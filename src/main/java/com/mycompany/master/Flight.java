@@ -21,11 +21,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Flight extends JFrame implements ActionListener{
+public class Flight extends JPanel implements ActionListener{
     private JLabel lblflights, lblDate;
     private JButton btnBook, btnSearch, btnRefresh;
     private JTextField txtField;
-    private JPanel panelFlight;
     private JTable tableFlights;
     private DefaultTableModel defaultTableMdl;
     private TableColumnModel tableColumnMdl;
@@ -54,17 +53,11 @@ public class Flight extends JFrame implements ActionListener{
     };
 
     Flight () {
-        setSize(1000, 600);
-        setLayout(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setResizable(false);
         
-        panelFlight = new JPanel();
-        panelFlight.setSize(1000, 600);
-        panelFlight.setBackground(new Color(37, 113, 128));
-        panelFlight.setLayout(null);
-        add(panelFlight);   
+       setSize(1000, 600);
+       setBackground(new Color(37, 113, 128));
+       setLayout(null);
+        
         
         flightClass = new JComboBox<>(TravelClass);
         
@@ -85,7 +78,7 @@ public class Flight extends JFrame implements ActionListener{
         tableFlights.getTableHeader().setBackground(new Color(180, 204, 224));
         tableFlights.getTableHeader().setForeground(new Color(0, 0, 0));
         tableFlights.getTableHeader().setFont(new Font("Garet", Font.BOLD, 20));
-        panelFlight.add(tableFlights);
+        add(tableFlights);
         
         search = new TableRowSorter<>(defaultTableMdl);
         tableFlights.setRowSorter(search);
@@ -99,17 +92,17 @@ public class Flight extends JFrame implements ActionListener{
         
         scrollpane = new JScrollPane(tableFlights);
         scrollpane.setBounds(30, 125, 925, 400);
-        panelFlight.add(scrollpane);        
+        add(scrollpane);        
         
         lblDate = new JLabel(LocalDate.now().format(DateTimeFormatter.ofPattern("MMMM dd, yyyy")));
         lblDate.setBounds(30, 10, 350, 50);
         lblDate.setFont(new Font("Garet", Font.BOLD, 20));
-        panelFlight.add(lblDate);
+        add(lblDate);
         
         lblflights = new JLabel("AVAILABLE FLIGHTS");
         lblflights.setBounds(30, 50, 350, 50);
         lblflights.setFont(new Font("Garet", Font.BOLD, 25));
-        panelFlight.add(lblflights);
+        add(lblflights);
        
         txtField = new JTextField();
         txtField.setBounds(290, 50, 380, 50);
@@ -117,7 +110,7 @@ public class Flight extends JFrame implements ActionListener{
         txtField.setBackground(new Color(180, 204, 224));
         txtField.setForeground(new Color(0, 0, 0));
         add(txtField);
-        panelFlight.add(txtField);
+        add(txtField);
         
         //Image Icon for Search button
         try {
@@ -235,13 +228,13 @@ public class Flight extends JFrame implements ActionListener{
            int row = tableFlights.getSelectedRow();
            if(row == -1){
               JOptionPane.showMessageDialog(this, "Please select a row to book", "Error", JOptionPane.ERROR_MESSAGE); 
-              return;
            }
              
            String selected = (String) tableFlights.getValueAt(row, 4);
            if(selected.equals("Choose..")){
               JOptionPane.showMessageDialog(this, "Please select a travel class to book", "Error", JOptionPane.ERROR_MESSAGE);
            }else {
+               new BookingForm(firstName,lastName,userID,phoneNumber);
                
            }
            
