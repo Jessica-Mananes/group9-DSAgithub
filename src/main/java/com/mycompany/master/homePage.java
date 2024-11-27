@@ -84,7 +84,7 @@ public class homePage extends JFrame {
         
         //bookPackage fourthTab = new bookPackage();
         
-        //history fifth = new history();
+        //history fifthTab = new history();
               
  // Create the TabbedPane and add the tabs
         jtpHome = new JTabbedPane();
