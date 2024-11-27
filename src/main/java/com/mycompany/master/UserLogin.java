@@ -144,7 +144,7 @@ public class UserLogin extends JFrame implements ActionListener {
                 
                
                 dispose();
-                //new Login();
+                new Login();
                  
             }
         }
