@@ -337,7 +337,7 @@ public class BookingFormTwo extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnSubmit) {
              JOptionPane.showMessageDialog(this, "successful!");
-             //new invoice();
+             new invoice();
              dispose();
         }
 }
