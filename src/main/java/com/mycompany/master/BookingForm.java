@@ -35,7 +35,7 @@ public class BookingForm extends JFrame implements ActionListener {
         
         // Set up the JFrame properties
         setTitle("Booking Form");
-        setSize(1000, 600);
+        setSize(1000, 650);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
