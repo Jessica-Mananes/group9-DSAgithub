@@ -234,11 +234,7 @@ public class Flight extends JPanel implements ActionListener{
            if(selected.equals("Choose..")){
               JOptionPane.showMessageDialog(this, "Please select a travel class to book", "Error", JOptionPane.ERROR_MESSAGE);
            }else {
-            String firstName = "";
-            String lastName = "";
-            String userID = "";
-            String phoneNumber = "";
-               new BookingForm(firstName,lastName,userID,phoneNumber);
+           new Login();
                
            }
            
