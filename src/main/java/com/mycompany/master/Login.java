@@ -126,13 +126,13 @@ public class Login extends JFrame implements ActionListener {
             String phoneNumber = "";
             // Show a success message
              JOptionPane.showMessageDialog(this, "Login successful!");
-             //new BookingForm(firstName,lastName,userID,phoneNumber);
+             new BookingForm(firstName,lastName,userID,phoneNumber);
              dispose();
         
          
          }else if (e.getSource()== btnSignup){
              dispose();
-             //new UserLogin();
+             new UserLogin();
     }
 }
 }
