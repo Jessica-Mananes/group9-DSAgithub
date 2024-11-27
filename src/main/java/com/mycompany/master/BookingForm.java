@@ -358,7 +358,7 @@ public class BookingForm extends JFrame implements ActionListener {
             String userID = "";
             String phoneNumber = "";
              JOptionPane.showMessageDialog(this, "successful!");
-             //new Hotel();
+             new Hotel();
              dispose();
         }
 }
