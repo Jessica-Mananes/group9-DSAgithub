@@ -78,13 +78,13 @@ public class homePage extends JFrame {
             firstTab.add(backgroundLabel);
            
  //initialize other tabs with empty panels
-        //Flight secondTab = new Flight();
+        Flight secondTab = new Flight();
         
-        //Hotel thirdTab = new Hotel();
+        Hotel thirdTab = new Hotel();
         
-        //bookPackage fourthTab = new bookPackage();
+        bookPackage fourthTab = new bookPackage();
         
-        //history fifth = new history();
+        history fifth = new history();
               
  // Create the TabbedPane and add the tabs
         jtpHome = new JTabbedPane();
