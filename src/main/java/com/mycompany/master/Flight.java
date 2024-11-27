@@ -125,7 +125,7 @@ public class Flight extends JPanel implements ActionListener{
         
         btnSearch = new JButton(imgnewSearch);
         btnSearch.setBounds(685, 50, 60, 50);
-        panelFlight.add(btnSearch);
+        add(btnSearch);
         
         //Image Icon for Refresh button
         try {
@@ -140,7 +140,7 @@ public class Flight extends JPanel implements ActionListener{
         
         btnRefresh = new JButton(imgnewRefresh);
         btnRefresh.setBounds(755, 50, 60, 50);
-        panelFlight.add(btnRefresh);
+        add(btnRefresh);
 
         //book now button
         btnBook = new JButton("BOOK NOW");
@@ -148,7 +148,7 @@ public class Flight extends JPanel implements ActionListener{
         btnBook.setFont(new Font("Garet", Font.BOLD, 17));
         btnBook.setForeground(new Color(0, 0, 0));
         btnBook.setBackground(new Color(180, 204, 224));
-        panelFlight.add(btnBook);
+        add(btnBook);
         
         //Local Date&Time
         for(int r = 0; r < flightInfo.length; r++){
