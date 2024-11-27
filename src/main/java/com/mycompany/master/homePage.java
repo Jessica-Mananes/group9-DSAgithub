@@ -19,7 +19,7 @@ import javax.swing.*;
 public class homePage extends JFrame {
     
    //declare components and variables
-    private JPanel firstTab, secondTab, thirdTab, fourthTab, fifthTab;  
+    private JPanel firstTab; 
     private final JTabbedPane jtpHome;
     private JLabel txtLabel, secondLabel, thirdLabel, dashLine; 
     private URL pic = null;
@@ -84,7 +84,7 @@ public class homePage extends JFrame {
         
         bookPackage fourthTab = new bookPackage();
         
-        history fifth = new history();
+        LoginThree fifthTab = new LoginThree();
               
  // Create the TabbedPane and add the tabs
         jtpHome = new JTabbedPane();
@@ -100,10 +100,11 @@ public class homePage extends JFrame {
         setResizable(false); //Disable resizing
         setLocationRelativeTo(null); //Center the frame on the screen
         setVisible(true); //make the frame visible 
-    
+        
+       
    
     }
-
+        
 }
 
     

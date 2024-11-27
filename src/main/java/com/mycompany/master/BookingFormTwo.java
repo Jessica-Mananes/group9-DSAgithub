@@ -30,7 +30,7 @@ public class BookingFormTwo extends JFrame implements ActionListener{
                    lblCheckOutTime,lblTitlePersonalDetails,lblTitleFlightInformation,lblTitleHotelInformation,lblFlightTotalCost;
     private JPanel pnlPersonalDetails,pnlFlightInfo,pnlHotelInfo;
     private JComboBox cmbRoomPreference;
-    private String[] roomPreference = {"One","Two","Three"};
+    private String[] roomPreference = {"Standard Room","Deluxe Room","Executive Room"};
 
  BookingFormTwo(String firstName,String lastName,String userID, String phoneNumber){
         

@@ -30,7 +30,7 @@ public class bookPackage extends JPanel implements ActionListener {
     //constructor for bookPackage class
     bookPackage() {
         setBackground(new Color(37, 113, 128));
-       
+        setLayout(null);
         
         //
         setSize(1000, 600);
@@ -347,7 +347,7 @@ public class bookPackage extends JPanel implements ActionListener {
             String lastName = "";
             String userID = "";
             String phoneNumber = "";
-            new BookingFormTwo(firstName,lastName,userID,phoneNumber);
+            new LoginTwo();
             
     }
         

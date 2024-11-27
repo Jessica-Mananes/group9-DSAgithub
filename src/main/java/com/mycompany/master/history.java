@@ -78,7 +78,15 @@ public class history extends JPanel implements ActionListener {
         int logout1 = JOptionPane.showConfirmDialog(history.this,"Are you sure you want to logout?","Confirm Logout",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 
         if (logout1 == JOptionPane.YES_OPTION) {
-           
+             setVisible(false);
+             removeAll();
+             
+             add(new LoginThree());
+             setVisible(true);
+             revalidate();
+             
+             
+            
         }
     }
 }

@@ -30,6 +30,7 @@ public class BookingForm extends JFrame implements ActionListener {
                    lblCheckOutTime,lblTitlePersonalDetails,lblTitleFlightInformation,lblTitleHotelInformation,lblFlightTotalCost;
     private JPanel pnlPersonalDetails,pnlFlightInfo,pnlHotelInfo;
     
+    
 
  BookingForm(String firstName,String lastName,String userID, String phoneNumber){
         
@@ -350,16 +351,21 @@ public class BookingForm extends JFrame implements ActionListener {
         btnNext.addActionListener(this);
         
     }
+ 
   @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnNext) {
-            String firstName = "";
-            String lastName = "";
-            String userID = "";
-            String phoneNumber = "";
-             JOptionPane.showMessageDialog(this, "successful!");
-             new Hotel();
-             dispose();
-        }
+            
+            
+            int book = JOptionPane.showConfirmDialog(BookingForm.this,"Are you sure you want to continue?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+            if (book == JOptionPane.YES_OPTION) {
+            JOptionPane.showMessageDialog(this, "Proceed to Hotel Tab");
+            dispose();
+             
+        }else{
+           new invoice();
+           dispose();
+            }
+}
 }
 }

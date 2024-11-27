@@ -228,13 +228,17 @@ public class Flight extends JPanel implements ActionListener{
            int row = tableFlights.getSelectedRow();
            if(row == -1){
               JOptionPane.showMessageDialog(this, "Please select a row to book", "Error", JOptionPane.ERROR_MESSAGE); 
+              
            }
+           
              
            String selected = (String) tableFlights.getValueAt(row, 4);
            if(selected.equals("Choose..")){
               JOptionPane.showMessageDialog(this, "Please select a travel class to book", "Error", JOptionPane.ERROR_MESSAGE);
            }else {
+           
            new Login();
+           
                
            }
            
