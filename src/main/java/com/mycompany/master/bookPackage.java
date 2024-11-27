@@ -19,7 +19,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-public class bookPackage extends JFrame implements ActionListener {
+public class bookPackage extends JPanel implements ActionListener {
     
     //Components Declaration
     private JPanel bgColor;
@@ -30,18 +30,12 @@ public class bookPackage extends JFrame implements ActionListener {
 
     //constructor for bookPackage class
     bookPackage() {
-        bgColor = new JPanel();
-        bgColor.setSize(1000, 600);
-        bgColor.setBackground(new Color(37, 113, 128));
-        bgColor.setLayout(null);
+        setBackground(new Color(37, 113, 128));
+       
         
         //
         setSize(1000, 600);
-        setTitle("Hotel Packages");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setLayout(null);
-        add(bgColor);
+        
       
         //add the first label from bookPackage Tab
         packages = new JLabel("TRAVEL PACKAGES");
@@ -355,7 +349,7 @@ public class bookPackage extends JFrame implements ActionListener {
             String userID = "";
             String phoneNumber = "";
             new BookingFormTwo(firstName,lastName,userID,phoneNumber);
-            dispose();
+            
     }
         
     }
