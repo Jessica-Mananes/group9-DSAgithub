@@ -350,6 +350,7 @@ public class bookPackage extends JFrame implements ActionListener {
         int book = JOptionPane.showConfirmDialog(bookPackage.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 
         if (book == JOptionPane.YES_OPTION) {
+            new BookingFormTwo(firstName,lastName,userID,phoneNumber);
             dispose();
     }
         
