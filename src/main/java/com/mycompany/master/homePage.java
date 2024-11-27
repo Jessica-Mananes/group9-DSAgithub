@@ -26,7 +26,7 @@ public class homePage extends JFrame {
     
    //constructor for homePage class 
    homePage(){
-       setSize(1000, 600); //set size of the frame 
+       setSize(1000, 650); //set size of the frame 
        setTitle("Travel Booking System"); //set title to window frame
        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //close operation when exiting
     
