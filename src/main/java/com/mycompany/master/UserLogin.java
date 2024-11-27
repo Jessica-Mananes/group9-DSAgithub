@@ -32,7 +32,7 @@ public class UserLogin extends JFrame implements ActionListener {
     UserLogin() {
         
         setTitle("Create Account");
-        setSize(1000, 600);
+        setSize(1000, 650);
         setResizable(false);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
