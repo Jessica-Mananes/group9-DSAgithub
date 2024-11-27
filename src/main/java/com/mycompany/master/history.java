@@ -29,7 +29,7 @@ public class history extends JFrame implements ActionListener {
         setSize(1000, 600);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getContentPane().setBackground(new Color(255, 253, 208));
+        getContentPane().setBackground(new Color(253, 252, 233));
         setLocationRelativeTo(null);
 
         //User Label
