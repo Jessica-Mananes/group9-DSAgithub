@@ -4,17 +4,16 @@
  */
 package com.mycompany.master;
 
-/**
- *
- * @author Jessica
- */
-
-
 import java.awt.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.*;
 import javax.swing.*;
+
+/**
+ *
+ * @author Jessica
+ */
 
 
 public class homePage extends JFrame {
@@ -34,7 +33,7 @@ public class homePage extends JFrame {
   //Panel for tabs
         firstTab = new JPanel();
         firstTab.setLayout(null);
-        firstTab.setSize(1000, 600);
+        firstTab.setSize(1000, 650);
   
   //initialize the first label to the HOME tab 
         txtLabel = new JLabel("Book Your Next");
@@ -79,17 +78,13 @@ public class homePage extends JFrame {
             firstTab.add(backgroundLabel);
            
  //initialize other tabs with empty panels
-        secondTab = new JPanel();
-        secondTab.setSize(1000, 600);
+        //Flight secondTab = new Flight();
         
-        thirdTab = new JPanel();
-        thirdTab.setSize(1000, 600); 
+        //Hotel thirdTab = new Hotel();
         
-        fourthTab = new JPanel();
-        fourthTab.setSize(1000, 600);
+        //bookPackage fourthTab = new bookPackage();
         
-        fifthTab= new JPanel();
-        fifthTab.setSize(1000, 600);
+        //history fifth = new history();
               
  // Create the TabbedPane and add the tabs
         jtpHome = new JTabbedPane();
