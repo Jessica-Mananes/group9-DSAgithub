@@ -34,7 +34,7 @@ public class Login extends JFrame implements ActionListener {
         
          // Set up the JFrame properties
         setTitle("Login");
-        setSize(1000, 600);
+        setSize(1000, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         setLocationRelativeTo(null);
