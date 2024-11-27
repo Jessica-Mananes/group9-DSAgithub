@@ -16,7 +16,7 @@ import java.awt.event.ActionListener;
 import java.net.*;
 import java.util.logging.*;
 
-public class Hotel extends JFrame implements ActionListener {
+public class Hotel extends JPanel implements ActionListener {
 
     private JLabel lblSearch, lblHotelID, lblHotelLocation, lblHotelLocExt, lblHotelName, lblparkRating, lblHotelRate, lblRating;
     private JTextField jtfSearch;
@@ -50,10 +50,8 @@ public class Hotel extends JFrame implements ActionListener {
     Hotel() {
         setSize(1000, 600);
         setLayout(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getContentPane().setBackground(new Color(37, 113, 128));
-        setLocationRelativeTo(null);
-
+        setBackground(new Color(37, 113, 128));
+        
         //allows the componets to don't overlap in on every panel
         layer = new JLayeredPane();
         layer.setBounds(0, 0, 1000, 600);
@@ -170,7 +168,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgeparisParkhyatt.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                     
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                     
                 }
                   });                
@@ -244,7 +242,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgparisshangri.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                    
-                    //new BookingFormTwo();
+                    new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   });
                 framePanelsydney.add(btnImgparisshangri);
@@ -316,7 +314,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgparisQT.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                   
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   });     
                 framePanelsydney.add(btnImgparisQT);
@@ -402,7 +400,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgenewyorkPlaza.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                     
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   }); 
                 framePanelnewyork.add(btnImgenewyorkPlaza);
@@ -472,7 +470,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgenewyorkPeninsula.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                    
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   }); 
                 framePanelnewyork.add(btnImgenewyorkPeninsula);
@@ -542,7 +540,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgenewyorkHighline.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                   
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   }); 
                 framePanelnewyork.add(btnImgenewyorkHighline);
@@ -627,7 +625,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgeafricaCapetown.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                  
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   }); 
                 framePanelAfrica.add(btnImgeafricaCapetown);
@@ -697,7 +695,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgeafricaSilo.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                    
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   }); 
                 framePanelAfrica.add(btnImgeafricaSilo);
@@ -767,7 +765,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgeafricaBelmond.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                    
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   }); 
                 framePanelAfrica.add(btnImgeafricaBelmond);
@@ -854,7 +852,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgehawaiiFourseasons.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
 
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   }); 
                 framePanelHawaii.add(btnImgehawaiiFourseasons);
@@ -924,7 +922,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgehawaiiAndaz.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                     
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   }); 
                 framePanelHawaii.add(btnImgehawaiiAndaz);
@@ -994,7 +992,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgehawaiiRitz.setBounds(630, 10, 250, 300);
                 btnImgehawaiiRitz.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   }); 
                 framePanelHawaii.add(btnImgehawaiiRitz);
@@ -1080,7 +1078,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgespainArts.setBounds(20, 10, 250, 300);
                 btnImgespainArts.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   });
                 framePanelSpain.add(btnImgespainArts);
@@ -1150,7 +1148,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgespainMandarin.setBounds(325, 10, 250, 300);
                 btnImgespainMandarin.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   });
                 framePanelSpain.add(btnImgespainMandarin);
@@ -1219,7 +1217,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgespainPalace.setBounds(630, 10, 250, 300);
                 btnImgespainPalace.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   });
                 framePanelSpain.add(btnImgespainPalace);
@@ -1302,7 +1300,7 @@ public class Hotel extends JFrame implements ActionListener {
                  
                 btnImgthailandMandarin.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   });                
                 framePanelthailand.add(btnImgthailandMandarin);
@@ -1371,7 +1369,7 @@ public class Hotel extends JFrame implements ActionListener {
                  
                 btnImgthailandSiam.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   });                
                 framePanelthailand.add(btnImgthailandSiam);
@@ -1439,7 +1437,7 @@ public class Hotel extends JFrame implements ActionListener {
                 
                 btnImgthailandPeninsula.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   });     
                 framePanelthailand.add(btnImgthailandPeninsula);
@@ -1524,7 +1522,7 @@ public class Hotel extends JFrame implements ActionListener {
                  
                 btnImgfranceRitz.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   });                
                 framePanelfrance.add(btnImgfranceRitz);
@@ -1593,7 +1591,7 @@ public class Hotel extends JFrame implements ActionListener {
                  
                 btnImgfranceLemeurice.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   });                
                 framePanelfrance.add(btnImgfranceLemeurice);
@@ -1662,7 +1660,7 @@ public class Hotel extends JFrame implements ActionListener {
                 
                 btnImgfranceShangrila.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   });     
                 framePanelfrance.add(btnImgfranceShangrila);
@@ -1745,7 +1743,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgjapanCarlton.setBounds(20, 10, 250, 300);
                 btnImgjapanCarlton.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   }); 
                 framePaneljapan.add(btnImgjapanCarlton);
@@ -1814,7 +1812,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgjapanHoshinoya.setBounds(325, 10, 250, 300);
                 btnImgjapanHoshinoya.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   }); 
                 framePaneljapan.add(btnImgjapanHoshinoya);
@@ -1883,7 +1881,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgjapanAman.setBounds(630, 10, 250, 300);
                 btnImgjapanAman.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   }); 
                 framePaneljapan.add(btnImgjapanAman);
@@ -1968,7 +1966,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgitalyRussie.setBounds(20, 10, 250, 300);
                 btnImgitalyRussie.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   }); 
                 framePanelitaly.add(btnImgitalyRussie);
@@ -2037,7 +2035,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgitalyEden.setBounds(325, 10, 250, 300);
                 btnImgitalyEden.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   }); 
                 framePanelitaly.add(btnImgitalyEden);
@@ -2105,7 +2103,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgitalyRegis.setBounds(630, 10, 250, 300);
                 btnImgitalyRegis.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   }); 
                 framePanelitaly.add(btnImgitalyRegis);
@@ -2190,7 +2188,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgsouthkoreaFS.setBounds(20, 10, 250, 300);
                 btnImgsouthkoreaFS.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   }); 
                 framePanelsouthkorea.add(btnImgsouthkoreaFS);
@@ -2259,7 +2257,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgsouthkoreaShilla.setBounds(325, 10, 250, 300);
                 btnImgsouthkoreaShilla.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   }); 
                 framePanelsouthkorea.add(btnImgsouthkoreaShilla);
@@ -2330,7 +2328,7 @@ public class Hotel extends JFrame implements ActionListener {
                 btnImgsouthkoreaSigniel.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                    
-                    //new BookingFormTwo();
+                new BookingFormTwo(firstName,lastName,userID,phoneNumber);
                 }
                   }); 
                 framePanelsouthkorea.add(btnImgsouthkoreaSigniel);  
