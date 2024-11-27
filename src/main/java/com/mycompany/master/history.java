@@ -15,7 +15,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author ASUS X441U
  */
-public class history extends JFrame implements ActionListener {
+public class history extends JPanel implements ActionListener {
     
     //Components Declaration
     private JLabel userid, bookHistory;
@@ -28,9 +28,8 @@ public class history extends JFrame implements ActionListener {
     history() {
         setSize(1000, 600);
         setLayout(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        getContentPane().setBackground(new Color(255, 253, 208));
-        setLocationRelativeTo(null);
+        setBackground(new Color(255, 253, 208));
+        
 
         //User Label
         userid = new JLabel("USER ID: ");
@@ -79,7 +78,7 @@ public class history extends JFrame implements ActionListener {
         int logout1 = JOptionPane.showConfirmDialog(history.this,"Are you sure you want to logout?","Confirm Logout",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 
         if (logout1 == JOptionPane.YES_OPTION) {
-            dispose();
+           
         }
     }
 }
