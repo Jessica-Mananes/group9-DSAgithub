@@ -9,6 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -17,6 +20,7 @@ import javax.swing.*;
  * @author ASUS X441U
  */
 public class invoice extends JFrame implements ActionListener{
+    private Connection con;
     private ImageIcon imgLogo,imgnewLogo;
     private URL imageLogo;
     private JButton btnClose;
@@ -209,4 +213,16 @@ public class invoice extends JFrame implements ActionListener{
             this.dispose();
         } 
     }
-}
+    public void Connect(){
+        String url = "jdbc:mysql://localhost:3306/GroupNineDSAProject";
+        String username = "root";
+        String password = "sica123";
+        
+    
+        try {
+            con = DriverManager.getConnection(url, username, password);
+        } catch (SQLException ex) {
+            Logger.getLogger(invoice.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+    }
