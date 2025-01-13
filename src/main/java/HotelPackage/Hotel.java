@@ -14,29 +14,57 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.logging.*;
 
 public class Hotel extends JFrame implements ActionListener {
 
-    private JLabel lblSearch, lblHotelID, lblHotelLocation, lblHotelLocExt, lblHotelName, lblparkRating, lblHotelRate, lblRating;
+    private JLabel lblSearch, lblHotelIDOne, lblHotelIDTwo, lblHotelIDThree, lblHotelIDFour, lblHotelIDFive, lblHotelIDSix, lblHotelIDSeven, lblHotelIDEight, lblHotelIDNine,lblHotelIDTen,
+            lblHotelIDEleven,lblHotelIDTwelve,lblHotelIDThirteen,lblHotelIDFourteen,lblHotelIDFifteen,lblHotelIDExtSixteen,lblHotelIDSeventeen,lblHotelIDEighteen,lblHotelIDNineteen,lblHotelIDTwenty,
+            lblHotelIDTwentyone,lblHotelIDTwentytwo,lblHotelIDTwentythree,lblHotelIDTwentyfour,lblHotelIDTwentyfive,lblHotelIDTwentysix,lblHotelIDTwentyseven,lblHotelIDTwentyeight,lblHotelIDTwentynine,
+            lblHotelIDThirty,lblHotelIDExtOne, lblHotelIDExtTwo, lblHotelIDExtThree, lblHotelIDExtFour, lblHotelIDExtFive, lblHotelIDExtSix, lblHotelIDExtSeven, lblHotelIDExtEight, lblHotelIDExtNine,
+            lblHotelIDExtTen,lblHotelIDExtEleven,lblHotelIDExtTwelve,lblHotelIDExtThirteen,lblHotelIDExtFourteen,lblHotelIDExtFifteen,lblHotelIDExtSeventeen,lblHotelIDExtEighteen,lblHotelIDExtNineteen,
+            lblHotelIDExtTwenty,lblHotelIDExtTwentyone,lblHotelIDExtTwentytwo,lblHotelIDExtTwentythree,lblHotelIDExtTwentyfour,lblHotelIDExtTwentyfive,lblHotelIDExtTwentysix,lblHotelIDExtTwentyseven,
+            lblHotelIDExtTwentyeight,lblHotelIDExtTwentynine,lblHotelLocationOne, lblHotelLocationTwo, lblHotelLocationThree, lblHotelLocationFour, lblHotelLocationFive, lblHotelLocationSix, lblHotelLocationSeven, 
+            lblHotelLocationEight, lblHotelLocationNine,lblHotelLocationTen, lblHotelLocationEleven,lblHotelLocationTwelve,lblHotelLocationThirteen,lblHotelLocationFourteen,lblHotelLocationFifteen,lblHotelLocationSixteen,
+            lblHotelLocationSeventeen,lblHotelLocationEighteen,lblHotelLocationNineteen,lblHotelLocationTwenty,lblHotelLocationTwentyone,lblHotelLocationTwentytwo,lblHotelLocationTwentythree,lblHotelLocationTwentyfour,
+            lblHotelLocationTwentyfive,lblHotelLocationTwentysix,lblHotelLocationTwentyseven,lblHotelLocationTwentyeight,lblHotelLocationTwentynine,lblHotelLocationThirty,lblHotelLocExtOne, lblHotelLocExtTwo, 
+            lblHotelLocExtThree, lblHotelLocExtFour, lblHotelLocExtFive, lblHotelLocExtSix, lblHotelLocExtSeven, lblHotelLocExtEight, lblHotelLocExtNine,lblHotelLocExtTen,lblHotelLocExtEleven,lblHotelLocExtTwelve,
+            lblHotelLocExtThirteen,lblHotelLocExtFourteen,lblHotelLocExtFifteen,lblHotelLocExtSixteen,lblHotelIDSixteen,lblHotelLocExtSeventeen,lblHotelLocExtEighteen,lblHotelLocExtNineteen,lblHotelLocExtTwenty,
+            lblHotelLocExtTwentyone,lblHotelLocExtTwentytwo,lblHotelLocExtTwentythree,lblHotelLocExtTwentyfour,lblHotelLocExtTwentyfive,lblHotelLocExtTwentysix,lblHotelLocExtTwentyseven,lblHotelLocExtTwentyeight,
+            lblHotelLocExtTwentynine,lblHotelLocExtThirty,lblHotelNameOne, lblHotelNameTwo, lblHotelNameThree, lblHotelNameFour, lblHotelNameFive,lblHotelNameSix, lblHotelNameSeven,lblHotelNameEight, lblHotelNameNine,
+            lblHotelNameTen, lblHotelNameEleven,lblHotelNameTwelve,lblHotelNameThirteen,lblHotelNameFourteen,lblHotelNameFifteen,lblHotelNameSixteen,lblHotelNameSeventeen,lblHotelNameEighteen,lblHotelNameNineteen,
+            lblHotelNameTwenty,lblHotelNameTwentyone,lblHotelNameTwentytwo,lblHotelNameTwentythree,lblHotelNameTwentyfour,lblHotelNameTwentyfive,lblHotelNameTwentysix,lblHotelNameTwentyseven,lblHotelNameTwentyeight,
+            lblHotelNameTwentynine,lblHotelNameThirty,lblHotelRateOne, lblHotelRateTwo, lblHotelRateThree, lblHotelRateFour, lblHotelRateFive, lblHotelRateSix, lblHotelRateSeven, lblHotelRateEight, lblHotelRateNine,lblHotelRateTen,
+            lblHotelRateEleven,lblHotelRateTwelve,lblHotelRateThirteen,lblHotelRateFourteen,lblHotelRateFifteen,lblHotelRateSixteen,lblHotelRateSeventeen,lblHotelRateEighteen,lblHotelRateNineteen,lblHotelRateTwenty,lblHotelRateTwentyone,
+            lblHotelRateTwentytwo,lblHotelRateTwentythree,lblHotelRateTwentyfour,lblHotelRateTwentyfive,lblHotelRateTwentysix,lblHotelRateTwentyseven,lblHotelRateTwentyeight,lblHotelRateTwentynine,lblHotelIDExtThirty,lblHotelRateThirty,
+           lblHotelRateExtOne, lblHotelRateExtTwo, lblHotelRateExtThree, lblHotelRateExtFour, lblHotelRateExtFive, lblHotelRateExtSix, lblHotelRateExtSeven, lblHotelRateExtEight, lblHotelRateExtNine,lblHotelRateExtTen,lblHotelRateExtEleven, 
+            lblHotelRateExtTwelve,lblHotelRateExtThirteen,lblHotelRateExtFourteen, lblHotelRateExtFifteen,lblHotelRateExtSixteen,lblHotelRateExtSeventeen,lblHotelRateExtEighteen,lblHotelRateExtNineteen,lblHotelRateExtTwenty,lblHotelRateExtTwentyone,
+            lblHotelRateExtTwentytwo,lblHotelRateExtTwentythree,lblHotelRateExtTwentyfour,lblHotelRateExtTwentyfive,lblHotelRateExtTwentysix,lblHotelRateExtTwentyseven,lblHotelRateExtTwentyeight,lblHotelRateExtTwentynine,lblHotelRateExtThirty; 
     private JTextField jtfSearch;
-    private JButton btnSearch, btnImgeparisParkhyatt, btnImgparisshangri, btnImgparisQT, btnImgenewyorkPlaza, btnImgenewyorkPeninsula, btnImgenewyorkHighline,
+    private JButton btnSearch,btnRefresh, btnImgeparisParkhyatt, btnImgparisshangri, btnImgparisQT, btnImgenewyorkPlaza, btnImgenewyorkPeninsula, btnImgenewyorkHighline,
             btnImgeafricaCapetown, btnImgeafricaSilo,btnImgeafricaBelmond,btnImgehawaiiFourseasons, btnImgehawaiiAndaz,btnImgehawaiiRitz,
-            btnImgespainArts,btnImgespainMandarin, btnImgespainPalace;
+            btnImgespainArts,btnImgespainMandarin, btnImgespainPalace, btnImgthailandMandarin, btnImgthailandSiam, btnImgthailandPeninsula, btnImgfranceRitz, btnImgfranceLemeurice, 
+            btnImgfranceShangrila, btnImgjapanCarlton, btnImgjapanHoshinoya, btnImgjapanAman, btnImgitalyRussie, btnImgitalyEden, btnImgitalyRegis, btnImgsouthkoreaFS, 
+            btnImgsouthkoreaShilla, btnImgsouthkoreaSigniel;;
     private Font font = new Font("Garet", Font.BOLD, 25),
             hotelFont = new Font("Garet", Font.BOLD, 15),
             fontHotelName = new Font("Arial", Font.BOLD, 20);
 
-    private URL imgparisParkhyatt, imgparisShangri, imgparisQT,imgnewyorkPlaza,imgnewyorkPeninsula,imgnewyorkHighline,imgafricaCapetown,imgafricaSilo,imgafricaBelmond,
-            imghawaiiFourseasons, imghawaiiAndaz, imghawaiiRitz, imgspainArts, imgspainMandarin, imgspainPalace,imgparkRating, imgshangriRating, imgplazaRating,
-            imgpeninsulaRating, imghighlineRating, imgcapetownRating, imgsiloRating, imgbelmondRating, imgfourseasonRating, imgfandazRating,imgfritzRating,
-            imgartsRating, imgmandarinRating, imgpalaceRating = null;
-    private JPanel framePanel, framePanelsydney,framePanelnewyork,framePanelAfrica,framePanelHawaii, framePanelSpain;
+    private JPanel framePanelsydney,framePanelnewyork,framePanelAfrica,framePanelHawaii, framePanelSpain, framePanelthailand, framePanelfrance, framePaneljapan, framePanelitaly,
+            framePanelsouthkorea;
     private ImageIcon imgIconparisParkhyatt, imgnewiconParkhyatt, imgIconparisShangri, imgiconparisShangri, imgIconparisQT, imgiconparisQT, imgIconnewyorkPlaza, imgnewiconnewyorkPlaza, 
             imgIconnewyorkPeninsula, imgnewiconnewyorkPeninsula, imgIconnewyorkHighline, imgnewiconnewyorkHighline, imgIconafricaCapetown, imgnewiconafricaCapetown, imgIconafricaSilo, 
             imgnewiconafricaSilo, imgIconafricaBelmond, imgnewiconafricaBelmond, imgIconhawaiiFourseasons, imgnewiconhawaiiFourseasons, imgIconhawaiiAndaz, imgnewiconhawaiiAndaz, 
             imgIconhawaiiRitz, imgnewiconhawaiiRitz, imgIconspainArts, imgnewiconspainArts, imgIconspainMandarin, imgnewiconspainMandarin, imgIconspainPalace, imgnewiconspainPalace, 
-            imgRating, imgIconRating, imgnewiconRating;
+            imgIconthailandMandarin, imgnewiconMandarin, imgIconthailandSiam, imgnewiconSiam, imgIconthailandPeninsula, imgnewiconPeninsula,imgIconthailandRitz, imgnewiconRitz,
+            imgIconfranceLemeurice, imgnewiconLemeurice, imgIconfranceShangrila, imgnewiconShangrila, imgIconjapanCarlton, imgnewiconCarlton,imgIconjapanHoshinoya, imgnewiconHoshinoya,
+            imgIconjapanAman, imgnewiconAman, imgIconitalyRussie, imgnewiconRussie,imgIconitalyEden, imgnewiconEden, imgIconitalyRegis,imgnewiconRegis,imgIconsouthkoreaFS, imgnewiconFS, 
+            imgIconsouthkoreaShilla, imgnewiconShilla, imgIconsouthkoreaSigniel, imgnewiconSigniel;
     private JLayeredPane layer;
 
     Hotel() {
@@ -44,6 +72,7 @@ public class Hotel extends JFrame implements ActionListener {
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(new Color(37, 113, 128));
+        setResizable(false);
         setLocationRelativeTo(null);
 
         //allows the componets to don't overlap in on every panel
@@ -55,39 +84,58 @@ public class Hotel extends JFrame implements ActionListener {
         jtfSearch = new JTextField();
         jtfSearch.setForeground(new Color(0,0,0));
         jtfSearch.setBackground(new Color(180,204,224));
-        jtfSearch.setBounds(230, 50, 415, 30);
+        jtfSearch.setBounds(230, 40, 415, 50);
         add(jtfSearch);
 
         lblSearch = new JLabel("PLACE:");
         lblSearch.setFont(font);
         lblSearch.setForeground(new Color(0,0,0));
-        lblSearch.setBounds(100, 40, 350, 50);
+        lblSearch.setBounds(115, 40, 350, 50);
         add(lblSearch);
 
         //search button 
-        btnSearch = new JButton("SEARCH");
+        btnSearch = new JButton("⌕");
         btnSearch.setFont(font);
         btnSearch.setForeground(new Color(0,0,0));
         btnSearch.setBackground(new Color(180,204,224));
-        btnSearch.setBounds(710, 50, 150, 30);
+        btnSearch.setBounds(690, 40, 60, 50);
         add(btnSearch);
         
-
+        //refresh btn
+        btnRefresh = new JButton("⟳");
+        btnRefresh.setFont(font);
+        btnRefresh.setForeground(new Color(0,0,0));
+        btnRefresh.setBackground(new Color(180,204,224));
+        btnRefresh.setBounds(770, 40, 60, 50);
+        add(btnRefresh);
+        
         btnSearch.addActionListener(this);
+        btnRefresh.addActionListener(this);
 
         
         setVisible(true);
     }
+    
+        PreparedStatement pst;
+        Connection con;
+        ResultSet rs;
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {   
         
-               //show the specific panel per location
+        Connect();
+   
+        if (e.getSource() == btnRefresh) {
+                layer.removeAll();
+                layer.repaint();
+                jtfSearch.setText(" ");
+        }
+        
+            //show the specific panel per location
         String place = jtfSearch.getText().trim();
         if (e.getSource() == btnSearch) {
             if (place.equalsIgnoreCase("sydney")) {
                 layer.removeAll(); 
-                jtfSearch.setText(" "); 
                 
                 //Panel for the location Sydney
                 framePanelsydney = new JPanel();
@@ -99,61 +147,52 @@ public class Hotel extends JFrame implements ActionListener {
                 // Labels for information of the hotel
                 // Park Hyatt
                 
-                lblHotelName = new JLabel("Park Hyatt Hotel, Sydney");
-                lblHotelName.setFont(fontHotelName);
-                lblHotelName.setForeground(Color.BLACK);
-                lblHotelName.setBounds(20, 300, 320, 70);
-                framePanelsydney.add(lblHotelName);
+                lblHotelNameOne = new JLabel("Park Hyatt Hotel, Sydney");
+                lblHotelNameOne.setFont(fontHotelName);
+                lblHotelNameOne.setForeground(Color.BLACK);
+                lblHotelNameOne.setBounds(20, 300, 320, 70);
+                framePanelsydney.add(lblHotelNameOne);
                 
-                lblHotelLocation = new JLabel("LOCATION: 7 Hickson Road,");
-                lblHotelLocation.setFont(hotelFont);
-                lblHotelLocation.setForeground(Color.WHITE);
-                lblHotelLocation.setBounds(20, 320, 310, 70);
-                framePanelsydney.add(lblHotelLocation);
+                lblHotelLocationOne = new JLabel("LOCATION:");
+                lblHotelLocationOne.setFont(hotelFont);
+                lblHotelLocationOne.setForeground(Color.WHITE);
+                lblHotelLocationOne.setBounds(20, 320, 310, 70);
+                framePanelsydney.add(lblHotelLocationOne);
                 
-                lblHotelLocExt = new JLabel("Sydney, 2000, Australia");
-                lblHotelLocExt.setFont(hotelFont);
-                lblHotelLocExt.setForeground(Color.WHITE);
-                lblHotelLocExt.setBounds(20, 340, 320, 70);
-                framePanelsydney.add(lblHotelLocExt);
+                lblHotelLocExtOne = new JLabel("7 Hickson Road,Sydney Australia");
+                lblHotelLocExtOne.setFont(hotelFont);
+                lblHotelLocExtOne.setForeground(Color.WHITE);
+                lblHotelLocExtOne.setBounds(20, 340, 320, 70);
+                framePanelsydney.add(lblHotelLocExtOne);
                 
-                lblHotelID = new JLabel("HOTELID: SPH001");
-                lblHotelID.setFont(hotelFont);
-                lblHotelID.setForeground(Color.WHITE);
-                lblHotelID.setBounds(20, 360, 320, 70);
-                framePanelsydney.add(lblHotelID);
+                lblHotelIDOne = new JLabel("HOTELID: ");
+                lblHotelIDOne.setFont(hotelFont);
+                lblHotelIDOne.setForeground(Color.WHITE);
+                lblHotelIDOne.setBounds(20, 360, 320, 70);
+                framePanelsydney.add(lblHotelIDOne);   
                
-                lblHotelRate = new JLabel("RATING: ");
-                lblHotelRate.setFont(hotelFont);
-                lblHotelRate.setForeground(Color.WHITE);
-                lblHotelRate.setBounds(20, 380, 320, 70);
-                framePanelsydney.add(lblHotelRate);
+                lblHotelIDExtOne = new JLabel(" SPH001");
+                lblHotelIDExtOne.setFont(hotelFont);
+                lblHotelIDExtOne.setForeground(Color.WHITE);
+                lblHotelIDExtOne.setBounds(90, 360, 320, 70);
+                framePanelsydney.add(lblHotelIDExtOne);
                 
-               
-                //Image for rating of Park Hyyat           
-    
-        try {
-                    imgparkRating= new URL("https://i.pinimg.com/736x/a3/ba/8f/a3ba8f74180b78219801a365d688acf6.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                lblHotelRateOne = new JLabel("RATING:");
+                lblHotelRateOne.setFont(hotelFont);
+                lblHotelRateOne.setForeground(Color.WHITE);
+                lblHotelRateOne.setBounds(20, 380, 320, 70);
+                framePanelsydney.add(lblHotelRateOne);
+                
+                lblHotelRateExtOne = new JLabel("5/5");
+                lblHotelRateExtOne.setFont(hotelFont);
+                lblHotelRateExtOne.setForeground(Color.WHITE);
+                lblHotelRateExtOne.setBounds(90, 380, 320, 70);
+                framePanelsydney.add(lblHotelRateExtOne);
 
-                imgIconRating = new ImageIcon(imgparkRating);
-                Image imgscaleparkRating = imgIconRating.getImage().getScaledInstance(200, 90, Image.SCALE_SMOOTH);
-                imgnewiconRating = new ImageIcon(imgscaleparkRating);
-                lblRating = new JLabel(imgnewiconRating);
-                lblRating.setBounds(85, 380, 200, 90);
-                framePanelsydney.add(lblRating);
-               
-                //Image for every button on the panel
-                
-        try {
-                    imgparisParkhyatt = new URL("https://i.pinimg.com/564x/3e/ec/79/3eec79db610cfed2438a14a762317c0b.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconparisParkhyatt = new ImageIcon(imgparisParkhyatt);
+                               
+                //Image button for park hyatt
+            
+                imgIconparisParkhyatt = new ImageIcon("parkhyattSydney.jpg");
                 Image imgscaleParkhyatt = imgIconparisParkhyatt.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
                 imgnewiconParkhyatt = new ImageIcon(imgscaleParkhyatt);
                 btnImgeparisParkhyatt = new JButton(imgnewiconParkhyatt);
@@ -161,70 +200,92 @@ public class Hotel extends JFrame implements ActionListener {
                  
                 btnImgeparisParkhyatt.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    JOptionPane.showMessageDialog(framePanelsydney, "ERROR");
+                                        
+                    
+        //JOtionPane (user's preference)
+        int btnImgeparisParkhyatt = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgeparisParkhyatt == JOptionPane.YES_OPTION) {
+            dispose();
+            
+            
+                                //new BookingFormTwo();
+
+     
+                        //getText                             
+                        String name=lblHotelNameOne.getText();
+                        String location=lblHotelLocExtOne.getText();
+                        String hotelid=lblHotelIDExtOne.getText();
+                        String rate=lblHotelRateExtOne.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                       
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    } 
+                        
+        }    
                 }
                   });                
                 framePanelsydney.add(btnImgeparisParkhyatt);
                 
                 
-              // Labels for information of the hotel
-              // Shangri
+                // Labels for information of the hotel
+                    // Shangri
               
-                lblHotelName = new JLabel("Shangri-La Hotel, Sydney");
-                lblHotelName.setFont(fontHotelName);
-                lblHotelName.setForeground(Color.BLACK);
-                lblHotelName.setBounds(325, 300, 320, 70);
-                framePanelsydney.add(lblHotelName);
+                lblHotelNameTwo = new JLabel("Shangri-La Hotel, Sydney");
+                lblHotelNameTwo.setFont(fontHotelName);
+                lblHotelNameTwo.setForeground(Color.BLACK);
+                lblHotelNameTwo.setBounds(325, 300, 320, 70);
+                framePanelsydney.add(lblHotelNameTwo);
                 
-                lblHotelLocation = new JLabel("LOCATION: 176 Cumberland St,");
-                lblHotelLocation.setFont(hotelFont);
-                lblHotelLocation.setForeground(Color.WHITE);
-                lblHotelLocation.setBounds(325, 320, 310, 70);
-                framePanelsydney.add(lblHotelLocation);
+                lblHotelLocationTwo = new JLabel("LOCATION: ");
+                lblHotelLocationTwo.setFont(hotelFont);
+                lblHotelLocationTwo.setForeground(Color.WHITE);
+                lblHotelLocationTwo.setBounds(325, 320, 310, 70);
+                framePanelsydney.add(lblHotelLocationTwo);
                 
-                lblHotelLocExt = new JLabel("The Rocks NSW 2000, Australia");
-                lblHotelLocExt.setFont(hotelFont);
-                lblHotelLocExt.setForeground(Color.WHITE);
-                lblHotelLocExt.setBounds(325, 340, 320, 70);
-                framePanelsydney.add(lblHotelLocExt);
+                lblHotelLocExtTwo = new JLabel("176 Cumberland St, Australia");
+                lblHotelLocExtTwo.setFont(hotelFont);
+                lblHotelLocExtTwo.setForeground(Color.WHITE);
+                lblHotelLocExtTwo.setBounds(325, 340, 320, 70);
+                framePanelsydney.add(lblHotelLocExtTwo);
                 
-                lblHotelID = new JLabel("HOTELID: SSH002");
-                lblHotelID.setFont(hotelFont);
-                lblHotelID.setForeground(Color.WHITE);
-                lblHotelID.setBounds(325, 360, 320, 70);
-                framePanelsydney.add(lblHotelID);
+                lblHotelIDTwo = new JLabel("HOTELID:");
+                lblHotelIDTwo.setFont(hotelFont);
+                lblHotelIDTwo.setForeground(Color.WHITE);
+                lblHotelIDTwo.setBounds(325, 360, 320, 70);
+                framePanelsydney.add(lblHotelIDTwo); 
                 
-                lblHotelRate = new JLabel("RATING: ");
-                lblHotelRate.setFont(hotelFont);
-                lblHotelRate.setForeground(Color.WHITE);
-                lblHotelRate.setBounds(325, 380, 320, 70);
-                framePanelsydney.add(lblHotelRate);
+                lblHotelIDExtTwo = new JLabel(" SSH002");
+                lblHotelIDExtTwo.setFont(hotelFont);
+                lblHotelIDExtTwo.setForeground(Color.WHITE);
+                lblHotelIDExtTwo.setBounds(395, 360, 320, 70);
+                framePanelsydney.add(lblHotelIDExtTwo);
+                
+                lblHotelRateTwo = new JLabel("RATING:");
+                lblHotelRateTwo.setFont(hotelFont);
+                lblHotelRateTwo.setForeground(Color.WHITE);
+                lblHotelRateTwo.setBounds(325, 380, 320, 70);
+                framePanelsydney.add(lblHotelRateTwo);
                  
-                    //Image for rating of Shangri       
-    
-         try {
-                    imgparkRating= new URL("https://i.pinimg.com/736x/a3/ba/8f/a3ba8f74180b78219801a365d688acf6.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconRating = new ImageIcon(imgparkRating);
-                Image imgscaleshangriRating = imgIconRating.getImage().getScaledInstance(200, 90, Image.SCALE_SMOOTH);
-                imgnewiconRating = new ImageIcon(imgscaleshangriRating);
-                lblRating = new JLabel(imgnewiconRating);
-                lblRating.setBounds(390, 380, 200, 90);
-                framePanelsydney.add(lblRating);
+                lblHotelRateExtTwo = new JLabel("5/5");
+                lblHotelRateExtTwo.setFont(hotelFont);
+                lblHotelRateExtTwo.setForeground(Color.WHITE);
+                lblHotelRateExtTwo.setBounds(395, 380, 320, 70);
+                framePanelsydney.add(lblHotelRateExtTwo);
                 
                 
                 //Image for every button on the panel
-                
-        try {
-                    imgparisShangri = new URL("https://i.pinimg.com/564x/f2/71/0e/f2710e37285de62b984df4a004ee793b.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconparisShangri = new ImageIcon(imgparisShangri);
+ 
+                imgIconparisShangri = new ImageIcon("shangrilaSydney.jpg");
                 Image imgscaleparisShangri = imgIconparisShangri.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
                 imgiconparisShangri = new ImageIcon(imgscaleparisShangri);
                 btnImgparisshangri = new JButton(imgiconparisShangri);
@@ -233,70 +294,90 @@ public class Hotel extends JFrame implements ActionListener {
                
                 btnImgparisshangri.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    JOptionPane.showMessageDialog(framePanelsydney, "ERROR");
+                                       
+       
+        //JOtionPane (user's preference)
+        int btnImgparisshangri = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgparisshangri == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          //new BookingFormTwo();
+
+             
+                    //getText                             
+                        String name=lblHotelNameTwo.getText();
+                        String location=lblHotelLocExtTwo.getText();
+                        String hotelid=lblHotelIDExtTwo.getText();
+                        String rate=lblHotelRateExtTwo.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }                              
+                }
                 }
                   });
                 framePanelsydney.add(btnImgparisshangri);
                 
                 
-                // Labels for information of the hotel
-                // QT
+                    // Labels for information of the hotel
+                        // QT
                 
-                lblHotelName = new JLabel("QT Hotel, Sydney");
-                lblHotelName.setFont(fontHotelName);
-                lblHotelName.setForeground(Color.BLACK);
-                lblHotelName.setBounds(630, 300, 320, 70);
-                framePanelsydney.add(lblHotelName);
+                lblHotelNameThree = new JLabel("QT Hotel, Sydney");
+                lblHotelNameThree.setFont(fontHotelName);
+                lblHotelNameThree.setForeground(Color.BLACK);
+                lblHotelNameThree.setBounds(630, 300, 320, 70);
+                framePanelsydney.add(lblHotelNameThree);
                 
-                lblHotelLocation = new JLabel("LOCATION: 49 Market St,");
-                lblHotelLocation.setFont(hotelFont);
-                lblHotelLocation.setForeground(Color.WHITE);
-                lblHotelLocation.setBounds(630, 320, 310, 70);
-                framePanelsydney.add(lblHotelLocation);
+                lblHotelLocationThree = new JLabel("LOCATION:");
+                lblHotelLocationThree.setFont(hotelFont);
+                lblHotelLocationThree.setForeground(Color.WHITE);
+                lblHotelLocationThree.setBounds(630, 320, 310, 70);
+                framePanelsydney.add(lblHotelLocationThree);
                 
-                lblHotelLocExt = new JLabel("The Rocks NSW 2000, Australia");
-                lblHotelLocExt.setFont(hotelFont);
-                lblHotelLocExt.setForeground(Color.WHITE);
-                lblHotelLocExt.setBounds(630, 340, 320, 70);
-                framePanelsydney.add(lblHotelLocExt);
+                lblHotelLocExtThree = new JLabel("49 Market St, Australia");
+                lblHotelLocExtThree.setFont(hotelFont);
+                lblHotelLocExtThree.setForeground(Color.WHITE);
+                lblHotelLocExtThree.setBounds(630, 340, 320, 70);
+                framePanelsydney.add(lblHotelLocExtThree);
                 
-                lblHotelID = new JLabel("HOTELID: SQH003");
-                lblHotelID.setFont(hotelFont);
-                lblHotelID.setForeground(Color.WHITE);
-                lblHotelID.setBounds(630, 360, 320, 70);
-                framePanelsydney.add(lblHotelID);
+                lblHotelIDThree = new JLabel("HOTELID:");
+                lblHotelIDThree.setFont(hotelFont);
+                lblHotelIDThree.setForeground(Color.WHITE);
+                lblHotelIDThree.setBounds(630, 360, 320, 70);
+                framePanelsydney.add(lblHotelIDThree);
+               
+                lblHotelIDExtThree = new JLabel(" SQH003");
+                lblHotelIDExtThree.setFont(hotelFont);
+                lblHotelIDExtThree.setForeground(Color.WHITE);
+                lblHotelIDExtThree.setBounds(700, 360, 320, 70);
+                framePanelsydney.add(lblHotelIDExtThree);
                 
-                lblHotelRate = new JLabel("RATING: ");
-                lblHotelRate.setFont(hotelFont);
-                lblHotelRate.setForeground(Color.WHITE);
-                lblHotelRate.setBounds(630, 380, 320, 70);
-                framePanelsydney.add(lblHotelRate);
+                lblHotelRateThree = new JLabel("RATING: ");
+                lblHotelRateThree.setFont(hotelFont);
+                lblHotelRateThree.setForeground(Color.WHITE);
+                lblHotelRateThree.setBounds(630, 380, 320, 70);
+                framePanelsydney.add(lblHotelRateThree);
                 
-                //Image for rating of QT       
-    
-        try {
-                    imgparkRating= new URL("https://i.pinimg.com/736x/83/ba/60/83ba60cbe75a12d50435de0a3bdc5343.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconRating = new ImageIcon(imgparkRating);
-                Image imgscaleqtRating = imgIconRating.getImage().getScaledInstance(200, 90, Image.SCALE_SMOOTH);
-                imgnewiconRating = new ImageIcon(imgscaleqtRating);
-                lblRating = new JLabel(imgnewiconRating);
-                lblRating.setBounds(690, 380, 200, 90);
-                framePanelsydney.add(lblRating);
+                lblHotelRateExtThree = new JLabel("4.5/5");
+                lblHotelRateExtThree.setFont(hotelFont);
+                lblHotelRateExtThree.setForeground(Color.WHITE);
+                lblHotelRateExtThree.setBounds(700, 380, 320, 70);
+                framePanelsydney.add(lblHotelRateExtThree);
                 
-                
+           
                 //Image for every button on the panel
-            
-        try {
-                    imgparisQT = new URL("https://i.pinimg.com/564x/6c/b2/fb/6cb2fb581d0cf4264ac68134c2cada0d.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
 
-                imgIconparisQT = new ImageIcon(imgparisQT);
+                imgIconparisQT = new ImageIcon("qtSydney.jpg");
                 Image imgscaleparisQT = imgIconparisQT.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
                 imgiconparisQT = new ImageIcon(imgscaleparisQT);
                 btnImgparisQT = new JButton(imgiconparisQT);
@@ -304,7 +385,36 @@ public class Hotel extends JFrame implements ActionListener {
                 
                 btnImgparisQT.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    JOptionPane.showMessageDialog(btnImgparisQT, "ERROR");
+                  
+       
+        //JOtionPane (user's preference)
+        int btnImgparisQT = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgparisQT == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          //new BookingFormTwo();
+                    
+                    
+                        //getText                             
+                        String name=lblHotelNameThree.getText();
+                        String location=lblHotelLocExtThree.getText();
+                        String hotelid=lblHotelIDExtThree.getText();
+                        String rate=lblHotelRateExtThree.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }               
+                }
                 }
                   });     
                 framePanelsydney.add(btnImgparisQT);
@@ -329,136 +439,180 @@ public class Hotel extends JFrame implements ActionListener {
                 // Labels for information of the hotel
                     // The Plaza Hotel, New York
                 
-                lblHotelName = new JLabel("The Plaza Hotel, NY");
-                lblHotelName.setFont(fontHotelName);
-                lblHotelName.setForeground(Color.BLACK);
-                lblHotelName.setBounds(20, 300, 320, 70);
-                framePanelnewyork.add(lblHotelName);
+                lblHotelNameFour = new JLabel("The Plaza Hotel, NY");
+                lblHotelNameFour.setFont(fontHotelName);
+                lblHotelNameFour.setForeground(Color.BLACK);
+                lblHotelNameFour.setBounds(20, 300, 320, 70);
+                framePanelnewyork.add(lblHotelNameFour);
                 
-                lblHotelLocation = new JLabel("LOCATION: 5th Avenue, Central Park,");
-                lblHotelLocation.setFont(hotelFont);
-                lblHotelLocation.setForeground(Color.WHITE);
-                lblHotelLocation.setBounds(20, 320, 310, 70);
-                framePanelnewyork.add(lblHotelLocation);
+                lblHotelLocationFour = new JLabel("LOCATION:");
+                lblHotelLocationFour.setFont(hotelFont);
+                lblHotelLocationFour.setForeground(Color.WHITE);
+                lblHotelLocationFour.setBounds(20, 320, 310, 70);
+                framePanelnewyork.add(lblHotelLocationFour);
                 
-                lblHotelLocExt = new JLabel("New York, NY, USA");
-                lblHotelLocExt.setFont(hotelFont);
-                lblHotelLocExt.setForeground(Color.WHITE);
-                lblHotelLocExt.setBounds(20, 340, 320, 70);
-                framePanelnewyork.add(lblHotelLocExt);
+                lblHotelLocExtFour = new JLabel("5th Avenue, C.P., NY, USA");
+                lblHotelLocExtFour.setFont(hotelFont);
+                lblHotelLocExtFour.setForeground(Color.WHITE);
+                lblHotelLocExtFour.setBounds(20, 340, 320, 70);
+                framePanelnewyork.add(lblHotelLocExtFour);
                 
-                lblHotelID = new JLabel("HOTELID: NYH004");
-                lblHotelID.setFont(hotelFont);
-                lblHotelID.setForeground(Color.WHITE);
-                lblHotelID.setBounds(20, 360, 320, 70);
-                framePanelnewyork.add(lblHotelID);
+                lblHotelIDFour = new JLabel("HOTELID:");
+                lblHotelIDFour.setFont(hotelFont);
+                lblHotelIDFour.setForeground(Color.WHITE);
+                lblHotelIDFour.setBounds(20, 360, 320, 70);
+                framePanelnewyork.add(lblHotelIDFour);
+                
+                lblHotelIDExtFour = new JLabel(" NYH004");
+                lblHotelIDExtFour.setFont(hotelFont);
+                lblHotelIDExtFour.setForeground(Color.WHITE);
+                lblHotelIDExtFour.setBounds(90, 360, 320, 70);
+                framePanelnewyork.add(lblHotelIDExtFour);
                
-                lblHotelRate = new JLabel("RATING:");
-                lblHotelRate.setFont(hotelFont);
-                lblHotelRate.setForeground(Color.WHITE);
-                lblHotelRate.setBounds(20, 380, 320, 70);
-                framePanelnewyork.add(lblHotelRate);
+                lblHotelRateFour = new JLabel("RATING:");
+                lblHotelRateFour.setFont(hotelFont);
+                lblHotelRateFour.setForeground(Color.WHITE);
+                lblHotelRateFour.setBounds(20, 380, 320, 70);
+                framePanelnewyork.add(lblHotelRateFour);
                 
-                 //Image for rating of Plaza          
-    
-        try {
-                    imgplazaRating= new URL("https://i.pinimg.com/736x/a3/ba/8f/a3ba8f74180b78219801a365d688acf6.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconRating = new ImageIcon(imgplazaRating);
-                Image imgscaleplazaRating = imgIconRating.getImage().getScaledInstance(200, 90, Image.SCALE_SMOOTH);
-                imgnewiconRating = new ImageIcon(imgscaleplazaRating);
-                lblRating = new JLabel(imgnewiconRating);
-                lblRating.setBounds(85, 380, 200, 90);
-                framePanelnewyork.add(lblRating);
-               
+                lblHotelRateExtFour = new JLabel("5/5");
+                lblHotelRateExtFour.setFont(hotelFont);
+                lblHotelRateExtFour.setForeground(Color.WHITE);
+                lblHotelRateExtFour.setBounds(90, 380, 320, 70);
+                framePanelnewyork.add(lblHotelRateExtFour);
+                
+                
                 //Image for every button on the panel
                 
-        try {
-                    imgnewyorkPlaza = new URL("https://i.pinimg.com/enabled_lo/564x/eb/5f/06/eb5f060b15a978684b04f7dd39812a53.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconnewyorkPlaza = new ImageIcon(imgnewyorkPlaza);
+                imgIconnewyorkPlaza = new ImageIcon("plazaNY.jpg");
                 Image imgscalenewyorkPlaza = imgIconnewyorkPlaza.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
                 imgnewiconnewyorkPlaza = new ImageIcon(imgscalenewyorkPlaza);
                 btnImgenewyorkPlaza = new JButton(imgnewiconnewyorkPlaza);
                 btnImgenewyorkPlaza.setBounds(20, 10, 250, 300);
                 btnImgenewyorkPlaza.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    JOptionPane.showMessageDialog(btnImgenewyorkPlaza, "ERROR");
+                    
+        
+        //JOtionPane (user's preference)
+        int btnImgenewyorkPlaza = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgenewyorkPlaza == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();
+                                
+                    
+                    //getText                             
+                        String name=lblHotelNameFour.getText();
+                        String location=lblHotelLocExtFour.getText();
+                        String hotelid=lblHotelIDExtFour.getText();
+                        String rate=lblHotelRateExtFour.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }               
+                }
                 }
                   }); 
                 framePanelnewyork.add(btnImgenewyorkPlaza);
                 
                 
-                // Labels for information of the hotel
-                    // The Peninsula Hotel, New York
                 
-                lblHotelName = new JLabel("The Peninsula Hotel, NY");
-                lblHotelName.setFont(fontHotelName);
-                lblHotelName.setForeground(Color.BLACK);
-                lblHotelName.setBounds(325, 300, 320, 70);
-                framePanelnewyork.add(lblHotelName);
+                    // Labels for information of the hotel
+                        // The Peninsula Hotel, New York
                 
-                lblHotelLocation = new JLabel("LOCATION: 700 5th Avenue,");
-                lblHotelLocation.setFont(hotelFont);
-                lblHotelLocation.setForeground(Color.WHITE);
-                lblHotelLocation.setBounds(325, 320, 310, 70);
-                framePanelnewyork.add(lblHotelLocation);
+                lblHotelNameFive = new JLabel("The Peninsula Hotel, NY");
+                lblHotelNameFive.setFont(fontHotelName);
+                lblHotelNameFive.setForeground(Color.BLACK);
+                lblHotelNameFive.setBounds(325, 300, 320, 70);
+                framePanelnewyork.add(lblHotelNameFive);
                 
-                lblHotelLocExt = new JLabel("New York, NY 10019, United States");
-                lblHotelLocExt.setFont(hotelFont);
-                lblHotelLocExt.setForeground(Color.WHITE);
-                lblHotelLocExt.setBounds(325, 340, 320, 70);
-                framePanelnewyork.add(lblHotelLocExt);
+                lblHotelLocationFive = new JLabel("LOCATION:");
+                lblHotelLocationFive.setFont(hotelFont);
+                lblHotelLocationFive.setForeground(Color.WHITE);
+                lblHotelLocationFive.setBounds(325, 320, 310, 70);
+                framePanelnewyork.add(lblHotelLocationFive);
                 
-                lblHotelID = new JLabel("HOTELID: NYH005");
-                lblHotelID.setFont(hotelFont);
-                lblHotelID.setForeground(Color.WHITE);
-                lblHotelID.setBounds(325, 360, 320, 70);
-                framePanelnewyork.add(lblHotelID);
+                lblHotelLocExtFive = new JLabel("700 5th Avenue, NY, USA");
+                lblHotelLocExtFive.setFont(hotelFont);
+                lblHotelLocExtFive.setForeground(Color.WHITE);
+                lblHotelLocExtFive.setBounds(325, 340, 320, 70);
+                framePanelnewyork.add(lblHotelLocExtFive);
+                
+                lblHotelIDFive = new JLabel("HOTELID:");
+                lblHotelIDFive.setFont(hotelFont);
+                lblHotelIDFive.setForeground(Color.WHITE);
+                lblHotelIDFive.setBounds(325, 360, 320, 70);
+                framePanelnewyork.add(lblHotelIDFive);
+                
+                lblHotelIDExtFive = new JLabel(" NYH005");
+                lblHotelIDExtFive.setFont(hotelFont);
+                lblHotelIDExtFive.setForeground(Color.WHITE);
+                lblHotelIDExtFive.setBounds(395, 360, 320, 70);
+                framePanelnewyork.add(lblHotelIDExtFive);
                
-                lblHotelRate = new JLabel("RATING:");
-                lblHotelRate.setFont(hotelFont);
-                lblHotelRate.setForeground(Color.WHITE);
-                lblHotelRate.setBounds(325, 380, 320, 70);
-                framePanelnewyork.add(lblHotelRate);
+                lblHotelRateFive = new JLabel("RATING:");
+                lblHotelRateFive.setFont(hotelFont);
+                lblHotelRateFive.setForeground(Color.WHITE);
+                lblHotelRateFive.setBounds(325, 380, 320, 70);
+                framePanelnewyork.add(lblHotelRateFive);
                 
-                //Image for rating of Peninsula          
-    
-        try {
-                    imgpeninsulaRating= new URL("https://i.pinimg.com/736x/a3/ba/8f/a3ba8f74180b78219801a365d688acf6.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconRating = new ImageIcon(imgpeninsulaRating);
-                Image imgscalepeninsulaRating = imgIconRating.getImage().getScaledInstance(200, 90, Image.SCALE_SMOOTH);
-                imgnewiconRating = new ImageIcon(imgscalepeninsulaRating);
-                lblRating = new JLabel(imgnewiconRating);
-                lblRating.setBounds(390, 380, 200, 90);
-                framePanelnewyork.add(lblRating);
+                lblHotelRateExtFive = new JLabel("5/5");
+                lblHotelRateExtFive.setFont(hotelFont);
+                lblHotelRateExtFive.setForeground(Color.WHITE);
+                lblHotelRateExtFive.setBounds(395, 380, 320, 70);
+                framePanelnewyork.add(lblHotelRateExtFive);
                 
+      
                 //Image for every button on the panel
-                
-        try {
-                    imgnewyorkPeninsula = new URL("https://i.pinimg.com/564x/4f/1b/fe/4f1bfe304485aeaae2d8b46a1115230e.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconnewyorkPeninsula = new ImageIcon(imgnewyorkPeninsula);
+ 
+                imgIconnewyorkPeninsula = new ImageIcon("peninsulaNY.jpg");
                 Image imgscalenewyorkPeninsula = imgIconnewyorkPeninsula.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
                 imgnewiconnewyorkPeninsula = new ImageIcon(imgscalenewyorkPeninsula);
                 btnImgenewyorkPeninsula = new JButton(imgnewiconnewyorkPeninsula);
                 btnImgenewyorkPeninsula.setBounds(325, 10, 250, 300);
                 btnImgenewyorkPeninsula.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    JOptionPane.showMessageDialog(btnImgenewyorkPeninsula, "ERROR");
+                   
+        //JOtionPane (user's preference)
+        int btnImgenewyorkPeninsula = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgenewyorkPeninsula == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();               
+                                
+                                
+                    //getText                             
+                        String name=lblHotelNameFive.getText();
+                        String location=lblHotelLocExtFive.getText();
+                        String hotelid=lblHotelIDExtFive.getText();
+                        String rate=lblHotelRateExtFive.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }               
+                }
                 }
                   }); 
                 framePanelnewyork.add(btnImgenewyorkPeninsula);
@@ -467,78 +621,89 @@ public class Hotel extends JFrame implements ActionListener {
                   // Labels for information of the hotel
                     // The High Line Hotel, New York
                 
-                lblHotelName = new JLabel("The Standard High Line, NY");
-                lblHotelName.setFont(fontHotelName);
-                lblHotelName.setForeground(Color.BLACK);
-                lblHotelName.setBounds(630, 300, 320, 70);
-                framePanelnewyork.add(lblHotelName);
+                lblHotelNameSix = new JLabel("The Standard High Line, NY");
+                lblHotelNameSix.setFont(fontHotelName);
+                lblHotelNameSix.setForeground(Color.BLACK);
+                lblHotelNameSix.setBounds(630, 300, 320, 70);
+                framePanelnewyork.add(lblHotelNameSix);
                 
-                lblHotelLocation = new JLabel("LOCATION: 848 Washington St,");
-                lblHotelLocation.setFont(hotelFont);
-                lblHotelLocation.setForeground(Color.WHITE);
-                lblHotelLocation.setBounds(630, 320, 310, 70);
-                framePanelnewyork.add(lblHotelLocation);
+                lblHotelLocationSix = new JLabel("LOCATION:");
+                lblHotelLocationSix.setFont(hotelFont);
+                lblHotelLocationSix.setForeground(Color.WHITE);
+                lblHotelLocationSix.setBounds(630, 320, 310, 70);
+                framePanelnewyork.add(lblHotelLocationSix);
                 
-                lblHotelLocExt = new JLabel("New York, NY 10014, United State");
-                lblHotelLocExt.setFont(hotelFont);
-                lblHotelLocExt.setForeground(Color.WHITE);
-                lblHotelLocExt.setBounds(630, 340, 320, 70);
-                framePanelnewyork.add(lblHotelLocExt);
+                lblHotelLocExtSix = new JLabel("848 Washington St, NY, USA");
+                lblHotelLocExtSix.setFont(hotelFont);
+                lblHotelLocExtSix.setForeground(Color.WHITE);
+                lblHotelLocExtSix.setBounds(630, 340, 320, 70);
+                framePanelnewyork.add(lblHotelLocExtSix);
                 
-                lblHotelID = new JLabel("HOTELID: NYH006");
-                lblHotelID.setFont(hotelFont);
-                lblHotelID.setForeground(Color.WHITE);
-                lblHotelID.setBounds(630, 360, 320, 70);
-                framePanelnewyork.add(lblHotelID);
+                lblHotelIDSix = new JLabel("HOTELID:");
+                lblHotelIDSix.setFont(hotelFont);
+                lblHotelIDSix.setForeground(Color.WHITE);
+                lblHotelIDSix.setBounds(630, 360, 320, 70);
+                framePanelnewyork.add(lblHotelIDSix);
+                
+                lblHotelIDExtSix = new JLabel(" NYH006");
+                lblHotelIDExtSix.setFont(hotelFont);
+                lblHotelIDExtSix.setForeground(Color.WHITE);
+                lblHotelIDExtSix.setBounds(700, 360, 320, 70);
+                framePanelnewyork.add(lblHotelIDExtSix);
                
-                lblHotelRate = new JLabel("RATING:");
-                lblHotelRate.setFont(hotelFont);
-                lblHotelRate.setForeground(Color.WHITE);
-                lblHotelRate.setBounds(630, 380, 320, 70);
-                framePanelnewyork.add(lblHotelRate);
+                lblHotelRateSix = new JLabel("RATING:");
+                lblHotelRateSix.setFont(hotelFont);
+                lblHotelRateSix.setForeground(Color.WHITE);
+                lblHotelRateSix.setBounds(630, 380, 320, 70);
+                framePanelnewyork.add(lblHotelRateSix);
                 
-                //Image for rating of High Line          
-    
-        try {
-                    imghighlineRating= new URL("https://i.pinimg.com/736x/a3/ba/8f/a3ba8f74180b78219801a365d688acf6.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconRating = new ImageIcon(imghighlineRating);
-                Image imgscalehighlineRating = imgIconRating.getImage().getScaledInstance(200, 90, Image.SCALE_SMOOTH);
-                imgnewiconRating = new ImageIcon(imgscalehighlineRating);
-                lblRating = new JLabel(imgnewiconRating);
-                lblRating.setBounds(690, 380, 200, 90);
-                framePanelnewyork.add(lblRating);
-                
+                lblHotelRateExtSix = new JLabel("5/5");
+                lblHotelRateExtSix.setFont(hotelFont);
+                lblHotelRateExtSix.setForeground(Color.WHITE);
+                lblHotelRateExtSix.setBounds(700, 380, 320, 70);
+                framePanelnewyork.add(lblHotelRateExtSix);
+     
                 //Image for every button on the panel
                 
-        try {
-                    imgnewyorkHighline = new URL("https://i.pinimg.com/564x/8f/41/4d/8f414d4cd9f7f163f9450470cdf88623.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconnewyorkHighline = new ImageIcon(imgnewyorkHighline);
+                imgIconnewyorkHighline = new ImageIcon("highlineNY.jpg");
                 Image imgscalenewyorkHighline = imgIconnewyorkHighline.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
                 imgnewiconnewyorkHighline = new ImageIcon(imgscalenewyorkHighline);
                 btnImgenewyorkHighline = new JButton(imgnewiconnewyorkHighline);
                 btnImgenewyorkHighline.setBounds(630, 10, 250, 300);
                 btnImgenewyorkHighline.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    JOptionPane.showMessageDialog(btnImgenewyorkHighline, "ERROR");
+                  
+                    //new BookingFormTwo();
+                    
+                    //getText                             
+                        String name=lblHotelNameSix.getText();
+                        String location=lblHotelLocExtSix.getText();
+                        String hotelid=lblHotelIDExtSix.getText();
+                        String rate=lblHotelRateExtSix.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }               
                 }
                   }); 
                 framePanelnewyork.add(btnImgenewyorkHighline);
             }
     
                 //show the specific panel per location
+                    //South Africa
         
     else if 
                 (place.equalsIgnoreCase("south africa")) {
                 layer.removeAll();                
-                jtfSearch.setText(" ");
 
                 //Panel for the location  South Africa
                 framePanelAfrica = new JPanel();
@@ -551,67 +716,89 @@ public class Hotel extends JFrame implements ActionListener {
                 // Labels for information of the hotel
                     // One&Only Cape Town Hotel
                 
-                lblHotelName = new JLabel("One&Only Cape Town Hotel");
-                lblHotelName.setFont(fontHotelName);
-                lblHotelName.setForeground(Color.BLACK);
-                lblHotelName.setBounds(20, 300, 320, 70);
-                framePanelAfrica.add(lblHotelName);
+                lblHotelNameSeven = new JLabel("One&Only Cape Town Hotel");
+                lblHotelNameSeven.setFont(fontHotelName);
+                lblHotelNameSeven.setForeground(Color.BLACK);
+                lblHotelNameSeven.setBounds(20, 300, 320, 70);
+                framePanelAfrica.add(lblHotelNameSeven);
                 
-                lblHotelLocation = new JLabel("LOCATION: Dock Rd, Victoria & Alfred");
-                lblHotelLocation.setFont(hotelFont);
-                lblHotelLocation.setForeground(Color.WHITE);
-                lblHotelLocation.setBounds(20, 320, 310, 70);
-                framePanelAfrica.add(lblHotelLocation);
+                lblHotelLocationSeven = new JLabel("LOCATION:");
+                lblHotelLocationSeven.setFont(hotelFont);
+                lblHotelLocationSeven.setForeground(Color.WHITE);
+                lblHotelLocationSeven.setBounds(20, 320, 310, 70);
+                framePanelAfrica.add(lblHotelLocationSeven);
                 
-                lblHotelLocExt = new JLabel("Waterfront, Cape Town, 8001, SA");
-                lblHotelLocExt.setFont(hotelFont);
-                lblHotelLocExt.setForeground(Color.WHITE);
-                lblHotelLocExt.setBounds(20, 340, 320, 70);
-                framePanelAfrica.add(lblHotelLocExt);
+                lblHotelLocExtSeven = new JLabel("Dock Rd, Cape Town, 8001, SA");
+                lblHotelLocExtSeven.setFont(hotelFont);
+                lblHotelLocExtSeven.setForeground(Color.WHITE);
+                lblHotelLocExtSeven.setBounds(20, 340, 320, 70);
+                framePanelAfrica.add(lblHotelLocExtSeven);
                 
-                lblHotelID = new JLabel("HOTELID: ACH007");
-                lblHotelID.setFont(hotelFont);
-                lblHotelID.setForeground(Color.WHITE);
-                lblHotelID.setBounds(20, 360, 320, 70);
-                framePanelAfrica.add(lblHotelID);
+                lblHotelIDSeven = new JLabel("HOTELID:");
+                lblHotelIDSeven.setFont(hotelFont);
+                lblHotelIDSeven.setForeground(Color.WHITE);
+                lblHotelIDSeven.setBounds(20, 360, 320, 70);
+                framePanelAfrica.add(lblHotelIDSeven);
+                
+                lblHotelIDExtSeven = new JLabel(" ACH007");
+                lblHotelIDExtSeven.setFont(hotelFont);
+                lblHotelIDExtSeven.setForeground(Color.WHITE);
+                lblHotelIDExtSeven.setBounds(90, 360, 320, 70);
+                framePanelAfrica.add(lblHotelIDExtSeven);
                
-                lblHotelRate = new JLabel("RATING:");
-                lblHotelRate.setFont(hotelFont);
-                lblHotelRate.setForeground(Color.WHITE);
-                lblHotelRate.setBounds(20, 380, 320, 70);
-                framePanelAfrica.add(lblHotelRate);
-
-                    //Image for rating of cape town          
-    
-        try {
-                    imgcapetownRating = new URL("https://i.pinimg.com/736x/a3/ba/8f/a3ba8f74180b78219801a365d688acf6.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconRating = new ImageIcon(imgcapetownRating);
-                Image imgscalecapetownRating = imgIconRating.getImage().getScaledInstance(200, 90, Image.SCALE_SMOOTH);
-                imgnewiconRating = new ImageIcon(imgscalecapetownRating);
-                lblRating = new JLabel(imgnewiconRating);
-                lblRating.setBounds(85, 380, 200, 90);
-                framePanelAfrica.add(lblRating);
+                lblHotelRateSeven = new JLabel("RATING:");
+                lblHotelRateSeven.setFont(hotelFont);
+                lblHotelRateSeven.setForeground(Color.WHITE);
+                lblHotelRateSeven.setBounds(20, 380, 320, 70);
+                framePanelAfrica.add(lblHotelRateSeven);
                 
+                lblHotelRateExtSeven = new JLabel("5/5");
+                lblHotelRateExtSeven.setFont(hotelFont);
+                lblHotelRateExtSeven.setForeground(Color.WHITE);
+                lblHotelRateExtSeven.setBounds(90, 380, 320, 70);
+                framePanelAfrica.add(lblHotelRateExtSeven);
+
+      
                 //Image for every button on the panel
-                
-        try {
-                    imgafricaCapetown = new URL("https://i.pinimg.com/564x/da/a0/ea/daa0ea4f0b7568585c02a8944de57983.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
 
-                imgIconafricaCapetown = new ImageIcon(imgafricaCapetown);
+                imgIconafricaCapetown = new ImageIcon("capetownSA.jpg");
                 Image imgscaleafricaCapetown = imgIconafricaCapetown.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
                 imgnewiconafricaCapetown = new ImageIcon(imgscaleafricaCapetown);
                 btnImgeafricaCapetown = new JButton(imgnewiconafricaCapetown);
                 btnImgeafricaCapetown.setBounds(20, 10, 250, 300);
                 btnImgeafricaCapetown.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    JOptionPane.showMessageDialog(btnImgeafricaCapetown, "ERROR");
+                 
+        
+        //JOtionPane (user's preference)
+        int btnImgeafricaCapetown = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgeafricaCapetown == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();         
+                                
+                                
+                    //getText                             
+                        String name=lblHotelNameSeven.getText();
+                        String location=lblHotelLocExtSeven.getText();
+                        String hotelid=lblHotelIDExtSeven.getText();
+                        String rate=lblHotelRateExtSeven.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }       
+        }
                 }
                   }); 
                 framePanelAfrica.add(btnImgeafricaCapetown);
@@ -620,67 +807,88 @@ public class Hotel extends JFrame implements ActionListener {
                  // Labels for information of the hotel
                     // Silo Hotel
                 
-                lblHotelName = new JLabel("Silo Hotel");
-                lblHotelName.setFont(fontHotelName);
-                lblHotelName.setForeground(Color.BLACK);
-                lblHotelName.setBounds(325, 300, 320, 70);
-                framePanelAfrica.add(lblHotelName);
+                lblHotelNameEight = new JLabel("Silo Hotel");
+                lblHotelNameEight.setFont(fontHotelName);
+                lblHotelNameEight.setForeground(Color.BLACK);
+                lblHotelNameEight.setBounds(325, 300, 320, 70);
+                framePanelAfrica.add(lblHotelNameEight);
                 
-                lblHotelLocation = new JLabel("LOCATION: Silo Square, Victoria &");
-                lblHotelLocation.setFont(hotelFont);
-                lblHotelLocation.setForeground(Color.WHITE);
-                lblHotelLocation.setBounds(325, 320, 310, 70);
-                framePanelAfrica.add(lblHotelLocation);
+                lblHotelLocationEight = new JLabel("LOCATION:");
+                lblHotelLocationEight.setFont(hotelFont);
+                lblHotelLocationEight.setForeground(Color.WHITE);
+                lblHotelLocationEight.setBounds(325, 320, 310, 70);
+                framePanelAfrica.add(lblHotelLocationEight);
                 
-                lblHotelLocExt = new JLabel("Alfred Waterfront, Cape Town, 8001, SA");
-                lblHotelLocExt.setFont(hotelFont);
-                lblHotelLocExt.setForeground(Color.WHITE);
-                lblHotelLocExt.setBounds(325, 340, 320, 70);
-                framePanelAfrica.add(lblHotelLocExt);
+                lblHotelLocExtEight = new JLabel("Silo Square, Cape Town, 8001, SA");
+                lblHotelLocExtEight.setFont(hotelFont);
+                lblHotelLocExtEight.setForeground(Color.WHITE);
+                lblHotelLocExtEight.setBounds(325, 340, 320, 70);
+                framePanelAfrica.add(lblHotelLocExtEight);
                 
-                lblHotelID = new JLabel("HOTELID: ASH008");
-                lblHotelID.setFont(hotelFont);
-                lblHotelID.setForeground(Color.WHITE);
-                lblHotelID.setBounds(325, 360, 320, 70);
-                framePanelAfrica.add(lblHotelID);
+                lblHotelIDEight = new JLabel("HOTELID:");
+                lblHotelIDEight.setFont(hotelFont);
+                lblHotelIDEight.setForeground(Color.WHITE);
+                lblHotelIDEight.setBounds(325, 360, 320, 70);
+                framePanelAfrica.add(lblHotelIDEight);
+                
+                lblHotelIDExtEight = new JLabel(" ASH008");
+                lblHotelIDExtEight.setFont(hotelFont);
+                lblHotelIDExtEight.setForeground(Color.WHITE);
+                lblHotelIDExtEight.setBounds(395, 360, 320, 70);
+                framePanelAfrica.add(lblHotelIDExtEight);
                
-                lblHotelRate = new JLabel("RATING:");
-                lblHotelRate.setFont(hotelFont);
-                lblHotelRate.setForeground(Color.WHITE);
-                lblHotelRate.setBounds(325, 380, 320, 70);
-                framePanelAfrica.add(lblHotelRate);
+                lblHotelRateEight = new JLabel("RATING:");
+                lblHotelRateEight.setFont(hotelFont);
+                lblHotelRateEight.setForeground(Color.WHITE);
+                lblHotelRateEight.setBounds(325, 380, 320, 70);
+                framePanelAfrica.add(lblHotelRateEight);
                 
-                 //Image for rating of Silo        
-    
-        try {
-                    imgsiloRating = new URL("https://i.pinimg.com/736x/83/ba/60/83ba60cbe75a12d50435de0a3bdc5343.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconRating = new ImageIcon(imgsiloRating);
-                Image imgscalesiloRating = imgIconRating.getImage().getScaledInstance(200, 90, Image.SCALE_SMOOTH);
-                imgnewiconRating = new ImageIcon(imgscalesiloRating);
-                lblRating = new JLabel(imgnewiconRating);
-                lblRating.setBounds(390, 380, 200, 90);
-                framePanelAfrica.add(lblRating);
+                lblHotelRateExtEight = new JLabel("5/5");
+                lblHotelRateExtEight.setFont(hotelFont);
+                lblHotelRateExtEight.setForeground(Color.WHITE);
+                lblHotelRateExtEight.setBounds(395, 380, 320, 70);
+                framePanelAfrica.add(lblHotelRateExtEight);
                 
+     
                 //Image for every button on the panel
-                
-        try {
-                    imgafricaSilo = new URL("https://i.pinimg.com/564x/f7/e6/61/f7e66172b1d598a92bc3ef5ff6d192b1.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
 
-                imgIconafricaSilo = new ImageIcon(imgafricaSilo);
+                imgIconafricaSilo = new ImageIcon("siloSA.jpg");
                 Image imgscaleafricaSilo = imgIconafricaSilo.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
                 imgnewiconafricaSilo = new ImageIcon(imgscaleafricaSilo);
                 btnImgeafricaSilo = new JButton(imgnewiconafricaSilo);
                 btnImgeafricaSilo.setBounds(325, 10, 250, 300);
                 btnImgeafricaSilo.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    JOptionPane.showMessageDialog(btnImgeafricaSilo, "ERROR");
+                   
+        //JOtionPane (user's preference)
+        int btnImgeafricaSilo = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgeafricaSilo == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();      
+                                
+                                
+                    //getText                             
+                        String name=lblHotelNameEight.getText();
+                        String location=lblHotelLocExtEight.getText();
+                        String hotelid=lblHotelIDExtEight.getText();
+                        String rate=lblHotelRateExtEight.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }               
+                }
                 }
                   }); 
                 framePanelAfrica.add(btnImgeafricaSilo);
@@ -689,67 +897,88 @@ public class Hotel extends JFrame implements ActionListener {
                 // Labels for information of the hotel
                 // Belmond Hotel
                 
-                lblHotelName = new JLabel("Belmond M.N. Hotel");
-                lblHotelName.setFont(fontHotelName);
-                lblHotelName.setForeground(Color.BLACK);
-                lblHotelName.setBounds(630, 300, 320, 70);
-                framePanelAfrica.add(lblHotelName);
+                lblHotelNameNine = new JLabel("Belmond M.N. Hotel");
+                lblHotelNameNine.setFont(fontHotelName);
+                lblHotelNameNine.setForeground(Color.BLACK);
+                lblHotelNameNine.setBounds(630, 300, 320, 70);
+                framePanelAfrica.add(lblHotelNameNine);
                 
-                lblHotelLocation = new JLabel("LOCATION: 76 Orange St, Gardens,");
-                lblHotelLocation.setFont(hotelFont);
-                lblHotelLocation.setForeground(Color.WHITE);
-                lblHotelLocation.setBounds(630, 320, 310, 70);
-                framePanelAfrica.add(lblHotelLocation);
+                lblHotelLocationNine = new JLabel("LOCATION:");
+                lblHotelLocationNine.setFont(hotelFont);
+                lblHotelLocationNine.setForeground(Color.WHITE);
+                lblHotelLocationNine.setBounds(630, 320, 310, 70);
+                framePanelAfrica.add(lblHotelLocationNine);
                 
-                lblHotelLocExt = new JLabel("Cape Town, 8001, South Africa");
-                lblHotelLocExt.setFont(hotelFont);
-                lblHotelLocExt.setForeground(Color.WHITE);
-                lblHotelLocExt.setBounds(630, 340, 320, 70);
-                framePanelAfrica.add(lblHotelLocExt);
+                lblHotelLocExtNine = new JLabel("76 Orange St, Cape Town, 8001, SA");
+                lblHotelLocExtNine.setFont(hotelFont);
+                lblHotelLocExtNine.setForeground(Color.WHITE);
+                lblHotelLocExtNine.setBounds(630, 340, 320, 70);
+                framePanelAfrica.add(lblHotelLocExtNine);
                 
-                lblHotelID = new JLabel("HOTELID: ABH009");
-                lblHotelID.setFont(hotelFont);
-                lblHotelID.setForeground(Color.WHITE);
-                lblHotelID.setBounds(630, 360, 320, 70);
-                framePanelAfrica.add(lblHotelID);
+                lblHotelIDNine = new JLabel("HOTELID:");
+                lblHotelIDNine.setFont(hotelFont);
+                lblHotelIDNine.setForeground(Color.WHITE);
+                lblHotelIDNine.setBounds(630, 360, 320, 70);
+                framePanelAfrica.add(lblHotelIDNine);
+                
+                lblHotelIDExtNine = new JLabel(" ABH009");
+                lblHotelIDExtNine.setFont(hotelFont);
+                lblHotelIDExtNine.setForeground(Color.WHITE);
+                lblHotelIDExtNine.setBounds(700, 360, 320, 70);
+                framePanelAfrica.add(lblHotelIDExtNine);
                
-                lblHotelRate = new JLabel("RATING:");
-                lblHotelRate.setFont(hotelFont);
-                lblHotelRate.setForeground(Color.WHITE);
-                lblHotelRate.setBounds(630, 380, 320, 70);
-                framePanelAfrica.add(lblHotelRate);
+                lblHotelRateNine = new JLabel("RATING:");
+                lblHotelRateNine.setFont(hotelFont);
+                lblHotelRateNine.setForeground(Color.WHITE);
+                lblHotelRateNine.setBounds(630, 380, 320, 70);
+                framePanelAfrica.add(lblHotelRateNine);
                 
-                //Image for rating of Belmond       
-    
-        try {
-                    imgbelmondRating = new URL("https://i.pinimg.com/736x/a3/ba/8f/a3ba8f74180b78219801a365d688acf6.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconRating = new ImageIcon(imgbelmondRating);
-                Image imgscalebelmondRating = imgIconRating.getImage().getScaledInstance(200, 90, Image.SCALE_SMOOTH);
-                imgnewiconRating = new ImageIcon(imgscalebelmondRating);
-                lblRating = new JLabel(imgnewiconRating);
-                lblRating.setBounds(690, 380, 200, 90);
-                framePanelAfrica.add(lblRating);
+                lblHotelRateExtNine = new JLabel("4.5/5");
+                lblHotelRateExtNine.setFont(hotelFont);
+                lblHotelRateExtNine.setForeground(Color.WHITE);
+                lblHotelRateExtNine.setBounds(700, 380, 320, 70);
+                framePanelAfrica.add(lblHotelRateExtNine);
                 
+             
                 //Image for every button on the panel
-                
-        try {
-                    imgafricaBelmond = new URL("https://i.pinimg.com/564x/3b/05/e4/3b05e4ba8da4d36e241e236539fbc3e5.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
 
-                imgIconafricaBelmond = new ImageIcon(imgafricaBelmond);
+                imgIconafricaBelmond = new ImageIcon("belmondSA.jpg");
                 Image imgscaleafricaBelmond = imgIconafricaBelmond.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
                 imgnewiconafricaBelmond = new ImageIcon(imgscaleafricaBelmond);
                 btnImgeafricaBelmond = new JButton(imgnewiconafricaBelmond);
                 btnImgeafricaBelmond.setBounds(630, 10, 250, 300);
                 btnImgeafricaBelmond.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    JOptionPane.showMessageDialog(btnImgeafricaBelmond, "ERROR");
+                   
+        //JOtionPane (user's preference)
+        int btnImgeafricaBelmond = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgeafricaBelmond == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();     
+                                
+                    
+                        //getText                             
+                        String name=lblHotelNameNine.getText();
+                        String location=lblHotelLocExtNine.getText();
+                        String hotelid=lblHotelIDExtNine.getText();
+                        String rate=lblHotelRateExtNine.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }               
+                }
                 }
                   }); 
                 framePanelAfrica.add(btnImgeafricaBelmond);
@@ -774,68 +1003,88 @@ public class Hotel extends JFrame implements ActionListener {
                 // Labels for information of the hotel
                 // Four Seasons Resort Maui at Wailea
                 
-                lblHotelName = new JLabel("Four Seasons Resort");
-                lblHotelName.setFont(fontHotelName);
-                lblHotelName.setForeground(Color.BLACK);
-                lblHotelName.setBounds(20, 300, 320, 70);
-                framePanelHawaii.add(lblHotelName);
+                lblHotelNameTen = new JLabel("Four Seasons Resort");
+                lblHotelNameTen.setFont(fontHotelName);
+                lblHotelNameTen.setForeground(Color.BLACK);
+                lblHotelNameTen.setBounds(20, 300, 320, 70);
+                framePanelHawaii.add(lblHotelNameTen);
                 
-                lblHotelLocation = new JLabel("LOCATION: 3900 Wailea Alanui Dr,");
-                lblHotelLocation.setFont(hotelFont);
-                lblHotelLocation.setForeground(Color.WHITE);
-                lblHotelLocation.setBounds(20, 320, 310, 70);
-                framePanelHawaii.add(lblHotelLocation);
+                lblHotelLocationTen = new JLabel("LOCATION:");
+                lblHotelLocationTen.setFont(hotelFont);
+                lblHotelLocationTen.setForeground(Color.WHITE);
+                lblHotelLocationTen.setBounds(20, 320, 310, 70);
+                framePanelHawaii.add(lblHotelLocationTen);
                 
-                lblHotelLocExt = new JLabel("Kihei, HI 96753, United States");
-                lblHotelLocExt.setFont(hotelFont);
-                lblHotelLocExt.setForeground(Color.WHITE);
-                lblHotelLocExt.setBounds(20, 340, 320, 70);
-                framePanelHawaii.add(lblHotelLocExt);
+                lblHotelLocExtTen = new JLabel("3900 Wailea Alanui Dr, HI, US");
+                lblHotelLocExtTen.setFont(hotelFont);
+                lblHotelLocExtTen.setForeground(Color.WHITE);
+                lblHotelLocExtTen.setBounds(20, 340, 320, 70);
+                framePanelHawaii.add(lblHotelLocExtTen);
                 
-                lblHotelID = new JLabel("HOTELID: HFH0010");
-                lblHotelID.setFont(hotelFont);
-                lblHotelID.setForeground(Color.WHITE);
-                lblHotelID.setBounds(20, 360, 320, 70);
-                framePanelHawaii.add(lblHotelID);
+                lblHotelIDTen = new JLabel("HOTELID:");
+                lblHotelIDTen.setFont(hotelFont);
+                lblHotelIDTen.setForeground(Color.WHITE);
+                lblHotelIDTen.setBounds(20, 360, 320, 70);
+                framePanelHawaii.add(lblHotelIDTen);
+                
+                lblHotelIDExtTen = new JLabel(" HFH0010");
+                lblHotelIDExtTen.setFont(hotelFont);
+                lblHotelIDExtTen.setForeground(Color.WHITE);
+                lblHotelIDExtTen.setBounds(90, 360, 320, 70);
+                framePanelHawaii.add(lblHotelIDExtTen);
                
-                lblHotelRate = new JLabel("RATING:");
-                lblHotelRate.setFont(hotelFont);
-                lblHotelRate.setForeground(Color.WHITE);
-                lblHotelRate.setBounds(20, 380, 320, 70);
-                framePanelHawaii.add(lblHotelRate);
+                lblHotelRateTen = new JLabel("RATING:");
+                lblHotelRateTen.setFont(hotelFont);
+                lblHotelRateTen.setForeground(Color.WHITE);
+                lblHotelRateTen.setBounds(20, 380, 320, 70);
+                framePanelHawaii.add(lblHotelRateTen);
                 
+                lblHotelRateExtTen = new JLabel("5/5");
+                lblHotelRateExtTen.setFont(hotelFont);
+                lblHotelRateExtTen.setForeground(Color.WHITE);
+                lblHotelRateExtTen.setBounds(90, 380, 320, 70);
+                framePanelHawaii.add(lblHotelRateExtTen);
                 
-                //Image for rating of Four Seasons Resort Maui at Wailea     
-                
-        try {
-                    imgfourseasonRating = new URL("https://i.pinimg.com/736x/a3/ba/8f/a3ba8f74180b78219801a365d688acf6.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconRating = new ImageIcon(imgfourseasonRating);
-                Image imgscalefourseasoRating = imgIconRating.getImage().getScaledInstance(200, 90, Image.SCALE_SMOOTH);
-                imgnewiconRating = new ImageIcon(imgscalefourseasoRating);
-                lblRating = new JLabel(imgnewiconRating);
-                lblRating.setBounds(85, 380, 200, 90);
-                framePanelHawaii.add(lblRating);
-                
+            
                 //Image for every button on the panel
-                
-        try {
-                    imghawaiiFourseasons = new URL("https://i.pinimg.com/564x/25/c0/0a/25c00aacc1335e2c2f6e274516862caf.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
 
-                imgIconhawaiiFourseasons = new ImageIcon(imghawaiiFourseasons);
+                imgIconhawaiiFourseasons = new ImageIcon("fourseasonsHawaii.jpg");
                 Image imgscalehawaiiFourseasons = imgIconhawaiiFourseasons.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
                 imgnewiconhawaiiFourseasons = new ImageIcon(imgscalehawaiiFourseasons);
                 btnImgehawaiiFourseasons = new JButton(imgnewiconhawaiiFourseasons);
                 btnImgehawaiiFourseasons.setBounds(20, 10, 250, 300);
                 btnImgehawaiiFourseasons.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    JOptionPane.showMessageDialog(btnImgehawaiiFourseasons, "ERROR");
+
+        //JOtionPane (user's preference)
+        int btnImgehawaiiFourseasons = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgehawaiiFourseasons == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();       
+                                
+                                
+                    //getText                             
+                        String name=lblHotelNameTen.getText();
+                        String location=lblHotelLocExtTen.getText();
+                        String hotelid=lblHotelIDExtTen.getText();
+                        String rate=lblHotelRateExtTen.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }               
+                }
                 }
                   }); 
                 framePanelHawaii.add(btnImgehawaiiFourseasons);
@@ -844,67 +1093,88 @@ public class Hotel extends JFrame implements ActionListener {
                 // Labels for information of the hotel
                 // Andaz Maui At Wailea Resort
                 
-                lblHotelName = new JLabel("Andaz Maui At Wailea Resort");
-                lblHotelName.setFont(fontHotelName);
-                lblHotelName.setForeground(Color.BLACK);
-                lblHotelName.setBounds(325, 300, 320, 70);
-                framePanelHawaii.add(lblHotelName);
+                lblHotelNameEleven = new JLabel("Andaz Maui At Wailea Resort");
+                lblHotelNameEleven.setFont(fontHotelName);
+                lblHotelNameEleven.setForeground(Color.BLACK);
+                lblHotelNameEleven.setBounds(325, 300, 320, 70);
+                framePanelHawaii.add(lblHotelNameEleven);
                 
-                lblHotelLocation = new JLabel("LOCATION: 3550 Wailea Alanui Dr,");
-                lblHotelLocation.setFont(hotelFont);
-                lblHotelLocation.setForeground(Color.WHITE);
-                lblHotelLocation.setBounds(325, 320, 310, 70);
-                framePanelHawaii.add(lblHotelLocation);
+                lblHotelLocationEleven = new JLabel("LOCATION:");
+                lblHotelLocationEleven.setFont(hotelFont);
+                lblHotelLocationEleven.setForeground(Color.WHITE);
+                lblHotelLocationEleven.setBounds(325, 320, 310, 70);
+                framePanelHawaii.add(lblHotelLocationEleven);
                 
-                lblHotelLocExt = new JLabel("Wailea, HI 96753, United States");
-                lblHotelLocExt.setFont(hotelFont);
-                lblHotelLocExt.setForeground(Color.WHITE);
-                lblHotelLocExt.setBounds(325, 340, 320, 70);
-                framePanelHawaii.add(lblHotelLocExt);
+                lblHotelLocExtEleven = new JLabel("3550 Wailea Alanui Dr, HI, US");
+                lblHotelLocExtEleven.setFont(hotelFont);
+                lblHotelLocExtEleven.setForeground(Color.WHITE);
+                lblHotelLocExtEleven.setBounds(325, 340, 320, 70);
+                framePanelHawaii.add(lblHotelLocExtEleven);
                 
-                lblHotelID = new JLabel("HOTELID: HAH011");
-                lblHotelID.setFont(hotelFont);
-                lblHotelID.setForeground(Color.WHITE);
-                lblHotelID.setBounds(325, 360, 320, 70);
-                framePanelHawaii.add(lblHotelID);
+                lblHotelIDEleven = new JLabel("HOTELID:");
+                lblHotelIDEleven.setFont(hotelFont);
+                lblHotelIDEleven.setForeground(Color.WHITE);
+                lblHotelIDEleven.setBounds(325, 360, 320, 70);
+                framePanelHawaii.add(lblHotelIDEleven);
+                
+                lblHotelIDExtEleven = new JLabel(" HAH011");
+                lblHotelIDExtEleven.setFont(hotelFont);
+                lblHotelIDExtEleven.setForeground(Color.WHITE);
+                lblHotelIDExtEleven.setBounds(395, 360, 320, 70);
+                framePanelHawaii.add(lblHotelIDExtEleven);
                
-                lblHotelRate = new JLabel("RATING:");
-                lblHotelRate.setFont(hotelFont);
-                lblHotelRate.setForeground(Color.WHITE);
-                lblHotelRate.setBounds(325, 380, 320, 70);
-                framePanelHawaii.add(lblHotelRate);
+                lblHotelRateEleven = new JLabel("RATING:");
+                lblHotelRateEleven.setFont(hotelFont);
+                lblHotelRateEleven.setForeground(Color.WHITE);
+                lblHotelRateEleven.setBounds(325, 380, 320, 70);
+                framePanelHawaii.add(lblHotelRateEleven);
                 
-                 //Image for rating of Andaz Maui At Wailea Resort    
+                lblHotelRateExtEleven = new JLabel("4.5/5");
+                lblHotelRateExtEleven.setFont(hotelFont);
+                lblHotelRateExtEleven.setForeground(Color.WHITE);
+                lblHotelRateExtEleven.setBounds(395, 380, 320, 70);
+                framePanelHawaii.add(lblHotelRateExtEleven);
                 
-        try {
-                    imgfandazRating = new URL("https://i.pinimg.com/736x/a3/ba/8f/a3ba8f74180b78219801a365d688acf6.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconRating = new ImageIcon(imgfandazRating);
-                Image imgscaleandazRating = imgIconRating.getImage().getScaledInstance(200, 90, Image.SCALE_SMOOTH);
-                imgnewiconRating = new ImageIcon(imgscaleandazRating);
-                lblRating = new JLabel(imgnewiconRating);
-                lblRating.setBounds(390, 380, 200, 90);
-                framePanelHawaii.add(lblRating);
-                
+               
                 //Image for every button on the panel
-                
-        try {
-                    imghawaiiAndaz = new URL("https://i.pinimg.com/564x/8b/1d/3c/8b1d3cbc80e576f7e65929aff79e70b5.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
 
-                imgIconhawaiiAndaz = new ImageIcon(imghawaiiAndaz);
+                imgIconhawaiiAndaz = new ImageIcon("andazHawaii.jpg");
                 Image imgscalehawaiiAndaz = imgIconhawaiiAndaz.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
                 imgnewiconhawaiiAndaz = new ImageIcon(imgscalehawaiiAndaz);
                 btnImgehawaiiAndaz = new JButton(imgnewiconhawaiiAndaz);
                 btnImgehawaiiAndaz.setBounds(325, 10, 250, 300);
                 btnImgehawaiiAndaz.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    JOptionPane.showMessageDialog(btnImgehawaiiAndaz, "ERROR");
+                    
+        //JOtionPane (user's preference)
+        int btnImgehawaiiAndaz = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgehawaiiAndaz == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();   
+                                
+                    
+                        //getText                             
+                        String name=lblHotelNameEleven.getText();
+                        String location=lblHotelLocExtEleven.getText();
+                        String hotelid=lblHotelIDExtEleven.getText();
+                        String rate=lblHotelRateExtEleven.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }               
+                }
                 }
                   }); 
                 framePanelHawaii.add(btnImgehawaiiAndaz);
@@ -913,68 +1183,89 @@ public class Hotel extends JFrame implements ActionListener {
                 // Labels for information of the hotel
                 // The Ritz-Carlton, Kapalua
                 
-                lblHotelName = new JLabel("The Ritz-Carlton, Kapalua");
-                lblHotelName.setFont(fontHotelName);
-                lblHotelName.setForeground(Color.BLACK);
-                lblHotelName.setBounds(630, 300, 320, 70);
-                framePanelHawaii.add(lblHotelName);
+                lblHotelNameTwelve = new JLabel("The Ritz-Carlton, Kapalua");
+                lblHotelNameTwelve.setFont(fontHotelName);
+                lblHotelNameTwelve.setForeground(Color.BLACK);
+                lblHotelNameTwelve.setBounds(630, 300, 320, 70);
+                framePanelHawaii.add(lblHotelNameTwelve);
                 
-                lblHotelLocation = new JLabel("LOCATION: 1 Ritz Carlton Dr, Lahaina,");
-                lblHotelLocation.setFont(hotelFont);
-                lblHotelLocation.setForeground(Color.WHITE);
-                lblHotelLocation.setBounds(630, 320, 310, 70);
-                framePanelHawaii.add(lblHotelLocation);
+                lblHotelLocationTwelve = new JLabel("LOCATION:");
+                lblHotelLocationTwelve.setFont(hotelFont);
+                lblHotelLocationTwelve.setForeground(Color.WHITE);
+                lblHotelLocationTwelve.setBounds(630, 320, 310, 70);
+                framePanelHawaii.add(lblHotelLocationTwelve);
                 
-                lblHotelLocExt = new JLabel("HI 96761, United States");
-                lblHotelLocExt.setFont(hotelFont);
-                lblHotelLocExt.setForeground(Color.WHITE);
-                lblHotelLocExt.setBounds(630, 340, 320, 70);
-                framePanelHawaii.add(lblHotelLocExt);
+                lblHotelLocExtTwelve = new JLabel("1 Ritz Carlton Dr, Lahaina,HI , US");
+                lblHotelLocExtTwelve.setFont(hotelFont);
+                lblHotelLocExtTwelve.setForeground(Color.WHITE);
+                lblHotelLocExtTwelve.setBounds(630, 340, 320, 70);
+                framePanelHawaii.add(lblHotelLocExtTwelve);
                 
-                lblHotelID = new JLabel("HOTELID: HRH012");
-                lblHotelID.setFont(hotelFont);
-                lblHotelID.setForeground(Color.WHITE);
-                lblHotelID.setBounds(630, 360, 320, 70);
-                framePanelHawaii.add(lblHotelID);
+                lblHotelIDTwelve = new JLabel("HOTELID:");
+                lblHotelIDTwelve.setFont(hotelFont);
+                lblHotelIDTwelve.setForeground(Color.WHITE);
+                lblHotelIDTwelve.setBounds(630, 360, 320, 70);
+                framePanelHawaii.add(lblHotelIDTwelve);
+                
+                lblHotelIDExtTwelve = new JLabel(" HRH012");
+                lblHotelIDExtTwelve.setFont(hotelFont);
+                lblHotelIDExtTwelve.setForeground(Color.WHITE);
+                lblHotelIDExtTwelve.setBounds(700, 360, 320, 70);
+                framePanelHawaii.add(lblHotelIDExtTwelve);
                
-                lblHotelRate = new JLabel("RATING:");
-                lblHotelRate.setFont(hotelFont);
-                lblHotelRate.setForeground(Color.WHITE);
-                lblHotelRate.setBounds(630, 380, 320, 70);
-                framePanelHawaii.add(lblHotelRate);
+                lblHotelRateTwelve = new JLabel("RATING:");
+                lblHotelRateTwelve.setFont(hotelFont);
+                lblHotelRateTwelve.setForeground(Color.WHITE);
+                lblHotelRateTwelve.setBounds(630, 380, 320, 70);
+                framePanelHawaii.add(lblHotelRateTwelve);
                 
-                //Image for rating of Andaz Maui At Wailea Resort    
-                
-                 try {
-                    imgfritzRating = new URL("https://i.pinimg.com/736x/a3/ba/8f/a3ba8f74180b78219801a365d688acf6.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconRating = new ImageIcon(imgfritzRating);
-                Image imgscaleritzRating = imgIconRating.getImage().getScaledInstance(200, 90, Image.SCALE_SMOOTH);
-                imgnewiconRating = new ImageIcon(imgscaleritzRating);
-                lblRating = new JLabel(imgnewiconRating);
-                lblRating.setBounds(690, 380, 200, 90);
-                framePanelHawaii.add(lblRating);
-                
+                lblHotelRateExtTwelve = new JLabel("4.5/5");
+                lblHotelRateExtTwelve.setFont(hotelFont);
+                lblHotelRateExtTwelve.setForeground(Color.WHITE);
+                lblHotelRateExtTwelve.setBounds(700, 380, 320, 70);
+                framePanelHawaii.add(lblHotelRateExtTwelve);
+               
                 
                 //Image for every button on the panel
-                
-         try {
-                    imghawaiiRitz = new URL("https://i.pinimg.com/564x/4a/10/a6/4a10a6576d9671d216156c928e268613.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconhawaiiRitz = new ImageIcon(imghawaiiRitz);
+  
+                imgIconhawaiiRitz = new ImageIcon("ritzHawaii.jpg");
                 Image imgscalehawaiiRitz = imgIconhawaiiRitz.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
                 imgnewiconhawaiiRitz = new ImageIcon(imgscalehawaiiRitz);
                 btnImgehawaiiRitz = new JButton(imgnewiconhawaiiRitz);
                 btnImgehawaiiRitz.setBounds(630, 10, 250, 300);
                 btnImgehawaiiRitz.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    JOptionPane.showMessageDialog(btnImgehawaiiRitz, "ERROR");
+                    
+
+        //JOtionPane (user's preference)
+        int btnImgehawaiiRitz = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgehawaiiRitz == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();         
+                                
+                              
+                        //getText                             
+                        String name=lblHotelNameTwelve.getText();
+                        String location=lblHotelLocExtTwelve.getText();
+                        String hotelid=lblHotelIDExtTwelve.getText();
+                        String rate=lblHotelRateExtTwelve.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }               
+        }                 
                 }
                   }); 
                 framePanelHawaii.add(btnImgehawaiiRitz);
@@ -983,11 +1274,11 @@ public class Hotel extends JFrame implements ActionListener {
     
                 
                    //show the specific panel per location
+                    //Spain
 
     else if
                 (place.equalsIgnoreCase("Spain")) {
                 layer.removeAll();
-                jtfSearch.setText(" ");
                 
                 //Panel for the location Spain
                 framePanelSpain = new JPanel();
@@ -999,68 +1290,88 @@ public class Hotel extends JFrame implements ActionListener {
                 // Labels for information of the hotel
                     // Hotel Arts Barcelona
                 
-                lblHotelName = new JLabel("Hotel Arts Barcelona");
-                lblHotelName.setFont(fontHotelName);
-                lblHotelName.setForeground(Color.BLACK);
-                lblHotelName.setBounds(20, 300, 320, 70);
-                framePanelSpain.add(lblHotelName);
+                lblHotelNameThirteen = new JLabel("Hotel Arts Barcelona");
+                lblHotelNameThirteen.setFont(fontHotelName);
+                lblHotelNameThirteen.setForeground(Color.BLACK);
+                lblHotelNameThirteen.setBounds(20, 300, 320, 70);
+                framePanelSpain.add(lblHotelNameThirteen);
                 
-                lblHotelLocation = new JLabel("LOCATION: Carrer de la Marina, 19-21,");
-                lblHotelLocation.setFont(hotelFont);
-                lblHotelLocation.setForeground(Color.WHITE);
-                lblHotelLocation.setBounds(20, 320, 310, 70);
-                framePanelSpain.add(lblHotelLocation);
+                lblHotelLocationThirteen = new JLabel("LOCATION:");
+                lblHotelLocationThirteen.setFont(hotelFont);
+                lblHotelLocationThirteen.setForeground(Color.WHITE);
+                lblHotelLocationThirteen.setBounds(20, 320, 310, 70);
+                framePanelSpain.add(lblHotelLocationThirteen);
                 
-                lblHotelLocExt = new JLabel("Ciutat Vella, 08005 Barcelona, Spain");
-                lblHotelLocExt.setFont(hotelFont);
-                lblHotelLocExt.setForeground(Color.WHITE);
-                lblHotelLocExt.setBounds(20, 340, 320, 70);
-                framePanelSpain.add(lblHotelLocExt);
+                lblHotelLocExtThirteen = new JLabel("Carrer de la Marina, Barcelona, Spain");
+                lblHotelLocExtThirteen.setFont(hotelFont);
+                lblHotelLocExtThirteen.setForeground(Color.WHITE);
+                lblHotelLocExtThirteen.setBounds(20, 340, 320, 70);
+                framePanelSpain.add(lblHotelLocExtThirteen);
                 
-                lblHotelID = new JLabel("HOTELID: SAH013");
-                lblHotelID.setFont(hotelFont);
-                lblHotelID.setForeground(Color.WHITE);
-                lblHotelID.setBounds(20, 360, 320, 70);
-                framePanelSpain.add(lblHotelID);
+                lblHotelIDThirteen = new JLabel("HOTELID:");
+                lblHotelIDThirteen.setFont(hotelFont);
+                lblHotelIDThirteen.setForeground(Color.WHITE);
+                lblHotelIDThirteen.setBounds(20, 360, 320, 70);
+                framePanelSpain.add(lblHotelIDThirteen);
+                
+                lblHotelIDExtThirteen = new JLabel(" SAH013");
+                lblHotelIDExtThirteen.setFont(hotelFont);
+                lblHotelIDExtThirteen.setForeground(Color.WHITE);
+                lblHotelIDExtThirteen.setBounds(90, 360, 320, 70);
+                framePanelSpain.add(lblHotelIDExtThirteen);
                
-                lblHotelRate = new JLabel("RATING:");
-                lblHotelRate.setFont(hotelFont);
-                lblHotelRate.setForeground(Color.WHITE);
-                lblHotelRate.setBounds(20, 380, 320, 70);
-                framePanelSpain.add(lblHotelRate);
-                 
-                       
-                   //Image for rating of Hotel Arts Barcelona     
+                lblHotelRateThirteen = new JLabel("RATING:");
+                lblHotelRateThirteen.setFont(hotelFont);
+                lblHotelRateThirteen.setForeground(Color.WHITE);
+                lblHotelRateThirteen.setBounds(20, 380, 320, 70);
+                framePanelSpain.add(lblHotelRateThirteen);
                 
-        try {
-                    imgartsRating = new URL("https://i.pinimg.com/736x/a3/ba/8f/a3ba8f74180b78219801a365d688acf6.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconRating = new ImageIcon(imgartsRating);
-                Image imgscaleartsRating = imgIconRating.getImage().getScaledInstance(200, 90, Image.SCALE_SMOOTH);
-                imgnewiconRating = new ImageIcon(imgscaleartsRating);
-                lblRating = new JLabel(imgnewiconRating);
-                lblRating.setBounds(85, 380, 200, 90);
-                framePanelSpain.add(lblRating);
+                lblHotelRateExtThirteen = new JLabel("5/5");
+                lblHotelRateExtThirteen.setFont(hotelFont);
+                lblHotelRateExtThirteen.setForeground(Color.WHITE);
+                lblHotelRateExtThirteen.setBounds(90, 380, 320, 70);
+                framePanelSpain.add(lblHotelRateExtThirteen);        
                 
                 //Image for every button on the panel
-                
-        try {
-                    imgspainArts = new URL("https://i.pinimg.com/564x/65/d4/37/65d43744520ebca141c6df40f83e3874.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconspainArts = new ImageIcon(imgspainArts);
+ 
+                imgIconspainArts = new ImageIcon("artsSpain.jpg");
                 Image imgscalespainArts = imgIconspainArts.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
                 imgnewiconspainArts = new ImageIcon(imgscalespainArts);
                 btnImgespainArts = new JButton(imgnewiconspainArts);
                 btnImgespainArts.setBounds(20, 10, 250, 300);
                 btnImgespainArts.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    JOptionPane.showMessageDialog(btnImgespainArts, "ERROR");
+                   
+                    
+        //JOtionPane (user's preference)
+        int btnImgespainArts = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgespainArts == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();     
+                                
+                        
+                         //getText                             
+                        String name=lblHotelNameThirteen.getText();
+                        String location=lblHotelLocExtThirteen.getText();
+                        String hotelid=lblHotelIDExtThirteen.getText();
+                        String rate=lblHotelRateExtThirteen.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    } 
+                  }
                 }
                   });
                 framePanelSpain.add(btnImgespainArts);
@@ -1069,68 +1380,89 @@ public class Hotel extends JFrame implements ActionListener {
                 // Labels for information of the hotel
                 // Mandarin Oriental, Barcelona
                 
-                lblHotelName = new JLabel("Mandarin Oriental, Barcelona");
-                lblHotelName.setFont(fontHotelName);
-                lblHotelName.setForeground(Color.BLACK);
-                lblHotelName.setBounds(325, 300, 320, 70);
-                framePanelSpain.add(lblHotelName);
+                lblHotelNameFourteen = new JLabel("Mandarin Oriental, Barcelona");
+                lblHotelNameFourteen.setFont(fontHotelName);
+                lblHotelNameFourteen.setForeground(Color.BLACK);
+                lblHotelNameFourteen.setBounds(325, 300, 320, 70);
+                framePanelSpain.add(lblHotelNameFourteen);
                 
-                lblHotelLocation = new JLabel("LOCATION: Pg. de Gràcia, 38-40,");
-                lblHotelLocation.setFont(hotelFont);
-                lblHotelLocation.setForeground(Color.WHITE);
-                lblHotelLocation.setBounds(325, 320, 310, 70);
-                framePanelSpain.add(lblHotelLocation);
+                lblHotelLocationFourteen = new JLabel("LOCATION:");
+                lblHotelLocationFourteen.setFont(hotelFont);
+                lblHotelLocationFourteen.setForeground(Color.WHITE);
+                lblHotelLocationFourteen.setBounds(325, 320, 310, 70);
+                framePanelSpain.add(lblHotelLocationFourteen);
                 
-                lblHotelLocExt = new JLabel("L'Eixample, 08007 Barcelona, Spain");
-                lblHotelLocExt.setFont(hotelFont);
-                lblHotelLocExt.setForeground(Color.WHITE);
-                lblHotelLocExt.setBounds(325, 340, 320, 70);
-                framePanelSpain.add(lblHotelLocExt);
+                lblHotelLocExtFourteen = new JLabel("L'Eixample,Barcelona, Spain");
+                lblHotelLocExtFourteen.setFont(hotelFont);
+                lblHotelLocExtFourteen.setForeground(Color.WHITE);
+                lblHotelLocExtFourteen.setBounds(325, 340, 320, 70);
+                framePanelSpain.add(lblHotelLocExtFourteen);
                 
-                lblHotelID = new JLabel("HOTELID: SMH014");
-                lblHotelID.setFont(hotelFont);
-                lblHotelID.setForeground(Color.WHITE);
-                lblHotelID.setBounds(325, 360, 320, 70);
-                framePanelSpain.add(lblHotelID);
+                lblHotelIDFourteen = new JLabel("HOTELID:");
+                lblHotelIDFourteen.setFont(hotelFont);
+                lblHotelIDFourteen.setForeground(Color.WHITE);
+                lblHotelIDFourteen.setBounds(325, 360, 320, 70);
+                framePanelSpain.add(lblHotelIDFourteen);
                 
-                lblHotelRate = new JLabel("RATING:");
-                lblHotelRate.setFont(hotelFont);
-                lblHotelRate.setForeground(Color.WHITE);
-                lblHotelRate.setBounds(325, 380, 320, 70);
-                framePanelSpain.add(lblHotelRate);
+                lblHotelIDExtFourteen = new JLabel(" SMH014");
+                lblHotelIDExtFourteen.setFont(hotelFont);
+                lblHotelIDExtFourteen.setForeground(Color.WHITE);
+                lblHotelIDExtFourteen.setBounds(395, 360, 320, 70);
+                framePanelSpain.add(lblHotelIDExtFourteen);
                 
+                lblHotelRateFourteen = new JLabel("RATING:");
+                lblHotelRateFourteen.setFont(hotelFont);
+                lblHotelRateFourteen.setForeground(Color.WHITE);
+                lblHotelRateFourteen.setBounds(325, 380, 320, 70);
+                framePanelSpain.add(lblHotelRateFourteen);
                 
-                //Image for rating of Mandarin Oriental, Barcelona 
+                lblHotelRateExtFourteen = new JLabel("5/5");
+                lblHotelRateExtFourteen.setFont(hotelFont);
+                lblHotelRateExtFourteen.setForeground(Color.WHITE);
+                lblHotelRateExtFourteen.setBounds(395, 380, 320, 70);
+                framePanelSpain.add(lblHotelRateExtFourteen);
                 
-       try {
-                    imgmandarinRating = new URL("https://i.pinimg.com/736x/83/ba/60/83ba60cbe75a12d50435de0a3bdc5343.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconRating = new ImageIcon(imgmandarinRating);
-                Image imgscalemandarinRating = imgIconRating.getImage().getScaledInstance(200, 90, Image.SCALE_SMOOTH);
-                imgnewiconRating = new ImageIcon(imgscalemandarinRating);
-                lblRating = new JLabel(imgnewiconRating);
-                lblRating.setBounds(390, 380, 200, 90);
-                framePanelSpain.add(lblRating);
                 
                 //Image for every button on the panel
-                    
-        try {
-                    imgspainMandarin = new URL("https://i.pinimg.com/564x/0c/49/65/0c4965a6787723d7e12b174c2c871745.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
 
-                imgIconspainMandarin = new ImageIcon(imgspainMandarin);
+                imgIconspainMandarin = new ImageIcon("mandarinSpain.jpg");
                 Image imgscalespainMandarin = imgIconspainMandarin.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
                 imgnewiconspainMandarin = new ImageIcon(imgscalespainMandarin);
                 btnImgespainMandarin = new JButton(imgnewiconspainMandarin);
                 btnImgespainMandarin.setBounds(325, 10, 250, 300);
                 btnImgespainMandarin.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    JOptionPane.showMessageDialog(btnImgespainMandarin, "ERROR");
+                        
+
+        //JOtionPane (user's preference)
+        int btnImgespainMandarin = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgespainMandarin == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();        
+                                
+                            
+                        //getText                             
+                        String name=lblHotelNameFourteen.getText();
+                        String location=lblHotelLocExtFourteen.getText();
+                        String hotelid=lblHotelIDExtFourteen.getText();
+                        String rate=lblHotelRateExtFourteen.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }             
+                    }
                 }
                   });
                 framePanelSpain.add(btnImgespainMandarin);
@@ -1139,78 +1471,1578 @@ public class Hotel extends JFrame implements ActionListener {
                 // Labels for information of the hotel
                 // El Palace Hotel, Barcelona
                 
-                lblHotelName = new JLabel("El Palace Hotel");
-                lblHotelName.setFont(fontHotelName);
-                lblHotelName.setForeground(Color.BLACK);
-                lblHotelName.setBounds(630, 300, 320, 70);
-                framePanelSpain.add(lblHotelName);
+                lblHotelNameFifteen = new JLabel("El Palace Hotel");
+                lblHotelNameFifteen.setFont(fontHotelName);
+                lblHotelNameFifteen.setForeground(Color.BLACK);
+                lblHotelNameFifteen.setBounds(630, 300, 320, 70);
+                framePanelSpain.add(lblHotelNameFifteen);
                 
-                lblHotelLocation = new JLabel("LOCATION:Gran Via de les Corts Catalanes,");
-                lblHotelLocation.setFont(hotelFont);
-                lblHotelLocation.setForeground(Color.WHITE);
-                lblHotelLocation.setBounds(630, 320, 310, 70);
-                framePanelSpain.add(lblHotelLocation);
+                lblHotelLocationFifteen = new JLabel("LOCATION:");
+                lblHotelLocationFifteen.setFont(hotelFont);
+                lblHotelLocationFifteen.setForeground(Color.WHITE);
+                lblHotelLocationFifteen.setBounds(630, 320, 310, 70);
+                framePanelSpain.add(lblHotelLocationFifteen);
                 
-                lblHotelLocExt = new JLabel("668, L'Eixample, 08010 Barcelona, Spain");
-                lblHotelLocExt.setFont(hotelFont);
-                lblHotelLocExt.setForeground(Color.WHITE);
-                lblHotelLocExt.setBounds(630, 340, 320, 70);
-                framePanelSpain.add(lblHotelLocExt);
+                lblHotelLocExtFifteen = new JLabel(" 668, L'Eixample, Barcelona, Spain");
+                lblHotelLocExtFifteen.setFont(hotelFont);
+                lblHotelLocExtFifteen.setForeground(Color.WHITE);
+                lblHotelLocExtFifteen.setBounds(630, 340, 320, 70);
+                framePanelSpain.add(lblHotelLocExtFifteen);
                 
-                lblHotelID = new JLabel("HOTELID: SPH015");
-                lblHotelID.setFont(hotelFont);
-                lblHotelID.setForeground(Color.WHITE);
-                lblHotelID.setBounds(630, 360, 320, 70);
-                framePanelSpain.add(lblHotelID);
+                lblHotelIDFifteen = new JLabel("HOTELID:");
+                lblHotelIDFifteen.setFont(hotelFont);
+                lblHotelIDFifteen.setForeground(Color.WHITE);
+                lblHotelIDFifteen.setBounds(630, 360, 320, 70);
+                framePanelSpain.add(lblHotelIDFifteen);
                 
-                lblHotelRate = new JLabel("RATING:");
-                lblHotelRate.setFont(hotelFont);
-                lblHotelRate.setForeground(Color.WHITE);
-                lblHotelRate.setBounds(630, 380, 320, 70);
-                framePanelSpain.add(lblHotelRate);
+                lblHotelIDExtFifteen = new JLabel(" SPH015");
+                lblHotelIDExtFifteen.setFont(hotelFont);
+                lblHotelIDExtFifteen.setForeground(Color.WHITE);
+                lblHotelIDExtFifteen.setBounds(700, 360, 320, 70);
+                framePanelSpain.add(lblHotelIDExtFifteen);
                 
-                //Image for rating of El Palace Hotel, Barcelona
+                lblHotelRateFifteen = new JLabel("RATING:");
+                lblHotelRateFifteen.setFont(hotelFont);
+                lblHotelRateFifteen.setForeground(Color.WHITE);
+                lblHotelRateFifteen.setBounds(630, 380, 320, 70);
+                framePanelSpain.add(lblHotelRateFifteen);
                 
-        try {
-                    imgpalaceRating = new URL("https://i.pinimg.com/736x/83/ba/60/83ba60cbe75a12d50435de0a3bdc5343.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                imgIconRating = new ImageIcon(imgpalaceRating);
-                Image imgscalepalaceRating = imgIconRating.getImage().getScaledInstance(200, 90, Image.SCALE_SMOOTH);
-                imgnewiconRating = new ImageIcon(imgscalepalaceRating);
-                lblRating = new JLabel(imgnewiconRating);
-                lblRating.setBounds(690, 380, 200, 90);
-                framePanelSpain.add(lblRating);
+                lblHotelRateExtFifteen = new JLabel("5/5");
+                lblHotelRateExtFifteen.setFont(hotelFont);
+                lblHotelRateExtFifteen.setForeground(Color.WHITE);
+                lblHotelRateExtFifteen.setBounds(700, 380, 320, 70);
+                framePanelSpain.add(lblHotelRateExtFifteen);
                 
+            
                 //Image for every button on the panel
-                       
-        try {
-                    imgspainPalace = new URL("https://i.pinimg.com/736x/ae/7b/eb/ae7beb7ca820ace88a28b1455387d941.jpg");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
-                }
 
-                imgIconspainPalace = new ImageIcon(imgspainPalace);
+                imgIconspainPalace = new ImageIcon("elpalaceSpain.jpg");
                 Image imgscalespainPalace = imgIconspainPalace.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
                 imgnewiconspainPalace = new ImageIcon(imgscalespainPalace);
                 btnImgespainPalace = new JButton(imgnewiconspainPalace);
                 btnImgespainPalace.setBounds(630, 10, 250, 300);
                 btnImgespainPalace.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    JOptionPane.showMessageDialog(btnImgespainPalace, "ERROR");
+                 
+                    
+        //JOtionPane (user's preference)
+        int btnImgespainPalace = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgespainPalace == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();       
+                                
+                            
+                        //getText                             
+                        String name=lblHotelNameFifteen.getText();
+                        String location=lblHotelLocExtFifteen.getText();
+                        String hotelid=lblHotelIDExtFifteen.getText();
+                        String rate=lblHotelRateExtFifteen.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }             
+                }
                 }
                   });
                 framePanelSpain.add(btnImgespainPalace);
                 
-                }        
+                }    
+
+                
+                //show the specific panel per location
+
+    
+            else if
+                (place.equalsIgnoreCase("thailand")) {
+                layer.removeAll();
+                jtfSearch.setText(" ");
+
+                //Panel for the location for Thailand
+                framePanelthailand = new JPanel();
+                framePanelthailand.setBounds(40, 120, 900, 400);
+                framePanelthailand.setBackground(new Color(37, 113, 128));
+                framePanelthailand.setLayout(null);
+                layer.add(framePanelthailand, Integer.valueOf(0));
+          
+                //Labels for the information of the hotel
+                    //Mandarin
+                
+                lblHotelNameSixteen = new JLabel("Mandarin Oriental, Bangkok");
+                lblHotelNameSixteen.setFont(fontHotelName);
+                lblHotelNameSixteen.setForeground(Color.BLACK);
+                lblHotelNameSixteen.setBounds(20, 300, 320, 70);
+                framePanelthailand.add(lblHotelNameSixteen);
+                
+                lblHotelLocationSixteen = new JLabel("LOCATION:");
+                lblHotelLocationSixteen.setFont(hotelFont);
+                lblHotelLocationSixteen.setForeground(Color.WHITE);
+                lblHotelLocationSixteen.setBounds(20, 320, 310, 70);
+                framePanelthailand.add(lblHotelLocationSixteen);
+                
+                lblHotelLocExtSixteen = new JLabel("48 Oriental Avenue, Bangkok, Thailand");
+                lblHotelLocExtSixteen.setFont(hotelFont);
+                lblHotelLocExtSixteen.setForeground(Color.WHITE);
+                lblHotelLocExtSixteen.setBounds(20, 340, 320, 70);
+                framePanelthailand.add(lblHotelLocExtSixteen);
+                
+                lblHotelIDSixteen = new JLabel("HOTELID:");
+                lblHotelIDSixteen.setFont(hotelFont);
+                lblHotelIDSixteen.setForeground(Color.WHITE);
+                lblHotelIDSixteen.setBounds(20, 360, 320, 70);
+                framePanelthailand.add(lblHotelIDSixteen);
+                
+                lblHotelIDExtSixteen = new JLabel(" BKK016");
+                lblHotelIDExtSixteen.setFont(hotelFont);
+                lblHotelIDExtSixteen.setForeground(Color.WHITE);
+                lblHotelIDExtSixteen.setBounds(90, 360, 320, 70);
+                framePanelthailand.add(lblHotelIDExtSixteen);
+
+                lblHotelRateSixteen = new JLabel("RATING: ");
+                lblHotelRateSixteen.setFont(hotelFont);
+                lblHotelRateSixteen.setForeground(Color.WHITE);
+                lblHotelRateSixteen.setBounds(20, 380, 320, 70);
+                framePanelthailand.add(lblHotelRateSixteen);
+                
+                lblHotelRateExtSixteen = new JLabel("5/5");
+                lblHotelRateExtSixteen.setFont(hotelFont);
+                lblHotelRateExtSixteen.setForeground(Color.WHITE);
+                lblHotelRateExtSixteen.setBounds(90, 380, 320, 70);
+                framePanelthailand.add(lblHotelRateExtSixteen);
+                
+                
+                //Image button for Mandarin
+   
+                imgIconthailandMandarin = new ImageIcon("mandarinThailand.jpg");
+                Image imgscaleMandarin = imgIconthailandMandarin.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
+                imgnewiconMandarin = new ImageIcon(imgscaleMandarin);
+                btnImgthailandMandarin = new JButton(imgnewiconMandarin);
+                btnImgthailandMandarin.setBounds(20, 10, 250, 300);
+                btnImgthailandMandarin.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    
+
+        //JOtionPane (user's preference)
+        int btnImgthailandMandarin = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgthailandMandarin == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();  
+                                
+                            
+                        //getText                             
+                        String name=lblHotelNameSixteen.getText();
+                        String location=lblHotelLocExtSixteen.getText();
+                        String hotelid=lblHotelIDExtSixteen.getText();
+                        String rate=lblHotelRateExtSixteen.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }             
+                }
+                }
+                  });                
+                framePanelthailand.add(btnImgthailandMandarin);
+
+                
+                //Labels for the information of the hotel
+                    //Siam
+                    
+                lblHotelNameSeventeen = new JLabel("The Siam");
+                lblHotelNameSeventeen.setFont(fontHotelName);
+                lblHotelNameSeventeen.setForeground(Color.BLACK);
+                lblHotelNameSeventeen.setBounds(325, 300, 320, 70);
+                framePanelthailand.add(lblHotelNameSeventeen);
+                
+                lblHotelLocationSeventeen = new JLabel("LOCATION:");
+                lblHotelLocationSeventeen.setFont(hotelFont);
+                lblHotelLocationSeventeen.setForeground(Color.WHITE);
+                lblHotelLocationSeventeen.setBounds(325, 320, 310, 70);
+                framePanelthailand.add(lblHotelLocationSeventeen);
+                
+                lblHotelLocExtSeventeen = new JLabel("3/2 Thanon Khao, Bangkok,Thailand");
+                lblHotelLocExtSeventeen.setFont(hotelFont);
+                lblHotelLocExtSeventeen.setForeground(Color.WHITE);
+                lblHotelLocExtSeventeen.setBounds(325, 340, 320, 70);
+                framePanelthailand.add(lblHotelLocExtSeventeen);
+                
+                lblHotelIDSeventeen = new JLabel("HOTELID:");
+                lblHotelIDSeventeen.setFont(hotelFont);
+                lblHotelIDSeventeen.setForeground(Color.WHITE);
+                lblHotelIDSeventeen.setBounds(325, 360, 320, 70);
+                framePanelthailand.add(lblHotelIDSeventeen);
+                
+                lblHotelIDExtSeventeen = new JLabel(" BKK017");
+                lblHotelIDExtSeventeen.setFont(hotelFont);
+                lblHotelIDExtSeventeen.setForeground(Color.WHITE);
+                lblHotelIDExtSeventeen.setBounds(395, 360, 320, 70);
+                framePanelthailand.add(lblHotelIDExtSeventeen);
+               
+                lblHotelRateSeventeen = new JLabel("RATING: ");
+                lblHotelRateSeventeen.setFont(hotelFont);
+                lblHotelRateSeventeen.setForeground(Color.WHITE);
+                lblHotelRateSeventeen.setBounds(325, 380, 320, 70);
+                framePanelthailand.add(lblHotelRateSeventeen);
+                
+                lblHotelRateExtSeventeen = new JLabel("4.5/5");
+                lblHotelRateExtSeventeen.setFont(hotelFont);
+                lblHotelRateExtSeventeen.setForeground(Color.WHITE);
+                lblHotelRateExtSeventeen.setBounds(395, 380, 320, 70);
+                framePanelthailand.add(lblHotelRateExtSeventeen);
+               
+
+                
+                //Image button for Siam
+   
+                imgIconthailandSiam = new ImageIcon("siamThailand.jpg");
+                Image imgscaleSiam = imgIconthailandSiam.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
+                imgnewiconSiam = new ImageIcon(imgscaleSiam);
+                btnImgthailandSiam = new JButton(imgnewiconSiam);
+                btnImgthailandSiam.setBounds(325, 10, 250, 300);
+                btnImgthailandSiam.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                  
+                    
+        //JOtionPane (user's preference)
+        int btnImgthailandSiam = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgthailandSiam == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();   
+                                
+                            
+                        //getText                             
+                        String name=lblHotelNameSeventeen.getText();
+                        String location=lblHotelLocExtSeventeen.getText();
+                        String hotelid=lblHotelIDExtSeventeen.getText();
+                        String rate=lblHotelRateExtSeventeen.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }             
+                }
+                }
+                  });                
+                framePanelthailand.add(btnImgthailandSiam);
+                
+                
+                //Labels for the information of the hotel
+                   //Peninsula
+                
+                lblHotelNameEighteen = new JLabel("The Peninsula");
+                lblHotelNameEighteen.setFont(fontHotelName);
+                lblHotelNameEighteen.setForeground(Color.BLACK);
+                lblHotelNameEighteen.setBounds(630, 300, 320, 70);
+                framePanelthailand.add(lblHotelNameEighteen);
+                
+                lblHotelLocationEighteen = new JLabel("LOCATION:");
+                lblHotelLocationEighteen.setFont(hotelFont);
+                lblHotelLocationEighteen.setForeground(Color.WHITE);
+                lblHotelLocationEighteen.setBounds(630, 320, 310, 70);
+                framePanelthailand.add(lblHotelLocationEighteen);
+                
+                lblHotelLocExtEighteen = new JLabel("CharoennakornRoad, Bangkok, Thailand ");
+                lblHotelLocExtEighteen.setFont(hotelFont);
+                lblHotelLocExtEighteen.setForeground(Color.WHITE);
+                lblHotelLocExtEighteen.setBounds(630, 340, 320, 70);
+                framePanelthailand.add(lblHotelLocExtEighteen);
+                
+                lblHotelIDEighteen = new JLabel("HOTELID:");
+                lblHotelIDEighteen.setFont(hotelFont);
+                lblHotelIDEighteen.setForeground(Color.WHITE);
+                lblHotelIDEighteen.setBounds(630, 360, 320, 70);
+                framePanelthailand.add(lblHotelIDEighteen);
+                
+                lblHotelIDExtEighteen = new JLabel(" BKK018");
+                lblHotelIDExtEighteen.setFont(hotelFont);
+                lblHotelIDExtEighteen.setForeground(Color.WHITE);
+                lblHotelIDExtEighteen.setBounds(700, 360, 320, 70);
+                framePanelthailand.add(lblHotelIDExtEighteen);
+                
+                lblHotelRateEighteen = new JLabel("RATING: ");
+                lblHotelRateEighteen.setFont(hotelFont);
+                lblHotelRateEighteen.setForeground(Color.WHITE);
+                lblHotelRateEighteen.setBounds(630, 380, 320, 70);
+                framePanelthailand.add(lblHotelRateEighteen);
+    
+                lblHotelRateExtEighteen = new JLabel("4.5/5");
+                lblHotelRateExtEighteen.setFont(hotelFont);
+                lblHotelRateExtEighteen.setForeground(Color.WHITE);
+                lblHotelRateExtEighteen.setBounds(700, 380, 320, 70);
+                framePanelthailand.add(lblHotelRateExtEighteen);
+    
+                //Image button for Peninsula
+
+                imgIconthailandPeninsula = new ImageIcon("peninsulaThailand.jpg");
+                Image imgscalepeninsula = imgIconthailandPeninsula.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
+                imgnewiconPeninsula = new ImageIcon(imgscalepeninsula);
+                btnImgthailandPeninsula = new JButton(imgnewiconPeninsula);
+                btnImgthailandPeninsula.setBounds(630, 10, 250, 300);
+                btnImgthailandPeninsula.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                   
+                    
+        //JOtionPane (user's preference)
+        int btnImgthailandPeninsula = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgthailandPeninsula == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();     
+                                
+                            
+                        //getText                             
+                        String name=lblHotelNameEighteen.getText();
+                        String location=lblHotelLocExtEighteen.getText();
+                        String hotelid=lblHotelIDExtEighteen.getText();
+                        String rate=lblHotelRateExtEighteen.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }           
+        }
+                }
+                  });     
+                framePanelthailand.add(btnImgthailandPeninsula);
+                
+                
+                //Show the specific panel for location
+              
+     
+       } else if 
+                (place.equalsIgnoreCase("paris")) {
+                layer.removeAll();                
+                
+                //Panel for the location for France
+                framePanelfrance = new JPanel();
+                framePanelfrance.setBounds(40, 120, 900, 450);
+                framePanelfrance.setBackground(new Color(37, 113, 128));
+                framePanelfrance.setLayout(null);
+                layer.add(framePanelfrance, Integer.valueOf(0));
+                
+                
+                //Labels for the information of the hotel
+                 //Ritz
+                
+                lblHotelNameNineteen = new JLabel("The Ritz");
+                lblHotelNameNineteen.setFont(fontHotelName);
+                lblHotelNameNineteen.setForeground(Color.BLACK);
+                lblHotelNameNineteen.setBounds(20, 300, 320, 70);
+                framePanelfrance.add(lblHotelNameNineteen);
+                
+                lblHotelLocationNineteen = new JLabel("LOCATION:");
+                lblHotelLocationNineteen.setFont(hotelFont);
+                lblHotelLocationNineteen.setForeground(Color.WHITE);
+                lblHotelLocationNineteen.setBounds(20, 320, 310, 70);
+                framePanelfrance.add(lblHotelLocationNineteen);
+                
+                lblHotelLocExtNineteen = new JLabel("15 Place Vendôme, Paris, France");
+                lblHotelLocExtNineteen.setFont(hotelFont);
+                lblHotelLocExtNineteen.setForeground(Color.WHITE);
+                lblHotelLocExtNineteen.setBounds(20, 340, 320, 70);
+                framePanelfrance.add(lblHotelLocExtNineteen);
+                
+                lblHotelIDNineteen = new JLabel("HOTELID:");
+                lblHotelIDNineteen.setFont(hotelFont);
+                lblHotelIDNineteen.setForeground(Color.WHITE);
+                lblHotelIDNineteen.setBounds(20, 360, 320, 70);
+                framePanelfrance.add(lblHotelIDNineteen);
+                
+                lblHotelIDExtNineteen = new JLabel(" PAR019");
+                lblHotelIDExtNineteen.setFont(hotelFont);
+                lblHotelIDExtNineteen.setForeground(Color.WHITE);
+                lblHotelIDExtNineteen.setBounds(90, 360, 320, 70);
+                framePanelfrance.add(lblHotelIDExtNineteen);
+               
+                lblHotelRateNineteen = new JLabel("RATING: ");
+                lblHotelRateNineteen.setFont(hotelFont);
+                lblHotelRateNineteen.setForeground(Color.WHITE);
+                lblHotelRateNineteen.setBounds(20, 380, 320, 70);
+                framePanelfrance.add(lblHotelRateNineteen);
+                
+                lblHotelRateExtNineteen = new JLabel("5/5");
+                lblHotelRateExtNineteen.setFont(hotelFont);
+                lblHotelRateExtNineteen.setForeground(Color.WHITE);
+                lblHotelRateExtNineteen.setBounds(90, 380, 320, 70);
+                framePanelfrance.add(lblHotelRateExtNineteen);
+                
+                 
+                //Image button for Ritz
+
+                imgIconthailandRitz = new ImageIcon("theritzParis.jpg");
+                Image imgscaleRitz = imgIconthailandRitz.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
+                imgnewiconRitz = new ImageIcon(imgscaleRitz);
+                btnImgfranceRitz = new JButton(imgnewiconRitz);
+                btnImgfranceRitz.setBounds(20, 10, 250, 300);
+                 
+                btnImgfranceRitz.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    
+        //JOtionPane (user's preference)
+        int btnImgfranceRitz = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgfranceRitz == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();      
+                                
+                    
+                        //getText                             
+                        String name=lblHotelNameNineteen.getText();
+                        String location=lblHotelLocExtNineteen.getText();
+                        String hotelid=lblHotelIDExtNineteen.getText();
+                        String rate=lblHotelRateExtNineteen.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }             
+                    }
+                }
+                  });                
+                framePanelfrance.add(btnImgfranceRitz);
+                
+                
+                //Labels for the information of the hotel
+                    //Le Meurice
+                
+                lblHotelNameTwenty = new JLabel("Le Meurice");
+                lblHotelNameTwenty.setFont(fontHotelName);
+                lblHotelNameTwenty.setForeground(Color.BLACK);
+                lblHotelNameTwenty.setBounds(325, 300, 320, 70);
+                framePanelfrance.add(lblHotelNameTwenty);
+                
+                lblHotelLocationTwenty = new JLabel("LOCATION:");
+                lblHotelLocationTwenty.setFont(hotelFont);
+                lblHotelLocationTwenty.setForeground(Color.WHITE);
+                lblHotelLocationTwenty.setBounds(325, 320, 310, 70);
+                framePanelfrance.add(lblHotelLocationTwenty);
+                
+                lblHotelLocExtTwenty = new JLabel("228 Rue de Rivoli, Paris, France");
+                lblHotelLocExtTwenty.setFont(hotelFont);
+                lblHotelLocExtTwenty.setForeground(Color.WHITE);
+                lblHotelLocExtTwenty.setBounds(325, 340, 320, 70);
+                framePanelfrance.add(lblHotelLocExtTwenty);
+                
+                lblHotelIDTwenty = new JLabel("HOTELID:");
+                lblHotelIDTwenty.setFont(hotelFont);
+                lblHotelIDTwenty.setForeground(Color.WHITE);
+                lblHotelIDTwenty.setBounds(325, 360, 320, 70);
+                framePanelfrance.add(lblHotelIDTwenty);
+               
+                lblHotelIDExtTwenty = new JLabel(" PAR020");
+                lblHotelIDExtTwenty.setFont(hotelFont);
+                lblHotelIDExtTwenty.setForeground(Color.WHITE);
+                lblHotelIDExtTwenty.setBounds(395, 360, 320, 70);
+                framePanelfrance.add(lblHotelIDExtTwenty);
+                
+                lblHotelRateTwenty = new JLabel("RATING: ");
+                lblHotelRateTwenty.setFont(hotelFont);
+                lblHotelRateTwenty.setForeground(Color.WHITE);
+                lblHotelRateTwenty.setBounds(325, 380, 320, 70);
+                framePanelfrance.add(lblHotelRateTwenty);
+                
+                lblHotelRateExtTwenty = new JLabel("5/5");
+                lblHotelRateExtTwenty.setFont(hotelFont);
+                lblHotelRateExtTwenty.setForeground(Color.WHITE);
+                lblHotelRateExtTwenty.setBounds(395, 380, 320, 70);
+                framePanelfrance.add(lblHotelRateExtTwenty);
+                
+
+                
+                //Image button for Le Meurice
+  
+                imgIconfranceLemeurice = new ImageIcon("meuriceParis.jpg");
+                Image imgscalelemeurice = imgIconfranceLemeurice.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
+                imgnewiconLemeurice = new ImageIcon(imgscalelemeurice);
+                btnImgfranceLemeurice = new JButton(imgnewiconLemeurice);
+                btnImgfranceLemeurice.setBounds(325, 10, 250, 300);
+                 
+                btnImgfranceLemeurice.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                  
+        //JOtionPane (user's preference)
+        int btnImgfranceLemeurice = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgfranceLemeurice == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();    
+                                
+                    
+                        //getText                             
+                        String name=lblHotelNameTwenty.getText();
+                        String location=lblHotelLocExtTwenty.getText();
+                        String hotelid=lblHotelIDExtTwenty.getText();
+                        String rate=lblHotelRateExtTwenty.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }             
+                  }
+                }
+                  });                
+                framePanelfrance.add(btnImgfranceLemeurice);
+                
+                
+                //Labels for the information of the hotel
+                     //Shangri-La
+                
+                lblHotelNameTwentyone = new JLabel("Shangri-La");
+                lblHotelNameTwentyone.setFont(fontHotelName);
+                lblHotelNameTwentyone.setForeground(Color.BLACK);
+                lblHotelNameTwentyone.setBounds(630, 300, 320, 70);
+                framePanelfrance.add(lblHotelNameTwentyone);
+                
+                lblHotelLocationTwentyone = new JLabel("LOCATION:");
+                lblHotelLocationTwentyone.setFont(hotelFont);
+                lblHotelLocationTwentyone.setForeground(Color.WHITE);
+                lblHotelLocationTwentyone.setBounds(630, 320, 310, 70);
+                framePanelfrance.add(lblHotelLocationTwentyone);
+                
+                lblHotelLocExtTwentyone = new JLabel("10 Avenue d'Iéna, Paris, France ");
+                lblHotelLocExtTwentyone.setFont(hotelFont);
+                lblHotelLocExtTwentyone.setForeground(Color.WHITE);
+                lblHotelLocExtTwentyone.setBounds(630, 340, 320, 70);
+                framePanelfrance.add(lblHotelLocExtTwentyone);
+                
+                lblHotelIDTwentyone = new JLabel("HOTELID:");
+                lblHotelIDTwentyone.setFont(hotelFont);
+                lblHotelIDTwentyone.setForeground(Color.WHITE);
+                lblHotelIDTwentyone.setBounds(630, 360, 320, 70);
+                framePanelfrance.add(lblHotelIDTwentyone);
+                
+                lblHotelIDExtTwentyone = new JLabel(" PAR021");
+                lblHotelIDExtTwentyone.setFont(hotelFont);
+                lblHotelIDExtTwentyone.setForeground(Color.WHITE);
+                lblHotelIDExtTwentyone.setBounds(700, 360, 320, 70);
+                framePanelfrance.add(lblHotelIDExtTwentyone);
+                
+                lblHotelRateTwentyone = new JLabel("RATING: ");
+                lblHotelRateTwentyone.setFont(hotelFont);
+                lblHotelRateTwentyone.setForeground(Color.WHITE);
+                lblHotelRateTwentyone.setBounds(630, 380, 320, 70);
+                framePanelfrance.add(lblHotelRateTwentyone);
+                
+                lblHotelRateExtTwentyone = new JLabel("5/5");
+                lblHotelRateExtTwentyone.setFont(hotelFont);
+                lblHotelRateExtTwentyone.setForeground(Color.WHITE);
+                lblHotelRateExtTwentyone.setBounds(700, 380, 320, 70);
+                framePanelfrance.add(lblHotelRateExtTwentyone);
+    
+            
+                //Image button for Shangrila
+
+                imgIconfranceShangrila = new ImageIcon("shangriParis.jpg");
+                Image imgscaleShangrila = imgIconfranceShangrila.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
+                imgnewiconShangrila = new ImageIcon(imgscaleShangrila);
+                btnImgfranceShangrila = new JButton(imgnewiconShangrila);
+                btnImgfranceShangrila.setBounds(630, 10, 250, 300);
+                
+                btnImgfranceShangrila.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                  
+        //JOtionPane (user's preference)
+        int btnImgfranceShangrila = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgfranceShangrila == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();  
+                                
+                    
+                        //getText                             
+                        String name=lblHotelNameTwentyone.getText();
+                        String location=lblHotelLocExtTwentyone.getText();
+                        String hotelid=lblHotelIDExtTwentyone.getText();
+                        String rate=lblHotelRateExtTwentyone.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }            
+                }
+                }
+                  });     
+                framePanelfrance.add(btnImgfranceShangrila);
+                
+                
+
+                //Show the specific panel for location
+                    //Japan
+               
+        } else if 
+                (place.equalsIgnoreCase("japan")) {
+                layer.removeAll();                
+                
+                //Panel for the location for Japan
+                framePaneljapan = new JPanel();
+                framePaneljapan.setBounds(40, 120, 900, 450);
+                framePaneljapan.setBackground(new Color(37, 113, 128));
+                framePaneljapan.setLayout(null);
+                layer.add(framePaneljapan, Integer.valueOf(0));
+                
+                
+                //Labels for the information of the hotel
+                   //Ritz-Carlton
+                   
+                lblHotelNameTwentytwo = new JLabel("The Ritz-Carlton");
+                lblHotelNameTwentytwo.setFont(fontHotelName);
+                lblHotelNameTwentytwo.setForeground(Color.BLACK);
+                lblHotelNameTwentytwo.setBounds(20, 300, 320, 70);
+                framePaneljapan.add(lblHotelNameTwentytwo);
+                
+                lblHotelLocationTwentytwo = new JLabel("LOCATION:");
+                lblHotelLocationTwentytwo.setFont(hotelFont);
+                lblHotelLocationTwentytwo.setForeground(Color.WHITE);
+                lblHotelLocationTwentytwo.setBounds(20, 320, 310, 70);
+                framePaneljapan.add(lblHotelLocationTwentytwo);
+                
+                lblHotelLocExtTwentytwo = new JLabel("Kamogawa, Kyoto, Japan");
+                lblHotelLocExtTwentytwo.setFont(hotelFont);
+                lblHotelLocExtTwentytwo.setForeground(Color.WHITE);
+                lblHotelLocExtTwentytwo.setBounds(20, 340, 320, 70);
+                framePaneljapan.add(lblHotelLocExtTwentytwo);
+                
+                lblHotelIDTwentytwo = new JLabel("HOTELID:");
+                lblHotelIDTwentytwo.setFont(hotelFont);
+                lblHotelIDTwentytwo.setForeground(Color.WHITE);
+                lblHotelIDTwentytwo.setBounds(20, 360, 320, 70);
+                framePaneljapan.add(lblHotelIDTwentytwo);
+                
+                lblHotelIDExtTwentytwo = new JLabel(" KYT022");
+                lblHotelIDExtTwentytwo.setFont(hotelFont);
+                lblHotelIDExtTwentytwo.setForeground(Color.WHITE);
+                lblHotelIDExtTwentytwo.setBounds(90, 360, 320, 70);
+                framePaneljapan.add(lblHotelIDExtTwentytwo);
+               
+                lblHotelRateTwentytwo = new JLabel("RATING:");
+                lblHotelRateTwentytwo.setFont(hotelFont);
+                lblHotelRateTwentytwo.setForeground(Color.WHITE);
+                lblHotelRateTwentytwo.setBounds(20, 380, 320, 70);
+                framePaneljapan.add(lblHotelRateTwentytwo);
+                
+                lblHotelRateExtTwentytwo = new JLabel("5/5");
+                lblHotelRateExtTwentytwo.setFont(hotelFont);
+                lblHotelRateExtTwentytwo.setForeground(Color.WHITE);
+                lblHotelRateExtTwentytwo.setBounds(90, 380, 320, 70);
+                framePaneljapan.add(lblHotelRateExtTwentytwo);
+
+                
+                //Image button for Carlton
+  
+                imgIconjapanCarlton = new ImageIcon("ritzcarltonJapan.jpg");
+                Image imgscaleCarlton = imgIconjapanCarlton.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
+                imgnewiconCarlton = new ImageIcon(imgscaleCarlton);
+                btnImgjapanCarlton = new JButton(imgnewiconCarlton);
+                btnImgjapanCarlton.setBounds(20, 10, 250, 300);
+                btnImgjapanCarlton.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                   
+        //JOtionPane (user's preference)
+        int btnImgjapanCarlton = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgjapanCarlton == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();        
+                                
+                    
+                        //getText                             
+                        String name=lblHotelNameTwentytwo.getText();
+                        String location=lblHotelLocExtTwentytwo.getText();
+                        String hotelid=lblHotelIDExtTwentytwo.getText();
+                        String rate=lblHotelRateExtTwentytwo.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }       
+        }
+                }
+                  }); 
+                framePaneljapan.add(btnImgjapanCarlton);
+                
+                
+                
+                      //Labels for the information of the hotel
+                          //Hoshinoya
+                   
+                lblHotelNameTwentythree = new JLabel("Hoshinoya");
+                lblHotelNameTwentythree.setFont(fontHotelName);
+                lblHotelNameTwentythree.setForeground(Color.BLACK);
+                lblHotelNameTwentythree.setBounds(325, 300, 320, 70);
+                framePaneljapan.add(lblHotelNameTwentythree);
+                
+                lblHotelLocationTwentythree = new JLabel("LOCATION:");
+                lblHotelLocationTwentythree.setFont(hotelFont);
+                lblHotelLocationTwentythree.setForeground(Color.WHITE);
+                lblHotelLocationTwentythree.setBounds(325, 320, 310, 70);
+                framePaneljapan.add(lblHotelLocationTwentythree);
+                
+                lblHotelLocExtTwentythree = new JLabel("Arashiyama, Kyoto, Japan");
+                lblHotelLocExtTwentythree.setFont(hotelFont);
+                lblHotelLocExtTwentythree.setForeground(Color.WHITE);
+                lblHotelLocExtTwentythree.setBounds(325, 340, 320, 70);
+                framePaneljapan.add(lblHotelLocExtTwentythree);
+                
+                lblHotelIDTwentythree = new JLabel("HOTELID:");
+                lblHotelIDTwentythree.setFont(hotelFont);
+                lblHotelIDTwentythree.setForeground(Color.WHITE);
+                lblHotelIDTwentythree.setBounds(325, 360, 320, 70);
+                framePaneljapan.add(lblHotelIDTwentythree);
+                
+                lblHotelIDExtTwentythree = new JLabel(" KYT023");
+                lblHotelIDExtTwentythree.setFont(hotelFont);
+                lblHotelIDExtTwentythree.setForeground(Color.WHITE);
+                lblHotelIDExtTwentythree.setBounds(395, 360, 320, 70);
+                framePaneljapan.add(lblHotelIDExtTwentythree);
+               
+                lblHotelRateTwentythree = new JLabel("RATING:");
+                lblHotelRateTwentythree.setFont(hotelFont);
+                lblHotelRateTwentythree.setForeground(Color.WHITE);
+                lblHotelRateTwentythree.setBounds(325, 380, 320, 70);
+                framePaneljapan.add(lblHotelRateTwentythree);
+                
+                lblHotelRateExtTwentythree = new JLabel("5/5");
+                lblHotelRateExtTwentythree.setFont(hotelFont);
+                lblHotelRateExtTwentythree.setForeground(Color.WHITE);
+                lblHotelRateExtTwentythree.setBounds(395, 380, 320, 70);
+                framePaneljapan.add(lblHotelRateExtTwentythree);
+        
+                
+                
+                //Image button for Hoshinoya
+               
+                imgIconjapanHoshinoya = new ImageIcon("hoshinoyaJapan.jpg");
+                Image imgscaleHoshinoya = imgIconjapanHoshinoya.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
+                imgnewiconHoshinoya = new ImageIcon(imgscaleHoshinoya);
+                btnImgjapanHoshinoya = new JButton(imgnewiconHoshinoya);
+                btnImgjapanHoshinoya.setBounds(325, 10, 250, 300);
+                btnImgjapanHoshinoya.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                  
+        //JOtionPane (user's preference)
+        int btnImgjapanHoshinoya = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgjapanHoshinoya == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();     
+                                
+                    
+                        //getText                             
+                        String name=lblHotelNameTwentythree.getText();
+                        String location=lblHotelLocExtTwentythree.getText();
+                        String hotelid=lblHotelIDExtTwentythree.getText();
+                        String rate=lblHotelRateExtTwentythree.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }       
+        }
+                }
+                  }); 
+                framePaneljapan.add(btnImgjapanHoshinoya);
+                
+                
+                
+                //Labels for the information of the hotel
+                    //Aman
+                    
+                lblHotelNameTwentyfour = new JLabel("Aman");
+                lblHotelNameTwentyfour.setFont(fontHotelName);
+                lblHotelNameTwentyfour.setForeground(Color.BLACK);
+                lblHotelNameTwentyfour.setBounds(630, 300, 320, 70);
+                framePaneljapan.add(lblHotelNameTwentyfour);
+                
+                lblHotelLocationTwentyfour = new JLabel("LOCATION:");
+                lblHotelLocationTwentyfour.setFont(hotelFont);
+                lblHotelLocationTwentyfour.setForeground(Color.WHITE);
+                lblHotelLocationTwentyfour.setBounds(630, 320, 310, 70);
+                framePaneljapan.add(lblHotelLocationTwentyfour);
+                
+                lblHotelLocExtTwentyfour = new JLabel("Okitayama, Kyoto, Japan");
+                lblHotelLocExtTwentyfour.setFont(hotelFont);
+                lblHotelLocExtTwentyfour.setForeground(Color.WHITE);
+                lblHotelLocExtTwentyfour.setBounds(630, 340, 320, 70);
+                framePaneljapan.add(lblHotelLocExtTwentyfour);
+                
+                lblHotelIDTwentyfour = new JLabel("HOTELID:");
+                lblHotelIDTwentyfour.setFont(hotelFont);
+                lblHotelIDTwentyfour.setForeground(Color.WHITE);
+                lblHotelIDTwentyfour.setBounds(630, 360, 320, 70);
+                framePaneljapan.add(lblHotelIDTwentyfour);
+                
+                lblHotelIDExtTwentyfour = new JLabel(" KYT024");
+                lblHotelIDExtTwentyfour.setFont(hotelFont);
+                lblHotelIDExtTwentyfour.setForeground(Color.WHITE);
+                lblHotelIDExtTwentyfour.setBounds(700, 360, 320, 70);
+                framePaneljapan.add(lblHotelIDExtTwentyfour);
+               
+                lblHotelRateTwentyfour = new JLabel("RATING:");
+                lblHotelRateTwentyfour.setFont(hotelFont);
+                lblHotelRateTwentyfour.setForeground(Color.WHITE);
+                lblHotelRateTwentyfour.setBounds(630, 380, 320, 70);
+                framePaneljapan.add(lblHotelRateTwentyfour);
+                
+                lblHotelRateExtTwentyfour = new JLabel("5/5");
+                lblHotelRateExtTwentyfour.setFont(hotelFont);
+                lblHotelRateExtTwentyfour.setForeground(Color.WHITE);
+                lblHotelRateExtTwentyfour.setBounds(700, 380, 320, 70);
+                framePaneljapan.add(lblHotelRateExtTwentyfour);
+               
+                
+                
+                //Image button for Aman
+ 
+                imgIconjapanAman = new ImageIcon("amanJapan.jpg");
+                Image imgscaleAman = imgIconjapanAman.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
+                imgnewiconAman = new ImageIcon(imgscaleAman);
+                btnImgjapanAman = new JButton(imgnewiconAman);
+                btnImgjapanAman.setBounds(630, 10, 250, 300);
+                btnImgjapanAman.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                  
+        //JOtionPane (user's preference)
+        int btnImgjapanHoshinoya = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgjapanHoshinoya == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();   
+                                
+                    
+                        //getText                             
+                        String name=lblHotelNameTwentyfour.getText();
+                        String location=lblHotelLocExtTwentyfour.getText();
+                        String hotelid=lblHotelIDExtTwentyfour.getText();
+                        String rate=lblHotelRateExtTwentyfour.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }       
+        }
+                }
+                  }); 
+                framePaneljapan.add(btnImgjapanAman);
+                
+                
+                
+               
+
+                //Show the specific panel for location
+                    //Italy
+               
+        } else if 
+                (place.equalsIgnoreCase("italy")) {
+                layer.removeAll();                
+                
+                //Panel for the location for Italy
+                framePanelitaly = new JPanel();
+                framePanelitaly.setBounds(40, 120, 900, 450);
+                framePanelitaly.setBackground(new Color(37, 113, 128));
+                framePanelitaly.setLayout(null);
+                layer.add(framePanelitaly, Integer.valueOf(0));
+                
+                
+                //Labels for the information of the hotel
+                      //Russie
+                      
+                lblHotelNameTwentyfive = new JLabel("Hotel de Russie");
+                lblHotelNameTwentyfive.setFont(fontHotelName);
+                lblHotelNameTwentyfive.setForeground(Color.BLACK);
+                lblHotelNameTwentyfive.setBounds(20, 300, 320, 70);
+                framePanelitaly.add(lblHotelNameTwentyfive);
+                
+                lblHotelLocationTwentyfive = new JLabel("LOCATION:");
+                lblHotelLocationTwentyfive.setFont(hotelFont);
+                lblHotelLocationTwentyfive.setForeground(Color.WHITE);
+                lblHotelLocationTwentyfive.setBounds(20, 320, 310, 70);
+                framePanelitaly.add(lblHotelLocationTwentyfive);
+                
+                lblHotelLocExtTwentyfive = new JLabel("Via del Babuino, Rome, Italy");
+                lblHotelLocExtTwentyfive.setFont(hotelFont);
+                lblHotelLocExtTwentyfive.setForeground(Color.WHITE);
+                lblHotelLocExtTwentyfive.setBounds(20, 340, 320, 70);
+                framePanelitaly.add(lblHotelLocExtTwentyfive);
+                
+                lblHotelIDTwentyfive = new JLabel("HOTELID:");
+                lblHotelIDTwentyfive.setFont(hotelFont);
+                lblHotelIDTwentyfive.setForeground(Color.WHITE);
+                lblHotelIDTwentyfive.setBounds(20, 360, 320, 70);
+                framePanelitaly.add(lblHotelIDTwentyfive);
+                
+                lblHotelIDExtTwentyfive = new JLabel(" ROM025");
+                lblHotelIDExtTwentyfive.setFont(hotelFont);
+                lblHotelIDExtTwentyfive.setForeground(Color.WHITE);
+                lblHotelIDExtTwentyfive.setBounds(90, 360, 320, 70);
+                framePanelitaly.add(lblHotelIDExtTwentyfive);
+               
+                lblHotelRateTwentyfive = new JLabel("RATING:");
+                lblHotelRateTwentyfive.setFont(hotelFont);
+                lblHotelRateTwentyfive.setForeground(Color.WHITE);
+                lblHotelRateTwentyfive.setBounds(20, 380, 320, 70);
+                framePanelitaly.add(lblHotelRateTwentyfive);
+                
+                lblHotelRateExtTwentyfive = new JLabel("5/5");
+                lblHotelRateExtTwentyfive.setFont(hotelFont);
+                lblHotelRateExtTwentyfive.setForeground(Color.WHITE);
+                lblHotelRateExtTwentyfive.setBounds(90, 380, 320, 70);
+                framePanelitaly.add(lblHotelRateExtTwentyfive);
+               
+                
+                //Image button for Russie
+   
+                imgIconitalyRussie = new ImageIcon("russieItaly.jpg");
+                Image imgscaleRussie = imgIconitalyRussie.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
+                imgnewiconRussie = new ImageIcon(imgscaleRussie);
+                btnImgitalyRussie = new JButton(imgnewiconRussie);
+                btnImgitalyRussie.setBounds(20, 10, 250, 300);
+                btnImgitalyRussie.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                  
+        //JOtionPane (user's preference)
+        int btnImgitalyRussie = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgitalyRussie == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();     
+                                
+                    
+                        //getText                             
+                        String name=lblHotelNameTwentyfive.getText();
+                        String location=lblHotelLocExtTwentyfive.getText();
+                        String hotelid=lblHotelIDExtTwentyfive.getText();
+                        String rate=lblHotelRateExtTwentyfive.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }       
+        }
+                }
+                  }); 
+                framePanelitaly.add(btnImgitalyRussie);
+                
+                
+                
+                //Labels for the information of the hotel
+                     //Eden
+                     
+                lblHotelNameTwentysix = new JLabel("Hotel Eden");
+                lblHotelNameTwentysix.setFont(fontHotelName);
+                lblHotelNameTwentysix.setForeground(Color.BLACK);
+                lblHotelNameTwentysix.setBounds(325, 300, 320, 70);
+                framePanelitaly.add(lblHotelNameTwentysix);
+                
+                lblHotelLocationTwentysix = new JLabel("LOCATION:");
+                lblHotelLocationTwentysix.setFont(hotelFont);
+                lblHotelLocationTwentysix.setForeground(Color.WHITE);
+                lblHotelLocationTwentysix.setBounds(325, 320, 310, 70);
+                framePanelitaly.add(lblHotelLocationTwentysix);
+                
+                lblHotelLocExtTwentysix = new JLabel("Via Ludovisi, Rome, Italy");
+                lblHotelLocExtTwentysix.setFont(hotelFont);
+                lblHotelLocExtTwentysix.setForeground(Color.WHITE);
+                lblHotelLocExtTwentysix.setBounds(325, 340, 320, 70);
+                framePanelitaly.add(lblHotelLocExtTwentysix);
+                
+                lblHotelIDTwentysix = new JLabel("HOTELID:");
+                lblHotelIDTwentysix.setFont(hotelFont);
+                lblHotelIDTwentysix.setForeground(Color.WHITE);
+                lblHotelIDTwentysix.setBounds(325, 360, 320, 70);
+                framePanelitaly.add(lblHotelIDTwentysix);
+                
+                lblHotelIDExtTwentysix = new JLabel(" ROM026");
+                lblHotelIDExtTwentysix.setFont(hotelFont);
+                lblHotelIDExtTwentysix.setForeground(Color.WHITE);
+                lblHotelIDExtTwentysix.setBounds(395, 360, 320, 70);
+                framePanelitaly.add(lblHotelIDExtTwentysix);
+               
+                lblHotelRateTwentysix = new JLabel("RATING:");
+                lblHotelRateTwentysix.setFont(hotelFont);
+                lblHotelRateTwentysix.setForeground(Color.WHITE);
+                lblHotelRateTwentysix.setBounds(325, 380, 320, 70);
+                framePanelitaly.add(lblHotelRateTwentysix);
+                
+                lblHotelRateExtTwentysix = new JLabel("5/5");
+                lblHotelRateExtTwentysix.setFont(hotelFont);
+                lblHotelRateExtTwentysix.setForeground(Color.WHITE);
+                lblHotelRateExtTwentysix.setBounds(395, 380, 320, 70);
+                framePanelitaly.add(lblHotelRateExtTwentysix);
+                
+            
+                //Image button for Eden
+   
+                imgIconitalyEden = new ImageIcon("edenItaly.jpg");
+                Image imgscaleEden = imgIconitalyEden.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
+                imgnewiconEden = new ImageIcon(imgscaleEden);
+                btnImgitalyEden = new JButton(imgnewiconEden);
+                btnImgitalyEden.setBounds(325, 10, 250, 300);
+                btnImgitalyEden.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    
+        //JOtionPane (user's preference)
+        int btnImgitalyEden = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgitalyEden == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();       
+                                
+                        
+                        //getText                             
+                        String name=lblHotelNameTwentysix.getText();
+                        String location=lblHotelLocExtTwentysix.getText();
+                        String hotelid=lblHotelIDExtTwentysix.getText();
+                        String rate=lblHotelRateExtTwentysix.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }       
+        }
+                }
+                  }); 
+                framePanelitaly.add(btnImgitalyEden);
+                
+                
+                //Labels for the information of the hotel
+                  //Regis
+                  
+                lblHotelNameTwentyseven = new JLabel("The St. Regis");
+                lblHotelNameTwentyseven.setFont(fontHotelName);
+                lblHotelNameTwentyseven.setForeground(Color.BLACK);
+                lblHotelNameTwentyseven.setBounds(630, 300, 320, 70);
+                framePanelitaly.add(lblHotelNameTwentyseven);
+                
+                lblHotelLocationTwentyseven = new JLabel("LOCATION:");
+                lblHotelLocationTwentyseven.setFont(hotelFont);
+                lblHotelLocationTwentyseven.setForeground(Color.WHITE);
+                lblHotelLocationTwentyseven.setBounds(630, 320, 310, 70);
+                framePanelitaly.add(lblHotelLocationTwentyseven);
+                
+                lblHotelLocExtTwentyseven = new JLabel("Orlando, Rome, Italy");
+                lblHotelLocExtTwentyseven.setFont(hotelFont);
+                lblHotelLocExtTwentyseven.setForeground(Color.WHITE);
+                lblHotelLocExtTwentyseven.setBounds(630, 340, 320, 70);
+                framePanelitaly.add(lblHotelLocExtTwentyseven);
+                
+                lblHotelIDTwentyseven = new JLabel("HOTELID:");
+                lblHotelIDTwentyseven.setFont(hotelFont);
+                lblHotelIDTwentyseven.setForeground(Color.WHITE);
+                lblHotelIDTwentyseven.setBounds(630, 360, 320, 70);
+                framePanelitaly.add(lblHotelIDTwentyseven);
+                
+                lblHotelIDExtTwentyseven = new JLabel(" ROM027");
+                lblHotelIDExtTwentyseven.setFont(hotelFont);
+                lblHotelIDExtTwentyseven.setForeground(Color.WHITE);
+                lblHotelIDExtTwentyseven.setBounds(700, 360, 320, 70);
+                framePanelitaly.add(lblHotelIDExtTwentyseven);
+               
+                lblHotelRateTwentyseven = new JLabel("RATING:");
+                lblHotelRateTwentyseven.setFont(hotelFont);
+                lblHotelRateTwentyseven.setForeground(Color.WHITE);
+                lblHotelRateTwentyseven.setBounds(630, 380, 320, 70);
+                framePanelitaly.add(lblHotelRateTwentyseven);
+                
+                lblHotelRateExtTwentyseven = new JLabel("5/5");
+                lblHotelRateExtTwentyseven.setFont(hotelFont);
+                lblHotelRateExtTwentyseven.setForeground(Color.WHITE);
+                lblHotelRateExtTwentyseven.setBounds(700, 380, 320, 70);
+                framePanelitaly.add(lblHotelRateExtTwentyseven);
+                
+                
+                //Image button for Regis
+    
+                imgIconitalyRegis = new ImageIcon("regisItaly.jpg");
+                Image imgscaleRegis = imgIconitalyRegis.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
+                imgnewiconRegis = new ImageIcon(imgscaleRegis);
+                btnImgitalyRegis = new JButton(imgnewiconRegis);
+                btnImgitalyRegis.setBounds(630, 10, 250, 300);
+                btnImgitalyRegis.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                   
+        //JOtionPane (user's preference)
+        int btnImgitalyRegis = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgitalyRegis == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();                              
+                        
+                        
+                        //getText                             
+                        String name=lblHotelNameTwentyseven.getText();
+                        String location=lblHotelLocExtTwentyseven.getText();
+                        String hotelid=lblHotelIDExtTwentyseven.getText();
+                        String rate=lblHotelRateExtTwentyseven.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }       
+        }
+                }
+                  }); 
+                framePanelitaly.add(btnImgitalyRegis);
+
+                
+               
+                //Show the specific panel for location
+                    //South Korea
+                
+        } else if 
+                (place.equalsIgnoreCase("south korea")) {
+                layer.removeAll();                
+                
+                //Panel for the location for South Korea
+                framePanelsouthkorea = new JPanel();
+                framePanelsouthkorea.setBounds(40, 120, 900, 450);
+                framePanelsouthkorea.setBackground(new Color(37, 113, 128));
+                framePanelsouthkorea.setLayout(null);
+                layer.add(framePanelsouthkorea, Integer.valueOf(0));
+                
+ 
+                //Labels for the information of the hotel
+                    //Four Season
+                    
+                lblHotelNameTwentyeight = new JLabel("Four Seasons Hotel");
+                lblHotelNameTwentyeight.setFont(fontHotelName);
+                lblHotelNameTwentyeight.setForeground(Color.BLACK);
+                lblHotelNameTwentyeight.setBounds(20, 300, 320, 70);
+                framePanelsouthkorea.add(lblHotelNameTwentyeight);
+                
+                lblHotelLocationTwentyeight = new JLabel("LOCATION:");
+                lblHotelLocationTwentyeight.setFont(hotelFont);
+                lblHotelLocationTwentyeight.setForeground(Color.WHITE);
+                lblHotelLocationTwentyeight.setBounds(20, 320, 310, 70);
+                framePanelsouthkorea.add(lblHotelLocationTwentyeight);
+                
+                lblHotelLocExtTwentyeight = new JLabel("Saemunan-ro, Seoul, South Korea");
+                lblHotelLocExtTwentyeight.setFont(hotelFont);
+                lblHotelLocExtTwentyeight.setForeground(Color.WHITE);
+                lblHotelLocExtTwentyeight.setBounds(20, 340, 320, 70);
+                framePanelsouthkorea.add(lblHotelLocExtTwentyeight);
+                
+                lblHotelIDTwentyeight = new JLabel("HOTELID:");
+                lblHotelIDTwentyeight.setFont(hotelFont);
+                lblHotelIDTwentyeight.setForeground(Color.WHITE);
+                lblHotelIDTwentyeight.setBounds(20, 360, 320, 70);
+                framePanelsouthkorea.add(lblHotelIDTwentyeight);
+                
+                lblHotelIDExtTwentyeight = new JLabel(" SEO028");
+                lblHotelIDExtTwentyeight.setFont(hotelFont);
+                lblHotelIDExtTwentyeight.setForeground(Color.WHITE);
+                lblHotelIDExtTwentyeight.setBounds(90, 360, 320, 70);
+                framePanelsouthkorea.add(lblHotelIDExtTwentyeight);
+               
+                lblHotelRateTwentyeight = new JLabel("RATING:");
+                lblHotelRateTwentyeight.setFont(hotelFont);
+                lblHotelRateTwentyeight.setForeground(Color.WHITE);
+                lblHotelRateTwentyeight.setBounds(20, 380, 320, 70);
+                framePanelsouthkorea.add(lblHotelRateTwentyeight);
+                
+                lblHotelRateExtTwentyeight = new JLabel("5/5");
+                lblHotelRateExtTwentyeight.setFont(hotelFont);
+                lblHotelRateExtTwentyeight.setForeground(Color.WHITE);
+                lblHotelRateExtTwentyeight.setBounds(90, 380, 320, 70);
+                framePanelsouthkorea.add(lblHotelRateExtTwentyeight);
+
+                
+                    
+                //Image button for FS
+  
+                imgIconsouthkoreaFS = new ImageIcon("seasonsSK.jpg");
+                Image imgscaleFS = imgIconsouthkoreaFS.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
+                imgnewiconFS = new ImageIcon(imgscaleFS);
+                btnImgsouthkoreaFS = new JButton(imgnewiconFS);
+                btnImgsouthkoreaFS.setBounds(20, 10, 250, 300);
+                btnImgsouthkoreaFS.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    
+        //JOtionPane (user's preference)
+        int btnImgsouthkoreaFS = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgsouthkoreaFS == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();    
+                                
+                        
+                        //getText                             
+                        String name=lblHotelNameTwentyeight.getText();
+                        String location=lblHotelLocExtTwentyeight.getText();
+                        String hotelid=lblHotelIDExtTwentyeight.getText();
+                        String rate=lblHotelRateExtTwentyeight.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }       
+        }
+                }
+                  }); 
+                framePanelsouthkorea.add(btnImgsouthkoreaFS);
+                
+                
+               
+                //Labels for the information of the hotel
+                    //Shilla
+                    
+                lblHotelNameTwentynine = new JLabel("The Shilla");
+                lblHotelNameTwentynine.setFont(fontHotelName);
+                lblHotelNameTwentynine.setForeground(Color.BLACK);
+                lblHotelNameTwentynine.setBounds(325, 300, 320, 70);
+                framePanelsouthkorea.add(lblHotelNameTwentynine);
+                
+                lblHotelLocationTwentynine = new JLabel("LOCATION:");
+                lblHotelLocationTwentynine.setFont(hotelFont);
+                lblHotelLocationTwentynine.setForeground(Color.WHITE);
+                lblHotelLocationTwentynine.setBounds(325, 320, 310, 70);
+                framePanelsouthkorea.add(lblHotelLocationTwentynine);
+                
+                lblHotelLocExtTwentynine = new JLabel("249 Dongho-ro, Seoul, South Korea");
+                lblHotelLocExtTwentynine.setFont(hotelFont);
+                lblHotelLocExtTwentynine.setForeground(Color.WHITE);
+                lblHotelLocExtTwentynine.setBounds(325, 340, 320, 70);
+                framePanelsouthkorea.add(lblHotelLocExtTwentynine);
+                
+                lblHotelIDTwentynine = new JLabel("HOTELID:");
+                lblHotelIDTwentynine.setFont(hotelFont);
+                lblHotelIDTwentynine.setForeground(Color.WHITE);
+                lblHotelIDTwentynine.setBounds(325, 360, 320, 70);
+                framePanelsouthkorea.add(lblHotelIDTwentynine);
+                
+                lblHotelIDExtTwentynine = new JLabel(" SEO029");
+                lblHotelIDExtTwentynine.setFont(hotelFont);
+                lblHotelIDExtTwentynine.setForeground(Color.WHITE);
+                lblHotelIDExtTwentynine.setBounds(395, 360, 320, 70);
+                framePanelsouthkorea.add(lblHotelIDExtTwentynine);
+               
+                lblHotelRateTwentynine = new JLabel("RATING:");
+                lblHotelRateTwentynine.setFont(hotelFont);
+                lblHotelRateTwentynine.setForeground(Color.WHITE);
+                lblHotelRateTwentynine.setBounds(325, 380, 320, 70);
+                framePanelsouthkorea.add(lblHotelRateTwentynine);
+                
+                lblHotelRateExtTwentynine = new JLabel("5/5");
+                lblHotelRateExtTwentynine.setFont(hotelFont);
+                lblHotelRateExtTwentynine.setForeground(Color.WHITE);
+                lblHotelRateExtTwentynine.setBounds(395, 380, 320, 70);
+                framePanelsouthkorea.add(lblHotelRateExtTwentynine);
+                
+                
+                //Image button for Shilla
+ 
+                imgIconsouthkoreaShilla = new ImageIcon("shillaSK.jpg");
+                Image imgscaleShilla = imgIconsouthkoreaShilla.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
+                imgnewiconShilla = new ImageIcon(imgscaleShilla);
+                btnImgsouthkoreaShilla = new JButton(imgnewiconShilla);
+                btnImgsouthkoreaShilla.setBounds(325, 10, 250, 300);
+                btnImgsouthkoreaShilla.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                   
+                    
+        //JOtionPane (user's preference)
+        int btnImgsouthkoreaShilla = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgsouthkoreaShilla == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();       
+                                
+                                
+                        
+                        //getText                             
+                        String name=lblHotelNameTwentynine.getText();
+                        String location=lblHotelLocExtTwentynine.getText();
+                        String hotelid=lblHotelIDExtTwentynine.getText();
+                        String rate=lblHotelRateExtTwentynine.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }    
+        }
+                }
+                  }); 
+                framePanelsouthkorea.add(btnImgsouthkoreaShilla);
+                
+                
+                
+                //Labels for the information of the hotel
+                    //Signiel
+                    
+                lblHotelNameThirty = new JLabel("Signiel");
+                lblHotelNameThirty.setFont(fontHotelName);
+                lblHotelNameThirty.setForeground(Color.BLACK);
+                lblHotelNameThirty.setBounds(630, 300, 320, 70);
+                framePanelsouthkorea.add(lblHotelNameThirty);
+                
+                lblHotelLocationThirty = new JLabel("LOCATION:");
+                lblHotelLocationThirty.setFont(hotelFont);
+                lblHotelLocationThirty.setForeground(Color.WHITE);
+                lblHotelLocationThirty.setBounds(630, 320, 310, 70);
+                framePanelsouthkorea.add(lblHotelLocationThirty);
+                
+                lblHotelLocExtThirty = new JLabel("300 Olympic-ro, Seoul, South Korea");
+                lblHotelLocExtThirty.setFont(hotelFont);
+                lblHotelLocExtThirty.setForeground(Color.WHITE);
+                lblHotelLocExtThirty.setBounds(630, 340, 320, 70);
+                framePanelsouthkorea.add(lblHotelLocExtThirty);
+                
+                lblHotelIDThirty = new JLabel("HOTELID:");
+                lblHotelIDThirty.setFont(hotelFont);
+                lblHotelIDThirty.setForeground(Color.WHITE);
+                lblHotelIDThirty.setBounds(630, 360, 320, 70);
+                framePanelsouthkorea.add(lblHotelIDThirty);
+                
+                lblHotelIDExtThirty = new JLabel(" SEO030");
+                lblHotelIDExtThirty.setFont(hotelFont);
+                lblHotelIDExtThirty.setForeground(Color.WHITE);
+                lblHotelIDExtThirty.setBounds(700, 360, 320, 70);
+                framePanelsouthkorea.add(lblHotelIDExtThirty);
+               
+                lblHotelRateThirty = new JLabel("RATING:");
+                lblHotelRateThirty.setFont(hotelFont);
+                lblHotelRateThirty.setForeground(Color.WHITE);
+                lblHotelRateThirty.setBounds(630, 380, 320, 70);
+                framePanelsouthkorea.add(lblHotelRateThirty);
+                
+                lblHotelRateExtThirty = new JLabel("4.5/5");
+                lblHotelRateExtThirty.setFont(hotelFont);
+                lblHotelRateExtThirty.setForeground(Color.WHITE);
+                lblHotelRateExtThirty.setBounds(700, 380, 320, 70);
+                framePanelsouthkorea.add(lblHotelRateExtThirty);
+                
+                
+                //Image button for Signiel
+ 
+                imgIconsouthkoreaSigniel = new ImageIcon("signielSK.jpg");
+                Image imgscaleSigniel = imgIconsouthkoreaSigniel.getImage().getScaledInstance(250, 300, Image.SCALE_SMOOTH);
+                imgnewiconSigniel = new ImageIcon(imgscaleSigniel);
+                btnImgsouthkoreaSigniel = new JButton(imgnewiconSigniel);
+                btnImgsouthkoreaSigniel.setBounds(630, 10, 250, 300);
+                btnImgsouthkoreaSigniel.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                   
+                   
+        //JOtionPane (user's preference)
+        int btnImgsouthkoreaSigniel = JOptionPane.showConfirmDialog(Hotel.this,"Are you sure you want to book now?","Confirm Booking",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+
+        if (btnImgsouthkoreaSigniel == JOptionPane.YES_OPTION) {
+            dispose();
+                    
+                          
+                                //new BookingFormTwo();                     
+                   
+                                
+                        //getText                             
+                        String name=lblHotelNameThirty.getText();
+                        String location=lblHotelLocExtThirty.getText();
+                        String hotelid=lblHotelIDExtThirty.getText();
+                        String rate=lblHotelRateExtThirty.getText();
+                                               
+                        try{
+                           pst = con.prepareStatement("insert into hotelinfo (name,location,hotelid,rate) values (?,?,?,?)");
+                           pst.setString(1,name);
+                           pst.setString(2,location);
+                           pst.setString(3,hotelid);
+                           pst.setString(4,rate);
+                        
+                           pst.executeUpdate();
+                           
+                        }catch (Exception a){
+                        a.printStackTrace();
+                    }       
+        }
+                }
+                  }); 
+                framePanelsouthkorea.add(btnImgsouthkoreaSigniel);  
+                }
+                
+                
+        else if(place.isEmpty()){
+            
+                JOptionPane.showMessageDialog(this, "Please Enter Your Destination First", "ERROR", JOptionPane.ERROR_MESSAGE);
+
+            
+            
+        }
             
                 //JOption if the search bar delivered is empty 
     else {
-                JOptionPane.showMessageDialog(this, "Please Enter Your Destination First", "ERROR", JOptionPane.ERROR_MESSAGE);
-                                                   
-            }             
-            }         
+                JOptionPane.showMessageDialog(this, "Place is still not available", "ERROR", JOptionPane.ERROR_MESSAGE);
+                                
+            }        
+            }  
+        }
+    
+    //connecting to sql
+    
+    public void Connect(){
+  
+        String url = "jdbc:mysql://localhost:3306/groupninedsaproject";
+            String username = "root";
+            String password = "admin123";
+                       
+        try {
+          con=(Connection) DriverManager.getConnection(url, username, password);
+       
+        } catch (SQLException ex) {
+            Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
+
+    }
+
