@@ -28,7 +28,8 @@ CREATE TABLE `flightinfo` (
   `departure` varchar(250) NOT NULL,
   `arrival` varchar(250) NOT NULL,
   `travelClass` varchar(50) NOT NULL,
-  `price` varchar(250) NOT NULL
+  `price` varchar(250) NOT NULL,
+  `TimeCreated` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -50,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-13 12:28:18
+-- Dump completed on 2025-01-13 12:37:43
