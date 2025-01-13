@@ -41,6 +41,7 @@ public class FlightInfo {
     }
         
     
+    //flight ID generator
     private String getFlightId(String destination) {
         String[] words = destination.split(", ");
         String FLIGHTId = "FL";
@@ -54,6 +55,7 @@ public class FlightInfo {
         
     } 
     
+    //arrival time
     private LocalDateTime arrival(){
         int traveltime = 0;
         
@@ -74,6 +76,7 @@ public class FlightInfo {
         return LocalDateTime.of(LocalDateTime.now().toLocalDate(), departure).plusHours(traveltime);
     }
     
+    //initial price
     private double InitialPrice(){
         double initialprice = 0.0;
         
@@ -95,6 +98,7 @@ public class FlightInfo {
         
     }
     
+    //travel class prices
     public double classPrices(String TravelClass, double initialprice) {
     double pr = initialprice;
 

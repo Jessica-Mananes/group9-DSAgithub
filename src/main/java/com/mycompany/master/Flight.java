@@ -240,7 +240,7 @@ public class Flight extends JFrame implements ActionListener{
            }
            tableFlights.repaint();
        }
-        
+       //allow user to book
        }else if (e.getSource() == btnBook){
            int row = tableFlights.getSelectedRow();
            if(row == -1){
@@ -260,7 +260,7 @@ public class Flight extends JFrame implements ActionListener{
                
                int select = tableFlights.getSelectedRow();
                 
-                if(select != -1){
+               if(select != -1){
                     Object flightID = tableFlights.getValueAt(select, 0);
                     Object destination = tableFlights.getValueAt(select, 1);
                     Object departure = tableFlights.getValueAt(select, 2);
@@ -293,7 +293,7 @@ public class Flight extends JFrame implements ActionListener{
        
     }
     
-     public void Connect(){
+    public void Connect(){
   
         String url = "jdbc:mysql://localhost:3306/groupninedsaproject";
             String username = "root";
