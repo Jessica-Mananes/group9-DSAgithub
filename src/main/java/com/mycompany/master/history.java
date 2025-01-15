@@ -175,24 +175,6 @@ public class historyht extends JFrame implements ActionListener{
             } else if (e.getSource() == viewhistory) {      
             LoadRecords();
 
-//            try{
-//            
-//                    pst = con.prepareStatement("SELECT * FROM flightinfo WHERE flightID = ?");
-//                    pst.setString(1, flightID);
-//                    rs = pst.executeQuery();
-//                    
-//
-//                    if (rs.next()) {
-//                        String arrival= rs.getString("Arrival");
-//                        String destination= rs.getString("Destination");
-//                        
-//                        historyModel.addRow(new Object[]{arrival, destination});
-//                    } else {
-//                        JOptionPane.showMessageDialog(this, "No records found", "Info", JOptionPane.INFORMATION_MESSAGE);
-//                    }
-//                } catch (SQLException ex) {
-//                    ex.printStackTrace();
-//                }
             }
         }
     }
