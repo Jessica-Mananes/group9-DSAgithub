@@ -33,8 +33,6 @@ public class ItineraryTravel extends JFrame implements ActionListener {
         userField.setEditable(false);
         add(userField);
         
-        
-        
         lbl = new JLabel("Individual Itinerary of Travel");
         lbl.setBounds(20, 80, 600, 50);
         lbl.setFont(new Font("Garet", Font.BOLD, 33));
