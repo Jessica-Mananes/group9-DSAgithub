@@ -27,8 +27,7 @@ import javax.swing.JTextField;
  *
  * @author Darrel
  */
-
-public class Login extends JFrame implements ActionListener {
+public class LoginTwo extends JFrame implements ActionListener {
 
     // Declare UI components for the Login form
     private JTextField txtUserID;
@@ -39,7 +38,7 @@ public class Login extends JFrame implements ActionListener {
     private Connection con;
     private PreparedStatement pst;
 
-    public Login() {
+    public LoginTwo() {
         Connect();
          // Set up the JFrame properties
         setTitle("Login");
@@ -133,7 +132,7 @@ public void Connect(){
         try {
             con = DriverManager.getConnection(url, username, password);
         } catch (SQLException ex) {
-            Logger.getLogger(UserLogin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginTwo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     // Handle button click events
@@ -142,48 +141,35 @@ public void Connect(){
         if (e.getSource() == btnLogin) {
             String userID = txtUserID.getText().trim();
             String userPassword = new String(password.getPassword());
-            
 
             if (userID.isEmpty() || userPassword.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "All fields are required!", "ERROR", JOptionPane.ERROR_MESSAGE);
             }else {
                  try {
                     String query = "SELECT * FROM signup WHERE UserID = ? AND Password = ?";
-                                   
                     pst = con.prepareStatement(query);
                     pst.setString(1, userID);
                     pst.setString(2, userPassword);
-                    
-                    
-                    
-                    
-                    
+
                     ResultSet rs = pst.executeQuery();
                     if (rs.next()) {
                         String firstName = rs.getString("FirstName");
                         String lastName = rs.getString("LastName");
                         String phoneNumber = rs.getString("PhoneNumber");
-                        
 
                         JOptionPane.showMessageDialog(this, "Login successful!");
-                        new BookingForm(firstName,lastName,userID,phoneNumber);
+                        new BookingFormTwo();
                         dispose();
                     }else {
                         JOptionPane.showMessageDialog(this, "Invalid UserID or Password!", "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
                 }catch (SQLException ex) {
-                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(LoginTwo.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         } else if (e.getSource() == btnSignup) {
             dispose();
-            new UserLogin();
+            //new UserLoginTwo();
         }
     }
     }
-
-
-        
-
-
-

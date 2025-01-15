@@ -17,9 +17,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -27,8 +27,7 @@ import javax.swing.JTextField;
  *
  * @author Darrel
  */
-
-public class Login extends JFrame implements ActionListener {
+public class LoginThree extends JPanel implements ActionListener {
 
     // Declare UI components for the Login form
     private JTextField txtUserID;
@@ -38,16 +37,14 @@ public class Login extends JFrame implements ActionListener {
     private ImageIcon imgLogo;
     private Connection con;
     private PreparedStatement pst;
-
-    public Login() {
+    
+    public LoginThree() {
         Connect();
          // Set up the JFrame properties
-        setTitle("Login");
+        
         setSize(1000, 650);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        setLocationRelativeTo(null);
-        getContentPane().setBackground(new Color(37,113,128));
+        setBackground(new Color(37,113,128));
         
          // Load and display the logo
         imgLogo = new ImageIcon("C:\\Users\\Darrel\\Documents\\NetBeansProjects\\group9-DSAgithub\\src\\main\\java\\com\\mycompany\\master\\Capture1.JPG");
@@ -133,7 +130,7 @@ public void Connect(){
         try {
             con = DriverManager.getConnection(url, username, password);
         } catch (SQLException ex) {
-            Logger.getLogger(UserLogin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginThree.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     // Handle button click events
@@ -142,48 +139,41 @@ public void Connect(){
         if (e.getSource() == btnLogin) {
             String userID = txtUserID.getText().trim();
             String userPassword = new String(password.getPassword());
-            
 
             if (userID.isEmpty() || userPassword.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "All fields are required!", "ERROR", JOptionPane.ERROR_MESSAGE);
             }else {
                  try {
                     String query = "SELECT * FROM signup WHERE UserID = ? AND Password = ?";
-                                   
                     pst = con.prepareStatement(query);
                     pst.setString(1, userID);
                     pst.setString(2, userPassword);
-                    
-                    
-                    
-                    
-                    
+
                     ResultSet rs = pst.executeQuery();
                     if (rs.next()) {
                         String firstName = rs.getString("FirstName");
                         String lastName = rs.getString("LastName");
                         String phoneNumber = rs.getString("PhoneNumber");
-                        
 
                         JOptionPane.showMessageDialog(this, "Login successful!");
-                        new BookingForm(firstName,lastName,userID,phoneNumber);
-                        dispose();
+             
+                        setVisible(false);
+                        removeAll();
+                        //add(new history());
+                        setVisible(true);
+             
                     }else {
                         JOptionPane.showMessageDialog(this, "Invalid UserID or Password!", "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
                 }catch (SQLException ex) {
-                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(LoginThree.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        } else if (e.getSource() == btnSignup) {
-            dispose();
-            new UserLogin();
-        }
-    }
-    }
-
-
-        
-
-
+             
+        }else if (e.getSource()== btnSignup){
+             
+             //new UserLoginThree();
+        }    
+}
+}
 

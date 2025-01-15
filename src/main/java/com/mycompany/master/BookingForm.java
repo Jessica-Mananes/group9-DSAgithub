@@ -8,6 +8,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,18 +31,21 @@ public class BookingForm extends JFrame implements ActionListener {
     // Declare buttons and labels
     private JTextField txtFirstName, txtLastName, txtUserID, txtPhoneNumber,txtCheckInDate, txtCheckOutDate, txtCheckInTime,txtCheckOutTime,txtFlightID,
                        txtDestination,txtDeparture,txtTravelClass,txtArrival,txtPrice,txtHotelID,txtHotelName,txtLocation,txtRating,txtRoomPreference,txtHotelPrice;
-    private JButton btnNext;
+    private JButton btnNext, btnRetrieve;
     private JLabel lblTitle,lblBookingID,lblFirstName,lblLastName,lblUserID,lblPhoneNumber,lblFlightID,lblDestination,lblDeparture,lblArrival,lblTravelClass,
                    lblPrice,lblHotelID,lblHotelName,lblLocation,lblRating,lblRoomPreference,lblHotelPrice,lblCheckInDate,lblCheckOutDate,lblCheckInTime,
                    lblCheckOutTime,lblTitlePersonalDetails,lblTitleFlightInformation,lblTitleHotelInformation,lblFlightTotalCost;
     private JPanel pnlPersonalDetails,pnlFlightInfo,pnlHotelInfo;
+    private Connection con;
+    private PreparedStatement pst;
+    
     
 
  BookingForm(String firstName,String lastName,String userID, String phoneNumber){
-        
+        Connect();
         // Set up the JFrame properties
         setTitle("Booking Form");
-        setSize(1000, 600);
+        setSize(1000, 650);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -343,23 +353,94 @@ public class BookingForm extends JFrame implements ActionListener {
         btnNext.setBounds(325, 440, 100, 30);
         btnNext.setBackground(new Color(37, 113, 128));
         btnNext.setForeground(new Color(253, 252, 233));
+        btnNext.setEnabled(false);
         pnlHotelInfo.add(btnNext);
+        
+        
+        btnRetrieve = new JButton("RETRIEVE");
+        btnRetrieve.setBounds(210, 440, 100, 30);
+        btnRetrieve.setBackground(new Color(37, 113, 128));
+        btnRetrieve.setForeground(new Color(253, 252, 233));
+        pnlHotelInfo.add(btnRetrieve);
         
         setVisible(true);
         
         btnNext.addActionListener(this);
+        btnRetrieve.addActionListener(this);
         
     }
-  @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnNext) {
-            String firstName = "";
-            String lastName = "";
-            String userID = "";
-            String phoneNumber = "";
-             JOptionPane.showMessageDialog(this, "successful!");
-             //new Hotel();
-             dispose();
+    public void Connect(){
+    String url = "jdbc:mysql://localhost:3306/groupninedsaproject";
+    String username = "root";
+    String password = "admin123";
+    
+    
+        try {
+            con = DriverManager.getConnection(url, username, password);
+        } catch (SQLException ex) {
+            Logger.getLogger(BookingForm.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    if (e.getSource() == btnRetrieve) {
+        
+        btnRetrieve.setVisible(false);
+        btnNext.setEnabled(true);
+               
+        
+        
+
+       try {
+            // Retrieve Database from SQL
+            String query = "SELECT flightID FROM flightInfo ORDER BY TimeCreated DESC LIMIT 1"; // Adjust the query as needed
+            pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                
+                String flightID = rs.getString("flightID");
+                txtFlightID.setText(flightID); 
+
+                
+                query = "SELECT * FROM flightInfo WHERE flightID = ?";
+                pst = con.prepareStatement(query);
+                pst.setString(1, flightID);
+
+                ResultSet flightDetails = pst.executeQuery();
+
+                if (flightDetails.next()) {
+                    
+                    txtDestination.setText(flightDetails.getString("destination"));
+                    txtDeparture.setText(flightDetails.getString("departure"));
+                    txtArrival.setText(flightDetails.getString("arrival"));
+                    txtTravelClass.setText(flightDetails.getString("travelClass"));
+                    txtPrice.setText(flightDetails.getString("price"));
+                }else {
+                    JOptionPane.showMessageDialog(this, "No details found for the selected Flight ID.", "No Data", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "No Flight IDs found in the database.", "No Data", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "An error occurred while retrieving data.", "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(BookingForm.class.getName()).log(Level.SEVERE, null, ex);
+        }try {
+                if (pst != null) pst.close();
+                if (con != null) con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(BookingForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    if (e.getSource() == btnNext) {
+        int book = JOptionPane.showConfirmDialog(BookingForm.this, "Are you sure you want to continue?", "Confirm Booking", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (book == JOptionPane.YES_OPTION) {
+            JOptionPane.showMessageDialog(this, "Proceed to Hotel Tab");
+            dispose();
+        } else {
+        }
+    }
 }
 }
+   

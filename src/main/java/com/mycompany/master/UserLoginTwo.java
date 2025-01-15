@@ -28,8 +28,7 @@ import javax.swing.JTextField;
  *
  * @author Darrel
  */
-//Declare GUI components 
-public class UserLogin extends JFrame implements ActionListener {
+public class UserLoginTwo extends JFrame implements ActionListener {
     private JTextField txtFirstName, txtLastName, txtUserID,txtPhoneNumber;
     private JPasswordField txtPassword, txtConfirmPassword;
     private JButton btnCreateAccount;
@@ -40,7 +39,7 @@ public class UserLogin extends JFrame implements ActionListener {
     private String values;
 
     //Constructor for the GUI Components
-    UserLogin() {
+    UserLoginTwo() {
         Connect();
         setTitle("Create Account");
         setSize(1000, 650);
@@ -147,12 +146,12 @@ public class UserLogin extends JFrame implements ActionListener {
         try {
             con = DriverManager.getConnection(url, username, password);
         } catch (SQLException ex) {
-            Logger.getLogger(UserLogin.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserLoginTwo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
-public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnCreateAccount) {
             String firstName = txtFirstName.getText().trim();
             String lastName = txtLastName.getText().trim();
@@ -193,11 +192,9 @@ public void actionPerformed(ActionEvent e) {
                 } 
                
                 dispose();
-                new Login();
+                new LoginTwo();
                  
             }
         }
     }
 }
-
-
