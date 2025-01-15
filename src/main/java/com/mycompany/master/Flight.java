@@ -252,11 +252,10 @@ public class Flight extends JFrame implements ActionListener{
            if(selected.equals("Choose..")){
               JOptionPane.showMessageDialog(this, "Please select a travel class to book", "Error", JOptionPane.ERROR_MESSAGE);
            }else {
-               //new Login();
                 int btnBook = JOptionPane.showConfirmDialog(this, "Are you sure you want to book now?", "Confirm Booking", JOptionPane.YES_OPTION);
            
                if(btnBook == JOptionPane.YES_OPTION){
-               dispose();
+               //new Login();
                
                int select = tableFlights.getSelectedRow();
                 
