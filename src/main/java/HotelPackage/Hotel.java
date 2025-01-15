@@ -23,7 +23,7 @@ import java.util.logging.*;
 
 public class Hotel extends JFrame implements ActionListener {
 
-    private JLabel lblSearch, lblHotelIDOne, lblHotelIDTwo, lblHotelIDThree, lblHotelIDFour, lblHotelIDFive, lblHotelIDSix, lblHotelIDSeven, lblHotelIDEight, lblHotelIDNine,lblHotelIDTen,
+    private JLabel lblNote, lblSearch, lblHotelIDOne, lblHotelIDTwo, lblHotelIDThree, lblHotelIDFour, lblHotelIDFive, lblHotelIDSix, lblHotelIDSeven, lblHotelIDEight, lblHotelIDNine,lblHotelIDTen,
             lblHotelIDEleven,lblHotelIDTwelve,lblHotelIDThirteen,lblHotelIDFourteen,lblHotelIDFifteen,lblHotelIDExtSixteen,lblHotelIDSeventeen,lblHotelIDEighteen,lblHotelIDNineteen,lblHotelIDTwenty,
             lblHotelIDTwentyone,lblHotelIDTwentytwo,lblHotelIDTwentythree,lblHotelIDTwentyfour,lblHotelIDTwentyfive,lblHotelIDTwentysix,lblHotelIDTwentyseven,lblHotelIDTwentyeight,lblHotelIDTwentynine,
             lblHotelIDThirty,lblHotelIDExtOne, lblHotelIDExtTwo, lblHotelIDExtThree, lblHotelIDExtFour, lblHotelIDExtFive, lblHotelIDExtSix, lblHotelIDExtSeven, lblHotelIDExtEight, lblHotelIDExtNine,
@@ -50,8 +50,9 @@ public class Hotel extends JFrame implements ActionListener {
             btnImgeafricaCapetown, btnImgeafricaSilo,btnImgeafricaBelmond,btnImgehawaiiFourseasons, btnImgehawaiiAndaz,btnImgehawaiiRitz,
             btnImgespainArts,btnImgespainMandarin, btnImgespainPalace, btnImgthailandMandarin, btnImgthailandSiam, btnImgthailandPeninsula, btnImgfranceRitz, btnImgfranceLemeurice, 
             btnImgfranceShangrila, btnImgjapanCarlton, btnImgjapanHoshinoya, btnImgjapanAman, btnImgitalyRussie, btnImgitalyEden, btnImgitalyRegis, btnImgsouthkoreaFS, 
-            btnImgsouthkoreaShilla, btnImgsouthkoreaSigniel;;
+            btnImgsouthkoreaShilla, btnImgsouthkoreaSigniel, btnPrint;
     private Font font = new Font("Garet", Font.BOLD, 25),
+            fontNote = new Font("Garet", Font.PLAIN, 10),
             hotelFont = new Font("Garet", Font.BOLD, 15),
             fontHotelName = new Font("Arial", Font.BOLD, 20);
 
@@ -87,11 +88,18 @@ public class Hotel extends JFrame implements ActionListener {
         jtfSearch.setBounds(230, 40, 415, 50);
         add(jtfSearch);
 
-        lblSearch = new JLabel("PLACE:");
+        lblSearch = new JLabel("Search:");
         lblSearch.setFont(font);
         lblSearch.setForeground(new Color(0,0,0));
         lblSearch.setBounds(115, 40, 350, 50);
         add(lblSearch);
+        
+        //note for search button
+        lblNote = new JLabel("Note: PLease search for specific place to stay.");
+        lblNote.setFont(fontNote);
+        lblNote.setForeground(Color.WHITE);
+        lblNote.setBounds(230, 90, 350, 15);
+        add(lblNote);
 
         //search button 
         btnSearch = new JButton("⌕");
@@ -124,6 +132,14 @@ public class Hotel extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {   
         
         Connect();
+//        if (e.getSource() == btnPrint){
+//            String print = jtfSearch.getText() .trim();
+//            if (!print.isEmpty()){
+//                
+//            }
+//            
+//            
+//        }
    
         if (e.getSource() == btnRefresh) {
                 layer.removeAll();
@@ -3024,7 +3040,11 @@ public class Hotel extends JFrame implements ActionListener {
                                 
             }        
             }  
+        
         }
+    
+    
+    
     
     //connecting to sql
     
@@ -3041,6 +3061,7 @@ public class Hotel extends JFrame implements ActionListener {
             Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+   
     
     
 
