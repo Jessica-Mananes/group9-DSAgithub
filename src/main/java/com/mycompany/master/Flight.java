@@ -80,7 +80,7 @@ public class Flight extends JFrame implements ActionListener{
             FlightInfo flight = list.get(f);
             flightdata[f][0] = flight.flightID;
             flightdata[f][1] = flight.destination;
-            flightdata[f][2] = flight.departure.format(DateTimeFormatter.ofPattern("h:mm a"));
+            flightdata[f][2] = flight.departure.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy h:mm a"));
             flightdata[f][3] = flight.arrival.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy h:mm a")); 
             flightdata[f][4] = flight.travelClass;
             flightdata[f][5] = "";
