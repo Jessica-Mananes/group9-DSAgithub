@@ -1,13 +1,22 @@
+package com.mycompany.master;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.master;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,10 +35,13 @@ public class UserLoginThree extends JFrame implements ActionListener {
     private JButton btnCreateAccount;
     private JLabel lblFirstName,lblLastName,lblUserID,lblPassword,lblConfirmPassword,lblLogo,lblPhoneNumber;
     private ImageIcon imgLogo;
+    private Connection con;
+    private PreparedStatement pst;
+    private String values;
 
     //Constructor for the GUI Components
     UserLoginThree() {
-        
+        Connect();
         setTitle("Create Account");
         setSize(1000, 650);
         setResizable(false);
@@ -66,6 +78,7 @@ public class UserLoginThree extends JFrame implements ActionListener {
         txtUserID = new JTextField();
         txtUserID.setBounds(225, 265, 250, 30);
         txtUserID.setBackground(new Color(180, 204, 224));
+        txtUserID.setEditable(false);
         add(txtUserID);
         
         //Adds the Password Label and PasswordField
@@ -123,6 +136,19 @@ public class UserLoginThree extends JFrame implements ActionListener {
         btnCreateAccount.addActionListener(this);
         
         setVisible(true);
+        
+    }
+    public void Connect(){
+    String url = "jdbc:mysql://localhost:3306/groupninedsaproject";
+    String username = "root";
+    String password = "admin123";
+    
+    
+        try {
+            con = DriverManager.getConnection(url, username, password);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserLoginThree.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -130,24 +156,47 @@ public class UserLoginThree extends JFrame implements ActionListener {
         if (e.getSource() == btnCreateAccount) {
             String firstName = txtFirstName.getText().trim();
             String lastName = txtLastName.getText().trim();
-            String email = txtUserID.getText().trim();
             String password = new String(txtPassword.getPassword());
             String phoneNumber = new String(txtPhoneNumber.getText().trim());
             String confirmPassword = new String(txtConfirmPassword.getPassword());
-
-            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || phoneNumber.isEmpty()) {
+            String userID = txtUserID.getText().trim();
+            
+            if (firstName.isEmpty() || lastName.isEmpty()  || password.isEmpty() || confirmPassword.isEmpty() || phoneNumber.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "All fields are required!", "ERROR", JOptionPane.ERROR_MESSAGE);
             } else if (!password.equals(confirmPassword)) {
                 JOptionPane.showMessageDialog(this, "Passwords do not match!", "ERROR", JOptionPane.ERROR_MESSAGE);
             } else {
-                
+                try{
+                    
+                    String values = "INSERT INTO signup (FirstName, LastName, PhoneNumber, Password) VALUES (?,?,?,?)";
+                    pst = con.prepareStatement(values, Statement.RETURN_GENERATED_KEYS);
+                    pst.setString(1, firstName);
+                    pst.setString(2, lastName);
+                    pst.setString(3, phoneNumber);
+                    pst.setString(4, password);
+                    
+                    int rowCount = pst.executeUpdate();                     
+                    if (rowCount > 0) {               
+                        ResultSet rs = pst.getGeneratedKeys();
+                        if (rs.next()) {
+                        String generatedUserID = rs.getString(1);
+                    
+                        JOptionPane.showMessageDialog(this, "Account created successfully! \nYour UserID is: "  + generatedUserID , "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
+                        }    
+                    }else {
+                     JOptionPane.showMessageDialog(this, "Failed to create account!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
+            
+                }catch (SQLException ex) {
+                    Logger.getLogger(UserLogin.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(this, "Database connection error!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                } 
                
                 dispose();
-                new LoginThree();
+                new Login();
                  
             }
         }
     }
-
-
 }
+

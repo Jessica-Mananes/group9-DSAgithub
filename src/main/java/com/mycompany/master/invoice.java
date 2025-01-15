@@ -1,8 +1,10 @@
+package com.mycompany.master;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.master;
+
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,6 +13,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,16 +24,22 @@ import javax.swing.*;
  * @author ASUS X441U
  */
 public class invoice extends JFrame implements ActionListener{
-    private Connection con;
-    private ImageIcon imgLogo,imgnewLogo;
-    private URL imageLogo;
-    private JButton btnClose;
+//    private ImageIcon imgLogo,imgnewLogo;
+    private JButton btnClose, btnPrint;
     private JLabel lblLogo, lblDash, lblBookingID, lblDateTime, lblDash1, lblContactNum, lblDash2, 
             lblFlightInfo, lblPrice,lblDestination, lblFlightID, lblClass, lblDash3, lblHotelInfo,
-            lblHotelD, lblHotelPrice, lblLocation, lblRoom, lblDash4, lblTotal, lblDash5, lblThankyou, lblDash6;
+            lblHotelD, lblHotelPrice, lblLocation, lblRoom, lblDash4, lblTotal, lblDash5, lblThankyou, lblDash6, 
+            
+            lblBookingIdInvoice, lblTimeCreatedInvoice, lblFlightPriceInvoice, lblFlightIDInvoice, lblDestinationInvoice, lblFlightClassInvoice,
+            lblHotelPriceInvoice, lblHotelIDInvoice, lblLocationInvoice, 
+            lblRoomPreferenceInvoice, lblTotalAmountInvoice;
+
+    private Connection con;
+    private PreparedStatement pst;
     
+   
     invoice () {
-        
+        Connect();
         setSize(550, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
@@ -38,20 +48,17 @@ public class invoice extends JFrame implements ActionListener{
         setUndecorated(true);
         getContentPane().setBackground(new Color(253, 252, 233));       
         
-        //Image Icon for logo
-        try {
-            imageLogo = new URL("https://i.pinimg.com/736x/3d/49/72/3d4972edebca280a6a786632df8d37a2.jpg");
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(invoice.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        imgLogo = new ImageIcon(imageLogo);
-        Image imgScaleLogo = imgLogo.getImage().getScaledInstance(100, 70, Image.SCALE_SMOOTH);
-        imgnewLogo = new ImageIcon(imgScaleLogo);
+        ImageIcon imageIcon = new ImageIcon("invoicelogo.png");
+        Image imageScale = imageIcon.getImage().getScaledInstance(90, 70, Image.SCALE_SMOOTH);
+        ImageIcon imageNew = new ImageIcon(imageScale);
+       
          
         //Invoice Label 
-        lblLogo = new JLabel(imgnewLogo);
-        lblLogo.setBounds(215, 25, 100, 70);
+        lblLogo = new JLabel(imageNew);
+        lblLogo.setBounds(215, 25, 90, 70);
+        lblLogo.setBackground(new Color(253, 252, 233));       
+        
+        
         add(lblLogo);
         
         lblDash = new JLabel("------------------------------------");
@@ -64,7 +71,8 @@ public class invoice extends JFrame implements ActionListener{
         lblDateTime.setBounds(51, 80, 500, 80);
         lblDateTime.setForeground(new Color (105,105,105));
         lblDateTime.setFont(new Font("Monospaced", Font.PLAIN, 13));
-        add(lblDateTime);
+        add(lblDateTime); 
+     
         
         lblContactNum = new JLabel("+639919130826");
         lblContactNum.setBounds(210, 100, 500, 80);
@@ -83,12 +91,22 @@ public class invoice extends JFrame implements ActionListener{
         lblBookingID.setForeground(new Color (105,105,105));
         lblBookingID.setFont(new Font("Monospaced", Font.PLAIN, 13));
         add(lblBookingID);
+        
+        lblBookingIdInvoice = new JLabel("");
+        lblBookingIdInvoice.setBounds(150, 135, 500, 80);
+        add(lblBookingIdInvoice);
+        
        
         lblDateTime = new JLabel("Date & Time: ");
         lblDateTime.setBounds(50, 155, 500, 80);
         lblDateTime.setForeground(new Color (105,105,105));
         lblDateTime.setFont(new Font("Monospaced", Font.PLAIN, 13));
         add(lblDateTime);
+        
+        lblTimeCreatedInvoice = new JLabel("");
+        lblTimeCreatedInvoice.setBounds(150, 155, 500, 80);
+        add(lblTimeCreatedInvoice);
+        
         
         lblDash2 = new JLabel("------------------------------------");
         lblDash2.setBounds(50, 175, 500, 80);
@@ -102,11 +120,17 @@ public class invoice extends JFrame implements ActionListener{
         lblFlightInfo.setFont(new Font("Monospaced", Font.PLAIN, 15));
         add(lblFlightInfo);
         
+        
         lblPrice = new JLabel("PRICE");
         lblPrice.setBounds(390, 195, 500, 80);
         lblPrice.setForeground(new Color (105,105,105));
         lblPrice.setFont(new Font("Monospaced", Font.PLAIN, 15));
         add(lblPrice);
+        
+        lblFlightPriceInvoice = new JLabel("");
+        lblFlightPriceInvoice.setBounds(390, 300, 500, 80);
+        add(lblFlightPriceInvoice);
+        
         
         lblFlightID = new JLabel("FlightID: ");
         lblFlightID.setBounds(50, 225, 500, 80);
@@ -114,17 +138,31 @@ public class invoice extends JFrame implements ActionListener{
         lblFlightID.setFont(new Font("Monospaced", Font.PLAIN, 13));
         add(lblFlightID);
         
+        lblFlightIDInvoice = new JLabel("");
+        lblFlightIDInvoice.setBounds(125, 225, 500, 80);
+        add(lblFlightIDInvoice);
+        
+       
+        
         lblDestination = new JLabel("Destination: ");
         lblDestination.setBounds(50, 245, 500, 80);
         lblDestination.setForeground(new Color (105,105,105));
         lblDestination.setFont(new Font("Monospaced", Font.PLAIN, 13));
         add(lblDestination);
         
+        lblDestinationInvoice = new JLabel("");
+        lblDestinationInvoice.setBounds(150, 245, 500, 80);
+        add(lblDestinationInvoice);
+        
         lblClass = new JLabel("Flight Class: ");
         lblClass.setBounds(50, 265, 500, 80);
         lblClass.setForeground(new Color (105,105,105));
         lblClass.setFont(new Font("Monospaced", Font.PLAIN, 13));
         add(lblClass);
+        
+        lblFlightClassInvoice = new JLabel("");
+        lblFlightClassInvoice.setBounds(155, 265, 500, 80);
+        add(lblFlightClassInvoice);
         
         lblDash3 = new JLabel("------------------------------------");
         lblDash3.setBounds(50, 315, 500, 80);
@@ -144,11 +182,19 @@ public class invoice extends JFrame implements ActionListener{
         lblHotelPrice.setFont(new Font("Monospaced", Font.PLAIN, 15));
         add(lblHotelPrice);
         
+        lblHotelPriceInvoice = new JLabel("");
+        lblHotelPriceInvoice.setBounds(390, 440, 500, 80);
+        add(lblHotelPriceInvoice);
+        
         lblHotelD = new JLabel("HotelID: ");
         lblHotelD.setBounds(50,365, 500, 80);
         lblHotelD.setForeground(new Color (105,105,105));
         lblHotelD.setFont(new Font("Monospaced", Font.PLAIN, 13));
         add(lblHotelD);
+        
+        lblHotelIDInvoice = new JLabel("");
+        lblHotelIDInvoice.setBounds(120, 365, 500, 80);
+        add(lblHotelIDInvoice);
         
         lblLocation = new JLabel("Location: ");
         lblLocation.setBounds(50,385, 500, 80);
@@ -156,11 +202,19 @@ public class invoice extends JFrame implements ActionListener{
         lblLocation.setFont(new Font("Monospaced", Font.PLAIN, 13));
         add(lblLocation);
         
+        lblLocationInvoice = new JLabel("");
+        lblLocationInvoice.setBounds(125, 385, 500, 80);
+        add(lblLocationInvoice);
+        
         lblRoom = new JLabel("Room Preference: ");
         lblRoom.setBounds(50, 405, 500, 80);
         lblRoom.setForeground(new Color (105,105,105));
         lblRoom.setFont(new Font("Monospaced", Font.PLAIN, 13));
         add(lblRoom);
+        
+        lblRoomPreferenceInvoice = new JLabel("");
+        lblRoomPreferenceInvoice.setBounds(180, 405, 500, 80);
+        add(lblRoomPreferenceInvoice);
         
         lblDash4 = new JLabel("------------------------------------");
         lblDash4.setBounds(50, 455, 500, 80);
@@ -173,6 +227,10 @@ public class invoice extends JFrame implements ActionListener{
         lblTotal.setForeground(new Color (105,105,105));
         lblTotal.setFont(new Font("Monospaced", Font.PLAIN, 15));
         add(lblTotal);
+        
+        lblTotalAmountInvoice = new JLabel("");
+        lblTotalAmountInvoice.setBounds(390, 475, 500, 80);
+        add(lblTotalAmountInvoice);
         
         lblDash5 = new JLabel("------------------------------------");
         lblDash5.setBounds(50, 495, 500, 80);
@@ -198,31 +256,95 @@ public class invoice extends JFrame implements ActionListener{
         btnClose.setFont(new Font("Monospaced", Font.BOLD, 15));
         btnClose.setForeground(new Color(253, 252, 233));
         btnClose.setBackground(new Color(37, 113, 128));
+        btnClose.setVisible (false);
         add(btnClose);
         
+        
+        btnPrint = new JButton("PRINT");
+        btnPrint.setBounds(400, 630, 80, 25);
+        btnPrint.setFont(new Font("Monospaced", Font.BOLD, 15));
+        btnPrint.setForeground(new Color(253, 252, 233));
+        btnPrint.setBackground(new Color(37, 113, 128));
+        add(btnPrint);
+        
         btnClose.addActionListener(this);
+        btnPrint.addActionListener(this);
         setVisible(true);
         
     }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        int close = JOptionPane.showConfirmDialog(this, "Are you sure you want to close?", "Invoice Receipt", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-         
-        if(close == JOptionPane.YES_NO_OPTION){
-            this.dispose();
-        } 
-    }
-    public void Connect(){
-        String url = "jdbc:mysql://localhost:3306/GroupNineDSAProject";
-        String username = "root";
-        String password = "sica123";
-        
+ public void Connect(){
+    String url = "jdbc:mysql://localhost:3306/groupninedsaproject";
+    String username = "root";
+    String password = "admin123";
+    
     
         try {
             con = DriverManager.getConnection(url, username, password);
         } catch (SQLException ex) {
             Logger.getLogger(invoice.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      
+        if (e.getSource() == btnPrint){
+            btnPrint.setVisible(false);
+            btnClose.setVisible(true);
+            String bookingid = lblBookingIdInvoice.getText();
+            if(bookingid.isEmpty()){
+            
+            
+        
+        try { String query = "SELECT BookingID, TimeCreated, FlightPrice, FlightID, Destination, TravelClass, HotelPrice, HotelID, HotelLocation, RoomPreference, TotalCost"
+                + "  FROM bookinfo ORDER BY TimeCreated DESC LIMIT 1"; // Adjust the query as needed
+            pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            
+                    if (rs.next()) {
+                        String BookingID = rs.getString("BookingID");
+                        String timecreated = rs.getString("TimeCreated");
+                        String flightprice = rs.getString("flightprice");
+                        String flightid = rs.getString("FlightID");
+                        String destination = rs.getString("Destination");
+                        String travelclass = rs.getString("TravelClass");
+                        String hotelprice = rs.getString("HotelPrice");
+                        String hotelid = rs.getString("HotelID");
+                        String hotellocation = rs.getString("HotelLocation");
+                        String roompreference = rs.getString("RoomPreference");
+                        String totalcost = rs.getString("TotalCost");
+                        
+                        lblBookingIdInvoice.setText(BookingID);
+                        lblTimeCreatedInvoice.setText(timecreated);
+                        lblFlightPriceInvoice.setText(flightprice);
+                        lblFlightIDInvoice.setText(flightid);
+                        lblDestinationInvoice.setText(destination);
+                        lblFlightClassInvoice.setText(travelclass);
+                        lblHotelPriceInvoice.setText(hotelprice);
+                        lblHotelIDInvoice.setText(hotelid);
+                        lblLocationInvoice.setText(hotellocation);
+                        lblRoomPreferenceInvoice.setText(roompreference);
+                        lblTotalAmountInvoice.setText(totalcost);
+       
+                        
+                    }
+                    } 
+                 catch (SQLException ex) {
+                    ex.printStackTrace();
+}
+            
+        }}
+            if(e.getSource() == btnClose){
+            int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to close?", "THANK YOU!", JOptionPane.YES_NO_OPTION);
+                    if(confirm == JOptionPane.YES_OPTION){
+                        new ItineraryTravel();
+                        dispose();
+ 
+                
+            }
         }
     }
+}
+       
+     
+           
+         

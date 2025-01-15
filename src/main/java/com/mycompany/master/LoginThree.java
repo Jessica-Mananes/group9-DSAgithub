@@ -1,13 +1,22 @@
+package com.mycompany.master;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.master;
+
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,9 +38,11 @@ public class LoginThree extends JPanel implements ActionListener {
     private JPasswordField password;
     private JButton btnLogin, btnSignup;
     private ImageIcon imgLogo;
-
+    private Connection con;
+    private PreparedStatement pst;
+    
     public LoginThree() {
-        
+        Connect();
          // Set up the JFrame properties
         
         setSize(1000, 650);
@@ -113,25 +124,58 @@ public class LoginThree extends JPanel implements ActionListener {
         btnSignup.addActionListener(this);
         
     }
-
+public void Connect(){
+    String url = "jdbc:mysql://localhost:3306/groupninedsaproject";
+    String username = "root";
+    String password = "admin123";
+    
+    
+        try {
+            con = DriverManager.getConnection(url, username, password);
+        } catch (SQLException ex) {
+            Logger.getLogger(UserLoginThree.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     // Handle button click events
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnLogin) {
-            
-            // Show a success message
-             JOptionPane.showMessageDialog(this, "Login successful!");
+            String userID = txtUserID.getText().trim();
+            String userPassword = new String(password.getPassword());
+
+            if (userID.isEmpty() || userPassword.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "All fields are required!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }else {
+                 try {
+                    String query = "SELECT * FROM signup WHERE UserID = ? AND Password = ?";
+                    pst = con.prepareStatement(query);
+                    pst.setString(1, userID);
+                    pst.setString(2, userPassword);
+
+                    ResultSet rs = pst.executeQuery();
+                    if (rs.next()) {
+                        String firstName = rs.getString("FirstName");
+                        String lastName = rs.getString("LastName");
+                        String phoneNumber = rs.getString("PhoneNumber");
+
+                        JOptionPane.showMessageDialog(this, "Login successful!");
              
-             setVisible(false);
-             removeAll();
-             add(new history());
-             setVisible(true);
+                        setVisible(false);
+                        removeAll();
+                        add(new history());
+                        setVisible(true);
              
+                    }else {
+                        JOptionPane.showMessageDialog(this, "Invalid UserID or Password!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
+                }catch (SQLException ex) {
+                    Logger.getLogger(LoginThree.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
              
-             
-         }else if (e.getSource()== btnSignup){
+        }else if (e.getSource()== btnSignup){
              
              new UserLoginThree();
-    }
+        }    
 }
 }
