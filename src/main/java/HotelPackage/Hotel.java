@@ -95,7 +95,7 @@ public class Hotel extends JFrame implements ActionListener {
         add(lblSearch);
         
         //note for search button
-        lblNote = new JLabel("Note: PLease search for specific place to stay.");
+        lblNote = new JLabel("Note: Please search for specific country you want to stay.");
         lblNote.setFont(fontNote);
         lblNote.setForeground(Color.WHITE);
         lblNote.setBounds(230, 90, 350, 15);
