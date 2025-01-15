@@ -42,7 +42,7 @@ public class Hotel extends JFrame implements ActionListener {
             lblHotelNameTwentynine,lblHotelNameThirty,lblHotelRateOne, lblHotelRateTwo, lblHotelRateThree, lblHotelRateFour, lblHotelRateFive, lblHotelRateSix, lblHotelRateSeven, lblHotelRateEight, lblHotelRateNine,lblHotelRateTen,
             lblHotelRateEleven,lblHotelRateTwelve,lblHotelRateThirteen,lblHotelRateFourteen,lblHotelRateFifteen,lblHotelRateSixteen,lblHotelRateSeventeen,lblHotelRateEighteen,lblHotelRateNineteen,lblHotelRateTwenty,lblHotelRateTwentyone,
             lblHotelRateTwentytwo,lblHotelRateTwentythree,lblHotelRateTwentyfour,lblHotelRateTwentyfive,lblHotelRateTwentysix,lblHotelRateTwentyseven,lblHotelRateTwentyeight,lblHotelRateTwentynine,lblHotelIDExtThirty,lblHotelRateThirty,
-           lblHotelRateExtOne, lblHotelRateExtTwo, lblHotelRateExtThree, lblHotelRateExtFour, lblHotelRateExtFive, lblHotelRateExtSix, lblHotelRateExtSeven, lblHotelRateExtEight, lblHotelRateExtNine,lblHotelRateExtTen,lblHotelRateExtEleven, 
+            lblHotelRateExtOne, lblHotelRateExtTwo, lblHotelRateExtThree, lblHotelRateExtFour, lblHotelRateExtFive, lblHotelRateExtSix, lblHotelRateExtSeven, lblHotelRateExtEight, lblHotelRateExtNine,lblHotelRateExtTen,lblHotelRateExtEleven, 
             lblHotelRateExtTwelve,lblHotelRateExtThirteen,lblHotelRateExtFourteen, lblHotelRateExtFifteen,lblHotelRateExtSixteen,lblHotelRateExtSeventeen,lblHotelRateExtEighteen,lblHotelRateExtNineteen,lblHotelRateExtTwenty,lblHotelRateExtTwentyone,
             lblHotelRateExtTwentytwo,lblHotelRateExtTwentythree,lblHotelRateExtTwentyfour,lblHotelRateExtTwentyfive,lblHotelRateExtTwentysix,lblHotelRateExtTwentyseven,lblHotelRateExtTwentyeight,lblHotelRateExtTwentynine,lblHotelRateExtThirty; 
     private JTextField jtfSearch;
@@ -132,15 +132,6 @@ public class Hotel extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {   
         
         Connect();
-//        if (e.getSource() == btnPrint){
-//            String print = jtfSearch.getText() .trim();
-//            if (!print.isEmpty()){
-//                
-//            }
-//            
-//            
-//        }
-   
         if (e.getSource() == btnRefresh) {
                 layer.removeAll();
                 layer.repaint();
@@ -204,7 +195,6 @@ public class Hotel extends JFrame implements ActionListener {
                 lblHotelRateExtOne.setForeground(Color.WHITE);
                 lblHotelRateExtOne.setBounds(90, 380, 320, 70);
                 framePanelsydney.add(lblHotelRateExtOne);
-
                                
                 //Image button for park hyatt
             
@@ -247,7 +237,7 @@ public class Hotel extends JFrame implements ActionListener {
                         a.printStackTrace();
                     } 
                         
-        }    
+                   }    
                 }
                   });                
                 framePanelsydney.add(btnImgeparisParkhyatt);
@@ -339,7 +329,7 @@ public class Hotel extends JFrame implements ActionListener {
                         }catch (Exception a){
                         a.printStackTrace();
                     }                              
-                }
+                  }
                 }
                   });
                 framePanelsydney.add(btnImgparisshangri);
@@ -430,7 +420,7 @@ public class Hotel extends JFrame implements ActionListener {
                         }catch (Exception a){
                         a.printStackTrace();
                     }               
-                }
+                  }
                 }
                   });     
                 framePanelsydney.add(btnImgparisQT);
@@ -628,7 +618,7 @@ public class Hotel extends JFrame implements ActionListener {
                         }catch (Exception a){
                         a.printStackTrace();
                     }               
-                }
+                 }
                 }
                   }); 
                 framePanelnewyork.add(btnImgenewyorkPeninsula);
@@ -709,7 +699,7 @@ public class Hotel extends JFrame implements ActionListener {
                         }catch (Exception a){
                         a.printStackTrace();
                     }               
-                }
+                   }
                   }); 
                 framePanelnewyork.add(btnImgenewyorkHighline);
             }
@@ -3028,24 +3018,19 @@ public class Hotel extends JFrame implements ActionListener {
                 
         else if(place.isEmpty()){
             
-                JOptionPane.showMessageDialog(this, "Please Enter Your Destination First", "ERROR", JOptionPane.ERROR_MESSAGE);
-
-            
+                JOptionPane.showMessageDialog(this, "Please Enter Your Destination First", "ERROR", JOptionPane.ERROR_MESSAGE);      
             
         }
             
                 //JOption if the search bar delivered is empty 
-    else {
+         else {
                 JOptionPane.showMessageDialog(this, "Place is still not available", "ERROR", JOptionPane.ERROR_MESSAGE);
                                 
             }        
             }  
         
         }
-    
-    
-    
-    
+  
     //connecting to sql
     
     public void Connect(){
@@ -3061,9 +3046,5 @@ public class Hotel extends JFrame implements ActionListener {
             Logger.getLogger(Hotel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-   
-    
-    
-
     }
 

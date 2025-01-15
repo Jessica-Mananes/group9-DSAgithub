@@ -37,7 +37,6 @@ CREATE TABLE `hotelinfo` (
 
 LOCK TABLES `hotelinfo` WRITE;
 /*!40000 ALTER TABLE `hotelinfo` DISABLE KEYS */;
-INSERT INTO `hotelinfo` VALUES ('The Ritz','15 Place Vendôme, Paris, France',' PAR019','5/5','2025-01-13 02:01:38');
 /*!40000 ALTER TABLE `hotelinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-13 10:32:24
+-- Dump completed on 2025-01-15 22:31:13
